@@ -1,0 +1,929 @@
+{
+  "meta": {
+    "name": "Jalur pendakian Gunung Butak via Panderman",
+    "engine": "Alam Engine"
+  },
+  "stats": {
+    "points": 71,
+    "distance_km": 2.24,
+    "gain": 282,
+    "loss": 31,
+    "highest": 1700.0,
+    "lowest": 1449.0,
+    "start": 1449.0,
+    "finish": 1700.0,
+    "bbox": {
+      "min_lat": -7.906439,
+      "max_lat": -7.891033,
+      "min_lng": 112.487265,
+      "max_lng": 112.492678
+    },
+    "center": {
+      "lat": -7.8987359999999995,
+      "lng": 112.4899715
+    }
+  },
+  "waypoints": [
+    {
+      "name": "Start",
+      "lat": -7.891033,
+      "lng": 112.492678,
+      "ele": 1449.0
+    },
+    {
+      "name": "Finish",
+      "lat": -7.906439,
+      "lng": 112.487265,
+      "ele": 1700.0
+    },
+    {
+      "name": "Highest Point",
+      "lat": -7.906439,
+      "lng": 112.487265,
+      "ele": 1700.0
+    }
+  ],
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [
+        -7.891033,
+        112.492678,
+        1449.0,
+        0
+      ],
+      [
+        -7.891162,
+        112.492517,
+        1455.0,
+        0.023
+      ],
+      [
+        -7.891199,
+        112.492305,
+        1454.0,
+        0.047
+      ],
+      [
+        -7.891245,
+        112.492125,
+        1453.0,
+        0.067
+      ],
+      [
+        -7.89156,
+        112.491828,
+        1466.0,
+        0.115
+      ],
+      [
+        -7.891793,
+        112.49148,
+        1470.0,
+        0.161
+      ],
+      [
+        -7.892105,
+        112.491188,
+        1470.0,
+        0.208
+      ],
+      [
+        -7.892469,
+        112.491136,
+        1477.0,
+        0.249
+      ],
+      [
+        -7.892788,
+        112.491062,
+        1485.0,
+        0.286
+      ],
+      [
+        -7.893203,
+        112.491004,
+        1497.0,
+        0.332
+      ],
+      [
+        -7.893758,
+        112.490903,
+        1503.0,
+        0.395
+      ],
+      [
+        -7.894411,
+        112.490792,
+        1526.0,
+        0.469
+      ],
+      [
+        -7.894531,
+        112.490561,
+        1520.0,
+        0.497
+      ],
+      [
+        -7.894756,
+        112.490395,
+        1530.0,
+        0.528
+      ],
+      [
+        -7.894849,
+        112.490295,
+        1532.0,
+        0.544
+      ],
+      [
+        -7.894745,
+        112.490182,
+        1530.0,
+        0.561
+      ],
+      [
+        -7.894689,
+        112.490123,
+        1529.0,
+        0.57
+      ],
+      [
+        -7.894493,
+        112.489931,
+        1523.0,
+        0.6
+      ],
+      [
+        -7.894555,
+        112.489789,
+        1525.0,
+        0.617
+      ],
+      [
+        -7.894705,
+        112.489557,
+        1526.0,
+        0.647
+      ],
+      [
+        -7.894922,
+        112.489405,
+        1530.0,
+        0.677
+      ],
+      [
+        -7.895035,
+        112.489291,
+        1533.0,
+        0.695
+      ],
+      [
+        -7.895256,
+        112.489092,
+        1539.0,
+        0.728
+      ],
+      [
+        -7.895572,
+        112.488935,
+        1545.0,
+        0.767
+      ],
+      [
+        -7.895779,
+        112.488779,
+        1547.0,
+        0.795
+      ],
+      [
+        -7.895989,
+        112.488662,
+        1547.0,
+        0.822
+      ],
+      [
+        -7.896268,
+        112.488651,
+        1550.0,
+        0.853
+      ],
+      [
+        -7.896485,
+        112.488754,
+        1555.0,
+        0.88
+      ],
+      [
+        -7.896615,
+        112.489047,
+        1571.0,
+        0.915
+      ],
+      [
+        -7.89667,
+        112.489112,
+        1575.0,
+        0.925
+      ],
+      [
+        -7.896769,
+        112.489245,
+        1580.0,
+        0.943
+      ],
+      [
+        -7.89705,
+        112.489464,
+        1583.0,
+        0.982
+      ],
+      [
+        -7.897384,
+        112.489633,
+        1592.0,
+        1.024
+      ],
+      [
+        -7.897558,
+        112.489575,
+        1595.0,
+        1.044
+      ],
+      [
+        -7.897604,
+        112.489455,
+        1595.0,
+        1.058
+      ],
+      [
+        -7.897594,
+        112.489414,
+        1594.0,
+        1.063
+      ],
+      [
+        -7.897547,
+        112.489275,
+        1591.0,
+        1.079
+      ],
+      [
+        -7.897479,
+        112.489141,
+        1586.0,
+        1.096
+      ],
+      [
+        -7.897448,
+        112.489,
+        1583.0,
+        1.112
+      ],
+      [
+        -7.897483,
+        112.488909,
+        1583.0,
+        1.123
+      ],
+      [
+        -7.89761,
+        112.488839,
+        1589.0,
+        1.139
+      ],
+      [
+        -7.897702,
+        112.488735,
+        1593.0,
+        1.154
+      ],
+      [
+        -7.897888,
+        112.488599,
+        1599.0,
+        1.18
+      ],
+      [
+        -7.898161,
+        112.488509,
+        1606.0,
+        1.211
+      ],
+      [
+        -7.898487,
+        112.488491,
+        1615.0,
+        1.248
+      ],
+      [
+        -7.898826,
+        112.488432,
+        1622.0,
+        1.286
+      ],
+      [
+        -7.899146,
+        112.488346,
+        1627.0,
+        1.323
+      ],
+      [
+        -7.899333,
+        112.488245,
+        1630.0,
+        1.346
+      ],
+      [
+        -7.899513,
+        112.488229,
+        1634.0,
+        1.367
+      ],
+      [
+        -7.900352,
+        112.488525,
+        1655.0,
+        1.465
+      ],
+      [
+        -7.900788,
+        112.488407,
+        1660.0,
+        1.516
+      ],
+      [
+        -7.901132,
+        112.488483,
+        1664.0,
+        1.555
+      ],
+      [
+        -7.901434,
+        112.488469,
+        1665.0,
+        1.588
+      ],
+      [
+        -7.901643,
+        112.488596,
+        1668.0,
+        1.615
+      ],
+      [
+        -7.901877,
+        112.488706,
+        1675.0,
+        1.644
+      ],
+      [
+        -7.902046,
+        112.488735,
+        1679.0,
+        1.663
+      ],
+      [
+        -7.902432,
+        112.488756,
+        1681.0,
+        1.706
+      ],
+      [
+        -7.902799,
+        112.48874,
+        1681.0,
+        1.747
+      ],
+      [
+        -7.903028,
+        112.48866,
+        1682.0,
+        1.774
+      ],
+      [
+        -7.903474,
+        112.488536,
+        1686.0,
+        1.825
+      ],
+      [
+        -7.903734,
+        112.48852,
+        1689.0,
+        1.854
+      ],
+      [
+        -7.904028,
+        112.48859,
+        1690.0,
+        1.888
+      ],
+      [
+        -7.904335,
+        112.488681,
+        1689.0,
+        1.924
+      ],
+      [
+        -7.904478,
+        112.488729,
+        1690.0,
+        1.94
+      ],
+      [
+        -7.904738,
+        112.488686,
+        1689.0,
+        1.97
+      ],
+      [
+        -7.905286,
+        112.488686,
+        1692.0,
+        2.031
+      ],
+      [
+        -7.905549,
+        112.488605,
+        1692.0,
+        2.061
+      ],
+      [
+        -7.9058,
+        112.488527,
+        1693.0,
+        2.09
+      ],
+      [
+        -7.906077,
+        112.488272,
+        1693.0,
+        2.132
+      ],
+      [
+        -7.906229,
+        112.48772,
+        1699.0,
+        2.195
+      ],
+      [
+        -7.906439,
+        112.487265,
+        1700.0,
+        2.25
+      ]
+    ]
+  },
+  "segments": [
+    {
+      "from": 0,
+      "to": 1,
+      "distance_m": 23.0,
+      "elevation_change": 6.0,
+      "slope": 26.09,
+      "type": "climb_hard",
+      "avg_slope": 26.09
+    },
+    {
+      "from": 1,
+      "to": 3,
+      "distance_m": 44.0,
+      "elevation_change": -2.0,
+      "slope": -4.17,
+      "type": "descent_easy",
+      "avg_slope": -4.55
+    },
+    {
+      "from": 3,
+      "to": 4,
+      "distance_m": 48.0,
+      "elevation_change": 13.0,
+      "slope": 27.08,
+      "type": "climb_hard",
+      "avg_slope": 27.08
+    },
+    {
+      "from": 4,
+      "to": 5,
+      "distance_m": 46.0,
+      "elevation_change": 4.0,
+      "slope": 8.7,
+      "type": "climb",
+      "avg_slope": 8.7
+    },
+    {
+      "from": 5,
+      "to": 6,
+      "distance_m": 47.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 6,
+      "to": 7,
+      "distance_m": 41.0,
+      "elevation_change": 7.0,
+      "slope": 17.07,
+      "type": "climb",
+      "avg_slope": 17.07
+    },
+    {
+      "from": 7,
+      "to": 9,
+      "distance_m": 83.0,
+      "elevation_change": 20.0,
+      "slope": 21.62,
+      "type": "climb_hard",
+      "avg_slope": 24.1
+    },
+    {
+      "from": 9,
+      "to": 10,
+      "distance_m": 63.0,
+      "elevation_change": 6.0,
+      "slope": 9.52,
+      "type": "climb",
+      "avg_slope": 9.52
+    },
+    {
+      "from": 10,
+      "to": 11,
+      "distance_m": 74.0,
+      "elevation_change": 23.0,
+      "slope": 31.08,
+      "type": "climb_hard",
+      "avg_slope": 31.08
+    },
+    {
+      "from": 11,
+      "to": 12,
+      "distance_m": 28.0,
+      "elevation_change": -6.0,
+      "slope": -21.43,
+      "type": "descent_hard",
+      "avg_slope": -21.43
+    },
+    {
+      "from": 12,
+      "to": 13,
+      "distance_m": 31.0,
+      "elevation_change": 10.0,
+      "slope": 32.26,
+      "type": "climb_hard",
+      "avg_slope": 32.26
+    },
+    {
+      "from": 13,
+      "to": 14,
+      "distance_m": 16.0,
+      "elevation_change": 2.0,
+      "slope": 12.5,
+      "type": "climb",
+      "avg_slope": 12.5
+    },
+    {
+      "from": 14,
+      "to": 17,
+      "distance_m": 56.0,
+      "elevation_change": -9.0,
+      "slope": -11.76,
+      "type": "descent",
+      "avg_slope": -16.07
+    },
+    {
+      "from": 17,
+      "to": 18,
+      "distance_m": 17.0,
+      "elevation_change": 2.0,
+      "slope": 11.76,
+      "type": "climb",
+      "avg_slope": 11.76
+    },
+    {
+      "from": 18,
+      "to": 19,
+      "distance_m": 30.0,
+      "elevation_change": 1.0,
+      "slope": 3.33,
+      "type": "climb_easy",
+      "avg_slope": 3.33
+    },
+    {
+      "from": 19,
+      "to": 23,
+      "distance_m": 120.0,
+      "elevation_change": 19.0,
+      "slope": 13.33,
+      "type": "climb",
+      "avg_slope": 15.83
+    },
+    {
+      "from": 23,
+      "to": 24,
+      "distance_m": 28.0,
+      "elevation_change": 2.0,
+      "slope": 7.14,
+      "type": "climb_easy",
+      "avg_slope": 7.14
+    },
+    {
+      "from": 24,
+      "to": 25,
+      "distance_m": 27.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 25,
+      "to": 27,
+      "distance_m": 58.0,
+      "elevation_change": 8.0,
+      "slope": 9.68,
+      "type": "climb",
+      "avg_slope": 13.79
+    },
+    {
+      "from": 27,
+      "to": 30,
+      "distance_m": 63.0,
+      "elevation_change": 25.0,
+      "slope": 45.71,
+      "type": "climb_hard",
+      "avg_slope": 39.68
+    },
+    {
+      "from": 30,
+      "to": 31,
+      "distance_m": 39.0,
+      "elevation_change": 3.0,
+      "slope": 7.69,
+      "type": "climb_easy",
+      "avg_slope": 7.69
+    },
+    {
+      "from": 31,
+      "to": 32,
+      "distance_m": 42.0,
+      "elevation_change": 9.0,
+      "slope": 21.43,
+      "type": "climb_hard",
+      "avg_slope": 21.43
+    },
+    {
+      "from": 32,
+      "to": 33,
+      "distance_m": 20.0,
+      "elevation_change": 3.0,
+      "slope": 15.0,
+      "type": "climb",
+      "avg_slope": 15.0
+    },
+    {
+      "from": 33,
+      "to": 34,
+      "distance_m": 14.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 34,
+      "to": 35,
+      "distance_m": 5.0,
+      "elevation_change": -1.0,
+      "slope": -20.0,
+      "type": "descent_hard",
+      "avg_slope": -20.0
+    },
+    {
+      "from": 35,
+      "to": 36,
+      "distance_m": 16.0,
+      "elevation_change": -3.0,
+      "slope": -18.75,
+      "type": "descent",
+      "avg_slope": -18.75
+    },
+    {
+      "from": 36,
+      "to": 37,
+      "distance_m": 17.0,
+      "elevation_change": -5.0,
+      "slope": -29.41,
+      "type": "descent_hard",
+      "avg_slope": -29.41
+    },
+    {
+      "from": 37,
+      "to": 38,
+      "distance_m": 16.0,
+      "elevation_change": -3.0,
+      "slope": -18.75,
+      "type": "descent",
+      "avg_slope": -18.75
+    },
+    {
+      "from": 38,
+      "to": 39,
+      "distance_m": 11.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 39,
+      "to": 44,
+      "distance_m": 125.0,
+      "elevation_change": 32.0,
+      "slope": 37.5,
+      "type": "climb_hard",
+      "avg_slope": 25.6
+    },
+    {
+      "from": 44,
+      "to": 48,
+      "distance_m": 119.0,
+      "elevation_change": 19.0,
+      "slope": 18.42,
+      "type": "climb",
+      "avg_slope": 15.97
+    },
+    {
+      "from": 48,
+      "to": 49,
+      "distance_m": 98.0,
+      "elevation_change": 21.0,
+      "slope": 21.43,
+      "type": "climb_hard",
+      "avg_slope": 21.43
+    },
+    {
+      "from": 49,
+      "to": 51,
+      "distance_m": 90.0,
+      "elevation_change": 9.0,
+      "slope": 9.8,
+      "type": "climb",
+      "avg_slope": 10.0
+    },
+    {
+      "from": 51,
+      "to": 52,
+      "distance_m": 33.0,
+      "elevation_change": 1.0,
+      "slope": 3.03,
+      "type": "climb_easy",
+      "avg_slope": 3.03
+    },
+    {
+      "from": 52,
+      "to": 53,
+      "distance_m": 27.0,
+      "elevation_change": 3.0,
+      "slope": 11.11,
+      "type": "climb",
+      "avg_slope": 11.11
+    },
+    {
+      "from": 53,
+      "to": 55,
+      "distance_m": 48.0,
+      "elevation_change": 11.0,
+      "slope": 24.14,
+      "type": "climb_hard",
+      "avg_slope": 22.92
+    },
+    {
+      "from": 55,
+      "to": 56,
+      "distance_m": 43.0,
+      "elevation_change": 2.0,
+      "slope": 4.65,
+      "type": "climb_easy",
+      "avg_slope": 4.65
+    },
+    {
+      "from": 56,
+      "to": 57,
+      "distance_m": 41.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 57,
+      "to": 59,
+      "distance_m": 78.0,
+      "elevation_change": 5.0,
+      "slope": 3.7,
+      "type": "climb_easy",
+      "avg_slope": 6.41
+    },
+    {
+      "from": 59,
+      "to": 60,
+      "distance_m": 29.0,
+      "elevation_change": 3.0,
+      "slope": 10.34,
+      "type": "climb",
+      "avg_slope": 10.34
+    },
+    {
+      "from": 60,
+      "to": 61,
+      "distance_m": 34.0,
+      "elevation_change": 1.0,
+      "slope": 2.94,
+      "type": "climb_easy",
+      "avg_slope": 2.94
+    },
+    {
+      "from": 61,
+      "to": 62,
+      "distance_m": 36.0,
+      "elevation_change": -1.0,
+      "slope": -2.78,
+      "type": "descent_easy",
+      "avg_slope": -2.78
+    },
+    {
+      "from": 62,
+      "to": 63,
+      "distance_m": 16.0,
+      "elevation_change": 1.0,
+      "slope": 6.25,
+      "type": "climb_easy",
+      "avg_slope": 6.25
+    },
+    {
+      "from": 63,
+      "to": 64,
+      "distance_m": 30.0,
+      "elevation_change": -1.0,
+      "slope": -3.33,
+      "type": "descent_easy",
+      "avg_slope": -3.33
+    },
+    {
+      "from": 64,
+      "to": 65,
+      "distance_m": 61.0,
+      "elevation_change": 3.0,
+      "slope": 4.92,
+      "type": "climb_easy",
+      "avg_slope": 4.92
+    },
+    {
+      "from": 65,
+      "to": 66,
+      "distance_m": 30.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 66,
+      "to": 67,
+      "distance_m": 29.0,
+      "elevation_change": 1.0,
+      "slope": 3.45,
+      "type": "climb_easy",
+      "avg_slope": 3.45
+    },
+    {
+      "from": 67,
+      "to": 68,
+      "distance_m": 42.0,
+      "elevation_change": 0.0,
+      "slope": 0.0,
+      "type": "flat",
+      "avg_slope": 0.0
+    },
+    {
+      "from": 68,
+      "to": 69,
+      "distance_m": 63.0,
+      "elevation_change": 6.0,
+      "slope": 9.52,
+      "type": "climb",
+      "avg_slope": 9.52
+    },
+    {
+      "from": 69,
+      "to": 70,
+      "distance_m": 55.0,
+      "elevation_change": 1.0,
+      "slope": 1.82,
+      "type": "flat",
+      "avg_slope": 1.82
+    }
+  ]
+}
