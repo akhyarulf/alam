@@ -1,0 +1,37 @@
+from pprint import pprint
+
+from pipeline import process_track
+
+from storage.manager import StorageManager
+from storage.drivers import (
+    LocalStorage,
+    GithubStorage,
+    DriveStorage
+)
+
+hasil = process_track(
+    export=True,
+    verbose=False
+)
+
+manager = StorageManager()
+
+manager.register(
+    LocalStorage()
+)
+
+manager.register(
+    GithubStorage()
+)
+
+manager.register(
+    DriveStorage()
+)
+
+result = manager.upload(
+    hasil["manifest"]
+)
+
+print()
+
+pprint(result)
