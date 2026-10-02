@@ -33,11 +33,11 @@ const CONFIG = {
 
     githubUser: "akhyarulf",
 
-    githubRepo: "alam-engine-data",
+    githubRepo: "alam-viewer",
 
     githubBranch: "main",
 
-    dataFolder: "viewer",
+    dataFolder: "data",
 
 
     /*

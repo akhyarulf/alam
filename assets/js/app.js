@@ -137,7 +137,7 @@ const App = {
 			return CONFIG.manifestURL;
 		}
 
-		return `https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/${this.routeId}/manifest.json`;
+		return `https://raw.githubusercontent.com/akhyarulf/alam-viewer/main/data/${this.routeId}/manifest.json`;
 
 	},
 
@@ -154,7 +154,7 @@ const App = {
 			return CONFIG.geojsonURL;
 		}
 
-		return `https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/${this.routeId}/track.geojson`;
+		return `https://raw.githubusercontent.com/akhyarulf/alam-viewer/main/data/${this.routeId}/track.geojson`;
 
 	},
 	
