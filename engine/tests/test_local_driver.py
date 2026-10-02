@@ -5,8 +5,7 @@ from pipeline import process_track
 from storage.manager import StorageManager
 from storage.drivers import (
     LocalStorage,
-    GithubStorage,
-    DriveStorage
+    GithubStorage
 )
 
 hasil = process_track(
@@ -22,10 +21,6 @@ manager.register(
 
 manager.register(
     GithubStorage()
-)
-
-manager.register(
-    DriveStorage()
 )
 
 result = manager.upload(

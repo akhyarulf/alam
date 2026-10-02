@@ -26,10 +26,5 @@ print(GITHUB_ENABLED)
 
 print()
 
-print("DRIVE")
-print(DRIVE_ENABLED)
-
-print()
-
 print("API")
 print(API_PORT)

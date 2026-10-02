@@ -28,7 +28,6 @@ from manifest.writer import ManifestWriter
 
 from storage.manager import StorageManager
 from storage.drivers.github import GithubStorage
-from storage.drivers.drive import DriveStorage
 
 from utils.report import print_summary
 from utils.route_id import create_route_id
@@ -69,7 +68,7 @@ def process_track(
 
     upload
         kalau False, file cuma di-export ke folder
-        output lokal, TIDAK diupload ke GitHub/Drive.
+        output lokal, TIDAK diupload ke GitHub.
         Berguna buat preview dulu sebelum publish beneran.
     """
 
@@ -194,8 +193,6 @@ def process_track(
         format_routing = {
             "json": (VIEWER_FOLDER, "github", True),
             "geojson": (VIEWER_FOLDER, "github", True),
-            "gpx": (FILES_FOLDER, "drive", False),
-            "kml": (FILES_FOLDER, "drive", False),
         }
 
         for fmt in output_formats:
@@ -252,8 +249,6 @@ def process_track(
             storage = StorageManager()
 
             storage.register(GithubStorage())
-
-            storage.register(DriveStorage())
 
             upload_result = storage.upload(
                 builder.build()

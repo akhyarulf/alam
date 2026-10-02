@@ -1,0 +1,190 @@
+{
+  "id": "wikiloc-mount-lawu-via-cemoro-sewu",
+  "engine": {
+    "name": "Alam Engine",
+    "version": "1.4.0"
+  },
+  "track": {
+    "name": "Wikiloc - Mount Lawu via Cemoro Sewu",
+    "mountain": "Wikiloc - Mount Lawu via Cemoro Sewu",
+    "route": ""
+  },
+  "stats": {
+    "points": 1679,
+    "distance_km": 8.51,
+    "gain": 1651,
+    "loss": 295,
+    "highest": 3267.388,
+    "lowest": 1912.008,
+    "start": 1912.046,
+    "finish": 3267.388,
+    "ascent_duration_minutes_low": 315,
+    "ascent_duration_minutes_high": 420,
+    "descent_duration_minutes_low": 150,
+    "descent_duration_minutes_high": 195,
+    "direction": "ascent",
+    "bbox": {
+      "min_lat": -7.66459,
+      "max_lat": -7.625247,
+      "min_lng": 111.191485,
+      "max_lng": 111.198167
+    },
+    "center": {
+      "lat": -7.644918499999999,
+      "lng": 111.194826
+    }
+  },
+  "legs": [
+    {
+      "from": "Start",
+      "to": "Pos 1",
+      "distance_km": 2.28,
+      "duration_minutes_low": 75,
+      "duration_minutes_high": 105
+    },
+    {
+      "from": "Pos 1",
+      "to": "Pos 2",
+      "distance_km": 1.8,
+      "duration_minutes_low": 75,
+      "duration_minutes_high": 90
+    },
+    {
+      "from": "Pos 2",
+      "to": "Pos 3",
+      "distance_km": 0.88,
+      "duration_minutes_low": 45,
+      "duration_minutes_high": 60
+    },
+    {
+      "from": "Pos 3",
+      "to": "Pos 4",
+      "distance_km": 0.9,
+      "duration_minutes_low": 45,
+      "duration_minutes_high": 60
+    },
+    {
+      "from": "Pos 4",
+      "to": "Pos 5",
+      "distance_km": 0.26,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    },
+    {
+      "from": "Pos 5",
+      "to": "Sendang Drajat",
+      "distance_km": 0.56,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    },
+    {
+      "from": "Sendang Drajat",
+      "to": "Hargo Dalem",
+      "distance_km": 0.84,
+      "duration_minutes_low": 30,
+      "duration_minutes_high": 45
+    },
+    {
+      "from": "Hargo Dalem",
+      "to": "Hargo Dumilah",
+      "distance_km": 0.55,
+      "duration_minutes_low": 30,
+      "duration_minutes_high": 45
+    },
+    {
+      "from": "Hargo Dumilah",
+      "to": "Finish",
+      "distance_km": 0.46,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    }
+  ],
+  "viewer": {
+    "json": "track.json",
+    "geojson": "track.geojson"
+  },
+  "downloads": {
+    "gpx": "https://drive.google.com/uc?id=1dtkELsANAZI5mfsJXZ6O8XqGD_xtTF7s&export=download",
+    "kml": "https://drive.google.com/uc?id=1CzQWpcoVwriEySOBvY0__HOPuN150X1H&export=download",
+    "kmz": null,
+    "fit": null,
+    "tcx": null
+  },
+  "exports": [
+    {
+      "route_id": "wikiloc-mount-lawu-via-cemoro-sewu",
+      "format": "json",
+      "filename": "track.json",
+      "folder": "viewer",
+      "path": "output\\viewer\\wikiloc-mount-lawu-via-cemoro-sewu\\track.json",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 369047,
+      "status": "success",
+      "file": "track.json",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/wikiloc-mount-lawu-via-cemoro-sewu/track.json",
+      "html_url": "https://github.com/akhyarulf/alam-engine-data/blob/main/viewer/wikiloc-mount-lawu-via-cemoro-sewu/track.json",
+      "sha": "5687c764d9b177b6b8f7b4c32c921d30ed524373",
+      "commit": "Update wikiloc-mount-lawu-via-cemoro-sewu/track.json",
+      "uploaded_at": "2026-08-01T19:21:52.939151",
+      "error": null
+    },
+    {
+      "route_id": "wikiloc-mount-lawu-via-cemoro-sewu",
+      "format": "geojson",
+      "filename": "track.geojson",
+      "folder": "viewer",
+      "path": "output\\viewer\\wikiloc-mount-lawu-via-cemoro-sewu\\track.geojson",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 167965,
+      "status": "success",
+      "file": "track.geojson",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/wikiloc-mount-lawu-via-cemoro-sewu/track.geojson",
+      "html_url": "https://github.com/akhyarulf/alam-engine-data/blob/main/viewer/wikiloc-mount-lawu-via-cemoro-sewu/track.geojson",
+      "sha": "51dfcf4202256f95824915bc62fda062def8bf12",
+      "commit": "Update wikiloc-mount-lawu-via-cemoro-sewu/track.geojson",
+      "uploaded_at": "2026-08-01T19:21:59.352218",
+      "error": null
+    },
+    {
+      "route_id": "wikiloc-mount-lawu-via-cemoro-sewu",
+      "format": "gpx",
+      "filename": "track.gpx",
+      "folder": "files",
+      "path": "output\\files\\wikiloc-mount-lawu-via-cemoro-sewu\\track.gpx",
+      "destination": "drive",
+      "public": false,
+      "exists": true,
+      "size": 156065,
+      "status": "success",
+      "file": "track.gpx",
+      "id": "1dtkELsANAZI5mfsJXZ6O8XqGD_xtTF7s",
+      "url": "https://drive.google.com/file/d/1dtkELsANAZI5mfsJXZ6O8XqGD_xtTF7s/view?usp=drivesdk",
+      "download_url": "https://drive.google.com/uc?id=1dtkELsANAZI5mfsJXZ6O8XqGD_xtTF7s&export=download",
+      "uploaded_at": "2026-08-01T19:22:06.785645",
+      "error": null
+    },
+    {
+      "route_id": "wikiloc-mount-lawu-via-cemoro-sewu",
+      "format": "kml",
+      "filename": "track.kml",
+      "folder": "files",
+      "path": "output\\files\\wikiloc-mount-lawu-via-cemoro-sewu\\track.kml",
+      "destination": "drive",
+      "public": false,
+      "exists": true,
+      "size": 51909,
+      "status": "success",
+      "file": "track.kml",
+      "id": "1CzQWpcoVwriEySOBvY0__HOPuN150X1H",
+      "url": "https://drive.google.com/file/d/1CzQWpcoVwriEySOBvY0__HOPuN150X1H/view?usp=drivesdk",
+      "download_url": "https://drive.google.com/uc?id=1CzQWpcoVwriEySOBvY0__HOPuN150X1H&export=download",
+      "uploaded_at": "2026-08-01T19:22:11.483829",
+      "error": null
+    }
+  ],
+  "created_at": "2026-08-01T19:21:46.219465"
+}

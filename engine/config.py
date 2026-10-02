@@ -52,8 +52,6 @@ FILES_FOLDER = "files"
 OUTPUT_FORMATS = [
     "json",
     "geojson",
-    "gpx",
-    "kml",
 ]
 
 
@@ -73,21 +71,6 @@ VIEWER_GEOJSON = True
 ENABLE_STORAGE = True
 
 AUTO_CLEANUP = True
-
-
-# =====================================
-# GOOGLE DRIVE
-# =====================================
-
-GOOGLE_CREDENTIALS_FILE = os.getenv("GOOGLE_CREDENTIALS_FILE", "oauth.json")
-
-GOOGLE_DRIVE_FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID", "")
-
-# Suffix nama file waktu diupload ke Drive, karena Drive
-# nggak punya struktur folder per-route kaya di GitHub.
-# Hasil: {route_id}-{DRIVE_SUFFIX}.{ext}
-# contoh: butak-via-panderman-nyasarnyaman.gpx
-DRIVE_SUFFIX = os.getenv("DRIVE_SUFFIX", "nyasarnyaman")
 
 
 # ======================================

@@ -1,0 +1,190 @@
+{
+  "id": "lawu-via-via-cemoro-sewu",
+  "engine": {
+    "name": "Alam Engine",
+    "version": "1.4.0"
+  },
+  "track": {
+    "name": "Lawu via Cemoro Sewu",
+    "mountain": "Lawu via",
+    "route": "Cemoro Sewu"
+  },
+  "stats": {
+    "points": 1679,
+    "distance_km": 8.51,
+    "gain": 1651,
+    "loss": 295,
+    "highest": 3267.388,
+    "lowest": 1912.008,
+    "start": 1912.046,
+    "finish": 3267.388,
+    "ascent_duration_minutes_low": 285,
+    "ascent_duration_minutes_high": 375,
+    "descent_duration_minutes_low": 30,
+    "descent_duration_minutes_high": 45,
+    "direction": "ascent",
+    "bbox": {
+      "min_lat": -7.66459,
+      "max_lat": -7.625247,
+      "min_lng": 111.191485,
+      "max_lng": 111.198167
+    },
+    "center": {
+      "lat": -7.644918499999999,
+      "lng": 111.194826
+    }
+  },
+  "legs": [
+    {
+      "from": "Start",
+      "to": "Pos 1",
+      "distance_km": 2.32,
+      "duration_minutes_low": 75,
+      "duration_minutes_high": 105
+    },
+    {
+      "from": "Pos 1",
+      "to": "Pos 2",
+      "distance_km": 1.67,
+      "duration_minutes_low": 75,
+      "duration_minutes_high": 90
+    },
+    {
+      "from": "Pos 2",
+      "to": "Pos 3",
+      "distance_km": 1.0,
+      "duration_minutes_low": 45,
+      "duration_minutes_high": 60
+    },
+    {
+      "from": "Pos 3",
+      "to": "Pos 4",
+      "distance_km": 0.87,
+      "duration_minutes_low": 45,
+      "duration_minutes_high": 60
+    },
+    {
+      "from": "Pos 4",
+      "to": "Pos 5",
+      "distance_km": 0.25,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    },
+    {
+      "from": "Pos 5",
+      "to": "Sendang Drajat",
+      "distance_km": 0.63,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    },
+    {
+      "from": "Sendang Drajat",
+      "to": "Hargo Dalem",
+      "distance_km": 0.78,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    },
+    {
+      "from": "Hargo Dalem",
+      "to": "Hargo Dumilah",
+      "distance_km": 0.5,
+      "duration_minutes_low": 30,
+      "duration_minutes_high": 45
+    },
+    {
+      "from": "Hargo Dumilah",
+      "to": "Finish",
+      "distance_km": 0.51,
+      "duration_minutes_low": 15,
+      "duration_minutes_high": 30
+    }
+  ],
+  "viewer": {
+    "json": "track.json",
+    "geojson": "track.geojson"
+  },
+  "downloads": {
+    "gpx": "https://drive.google.com/uc?id=1y4ZqWnrAoQnGujXX1SwFqEPjblvdnFiR&export=download",
+    "kml": "https://drive.google.com/uc?id=1wwjIcx5fokdS38XjKCw4yaBCMXaWDkxm&export=download",
+    "kmz": null,
+    "fit": null,
+    "tcx": null
+  },
+  "exports": [
+    {
+      "route_id": "lawu-via-via-cemoro-sewu",
+      "format": "json",
+      "filename": "track.json",
+      "folder": "viewer",
+      "path": "output\\viewer\\lawu-via-via-cemoro-sewu\\track.json",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 369006,
+      "status": "success",
+      "file": "track.json",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/lawu-via-via-cemoro-sewu/track.json",
+      "html_url": "https://github.com/akhyarulf/alam-engine-data/blob/main/viewer/lawu-via-via-cemoro-sewu/track.json",
+      "sha": "a9f2fa7fa1245fc20dd122215e358b4fc0941602",
+      "commit": "Update lawu-via-via-cemoro-sewu/track.json",
+      "uploaded_at": "2026-08-01T00:34:32.730455",
+      "error": null
+    },
+    {
+      "route_id": "lawu-via-via-cemoro-sewu",
+      "format": "geojson",
+      "filename": "track.geojson",
+      "folder": "viewer",
+      "path": "output\\viewer\\lawu-via-via-cemoro-sewu\\track.geojson",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 167926,
+      "status": "success",
+      "file": "track.geojson",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam-engine-data/main/viewer/lawu-via-via-cemoro-sewu/track.geojson",
+      "html_url": "https://github.com/akhyarulf/alam-engine-data/blob/main/viewer/lawu-via-via-cemoro-sewu/track.geojson",
+      "sha": "d10b573571e001423e143056daa2071216b62032",
+      "commit": "Update lawu-via-via-cemoro-sewu/track.geojson",
+      "uploaded_at": "2026-08-01T00:34:38.959971",
+      "error": null
+    },
+    {
+      "route_id": "lawu-via-via-cemoro-sewu",
+      "format": "gpx",
+      "filename": "track.gpx",
+      "folder": "files",
+      "path": "output\\files\\lawu-via-via-cemoro-sewu\\track.gpx",
+      "destination": "drive",
+      "public": false,
+      "exists": true,
+      "size": 156028,
+      "status": "success",
+      "file": "track.gpx",
+      "id": "1y4ZqWnrAoQnGujXX1SwFqEPjblvdnFiR",
+      "url": "https://drive.google.com/file/d/1y4ZqWnrAoQnGujXX1SwFqEPjblvdnFiR/view?usp=drivesdk",
+      "download_url": "https://drive.google.com/uc?id=1y4ZqWnrAoQnGujXX1SwFqEPjblvdnFiR&export=download",
+      "uploaded_at": "2026-08-01T00:34:46.036627",
+      "error": null
+    },
+    {
+      "route_id": "lawu-via-via-cemoro-sewu",
+      "format": "kml",
+      "filename": "track.kml",
+      "folder": "files",
+      "path": "output\\files\\lawu-via-via-cemoro-sewu\\track.kml",
+      "destination": "drive",
+      "public": false,
+      "exists": true,
+      "size": 51877,
+      "status": "success",
+      "file": "track.kml",
+      "id": "1wwjIcx5fokdS38XjKCw4yaBCMXaWDkxm",
+      "url": "https://drive.google.com/file/d/1wwjIcx5fokdS38XjKCw4yaBCMXaWDkxm/view?usp=drivesdk",
+      "download_url": "https://drive.google.com/uc?id=1wwjIcx5fokdS38XjKCw4yaBCMXaWDkxm&export=download",
+      "uploaded_at": "2026-08-01T00:34:50.403200",
+      "error": null
+    }
+  ],
+  "created_at": "2026-08-01T00:34:26.474909"
+}

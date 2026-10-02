@@ -1,11 +1,9 @@
 from storage.drivers.local import LocalStorage
-from storage.drivers.drive import DriveStorage
 from storage.drivers.github import GithubStorage
 
 
 STORAGES = {
     "local": LocalStorage,
-    "drive": DriveStorage,
     "github": GithubStorage,
 }
 

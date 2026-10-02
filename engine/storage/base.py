@@ -5,7 +5,7 @@ class BaseStorage(ABC):
     """
     Base class untuk semua storage driver.
 
-    Semua driver (Drive, GitHub, Local, dll)
+    Semua driver (GitHub, Local, dll)
     wajib mengikuti interface ini.
     """
 
