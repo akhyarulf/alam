@@ -193,7 +193,7 @@ class ManifestBuilder:
 
             Path("output")
 
-            / "viewer"
+            / "data"
 
             / self.route_id
 

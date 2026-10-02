@@ -45,7 +45,7 @@ TRIM_END = 0
 # OUTPUT
 # =====================================================
 
-VIEWER_FOLDER = "viewer"
+VIEWER_FOLDER = "data"
 
 FILES_FOLDER = "files"
 

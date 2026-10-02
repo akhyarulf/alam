@@ -4,7 +4,7 @@ manager = OutputManager("Gunung Buthak")
 
 manager.add("gpx", suffix="-clean")
 manager.add("geojson")
-manager.add("json", folder="viewer")
+manager.add("json", folder="data")
 manager.add("kml", folder="files")
 
 print("===== OUTPUT MANAGER =====")

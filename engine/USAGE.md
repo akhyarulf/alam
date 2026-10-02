@@ -44,8 +44,8 @@ Buka `http://localhost:8000` di browser.
 
 ## 4. Struktur folder di GitHub
 
-- `viewer/{route_id}/track.json`, `viewer/{route_id}/track.geojson`,
-  `viewer/{route_id}/manifest.json` — rapi karena tiap jalur otomatis punya folder sendiri.
+- `data/{route_id}/track.json`, `data/{route_id}/track.geojson`,
+  `data/{route_id}/manifest.json` — rapi karena tiap jalur otomatis punya folder sendiri.
 
 ## 5. Sambung ke viewer / Blogger
 
