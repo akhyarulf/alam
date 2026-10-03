@@ -76,3 +76,62 @@ ganti isinya, lalu commit ke folder `data/<slug>/` baru.
   logikanya sudah direplikasi di `upload.html`.
 - `token.json`, `credentials.json`, `client_secret*.json` tidak pernah
   di-commit (sudah diblokir `.gitignore`).
+
+## 📝 Catatan Pemindahan Nama Repositori
+
+> Dicatat prosedur & verifikasi perubahan nama repo `akhyarulf/alam-viewer` → `akhyarulf/alam` (dibuat bersama bro, 2026-09-XX).
+
+### ✅ Selesai (2026-09-XX)
+| Item | Sebelum | Sesudah |
+|---|---|---|
+| Nama GitHub repo | `akhyarulf/alam-viewer` | `akhyarulf/alam` |
+| GitHub Pages | `https://akhyarulf.github.io/alam-viewer/` | `https://akhyarulf.github.io/alam/` |
+| Subdomain (Freebuff) | — | `https://alam.nyasarnyaman.my.id/` |
+| `config.js` (`githubRepo`) | `"alam-viewer"` | `"alam"` |
+| `rawBase` data URL | `akhyarulf/alam-viewer/main/data/...` | `akhyarulf/alam/main/data/...` |
+| Uploader (`upload.html`) | `alam-viewer` | `alam` |
+| Viewer data URLs (`app.js`) | `akhyarulf/alam-viewer/main/data/...` | `akhyarulf/alam/main/data/...` |
+| Download manager (`download.js`) | `akhyarulf/alam-viewer` | `akhyarulf/alam` |
+| Embed-sync (`embed-sync.js`) | `source: "alam-viewer"` | `source: "alam"` |
+| Theme key (`theme.js`) | `"alam-viewer-theme"` | `"alam-theme"` |
+| `.gitignore` cleanup paths | `engine/output/`, `engine/data/output/` | `alam/output/`, `alam/data/output/` |
+
+### 🔧 Perintah yang dipakai (dalam repo)
+```bash
+# 1. Ganti semua label "alam-viewer" → "alam" dan "akhyarulf/alam-viewer" → "akhyarulf/alam"
+# (grep/sed sesuai kebutuhan, lalu commit)
+
+# 2. Push ke main
+git push origin HEAD:main
+
+# 3. Cek status clean & synced
+git status --porcelain=v1   # harus kosong
+git ls-remote --heads origin main
+```
+
+### 📖 Sumber data viewer (setelah rename)
+```
+https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/{manifest.json,track.geojson,track.json}
+```
+
+### 🧩 Struktur repo (new)
+```
+alam/
+├── index.html                     # viewer
+├── upload.html                    # uploader browser (GPX → commit ke data/)
+├── assets/                        # JS + CSS viewer
+├── config.js                      # githubUser/Repo/Branch/dataFolder
+├── data/                          # satu folder per jalur
+│   └── <slug>/
+│       ├── manifest.json          # metadata + statistik (format Butak)
+│       ├── track.geojson          # garis jalur untuk peta
+│       └── track.json             # format engine (meta, stats, waypoints, segments)
+└── README.md
+```
+
+> **Catatan:** `?route=<slug>` tetap dipakai untuk memilih jalur view; engine/` (Python-era) sudah dihapus di commit `46d23a7`, jadi yang relevan sekarang cuma front-end statis + `data/`.
+
+### ⚠️ Yang Masih Harus Dilakukan (human action, no PAT)
+1. **GitHub → rename repo** `akhyarulf/alam-viewer` → `akhyarulf/alam` (Settings → Repository name). Pages otomatis pindah ke `.../alam/`.
+2. **Update blog iframe embed** → `https://akhyarulf.github.io/alam/?route=<slug>`.
+3. **Subdomain** `alam.nyasarnyaman.my.id` → arahkan ke GitHub Pages (`akhyarulf.github.io/alam`).
