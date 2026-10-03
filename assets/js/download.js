@@ -128,40 +128,6 @@ const DownloadManager = {
     },
 
     /* ======================================================
-       Open Download
-    ====================================================== */
-
-    open(type) {
-
-        const url = this.downloads[type];
-
-        if (!url) {
-
-            console.warn(
-
-                `${type.toUpperCase()} tidak tersedia.`
-
-            );
-
-            return false;
-
-        }
-
-        window.open(
-
-            url,
-
-            "_blank",
-
-            "noopener"
-
-        );
-
-        return true;
-
-    },
-
-    /* ======================================================
        Disable All
     ====================================================== */
 
@@ -198,22 +164,6 @@ const DownloadManager = {
         this.setManifest(manifest);
 
         this.update();
-
-    },
-
-    /* ======================================================
-       Getter
-    ====================================================== */
-
-    getDownloads() {
-
-        return this.downloads;
-
-    },
-
-    has(type) {
-
-        return !!this.downloads[type];
 
     },
 

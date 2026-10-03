@@ -12,21 +12,6 @@ const CONFIG = {
 
     /*
     =========================================
-    APP
-    =========================================
-    */
-
-    appName: "Alam Viewer",
-
-    version: "1.0.0",
-
-    engine: "Alam Engine",
-
-    engineVersion: "1.3.2",
-
-
-    /*
-    =========================================
     DATA REPOSITORY
     =========================================
     */
@@ -120,108 +105,6 @@ const CONFIG = {
         return `${this.rawBase}/${this.route}/track.geojson`;
 
     },
-
-
-    /*
-    =========================================
-    MAP
-    =========================================
-    */
-
-    map: {
-
-        zoom: 14,
-
-        minZoom: 4,
-
-        maxZoom: 19,
-
-        zoomControl: false,
-
-        attributionControl: false
-
-    },
-
-
-    /*
-    =========================================
-    BASEMAPS
-    =========================================
-    */
-
-    basemaps: {
-
-        osm: {
-
-            name: "OpenStreetMap",
-
-            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-
-            attribution: "&copy; OpenStreetMap"
-
-        },
-
-        satellite: {
-
-            name: "Esri Satellite",
-
-            url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-
-            attribution: "Esri"
-
-        },
-
-        topo: {
-
-            name: "OpenTopoMap",
-
-            url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
-
-            attribution: "OpenTopoMap"
-
-        }
-
-    },
-
-    defaultBasemap: "topo",
-
-
-    /*
-    =========================================
-    CHART
-    =========================================
-    */
-
-    chart: {
-
-        tension: 0.3,
-
-        fill: true,
-
-        pointRadius: 0,
-
-        borderWidth: 2
-
-    },
-
-
-    /*
-    =========================================
-    UI
-    =========================================
-    */
-
-    ui: {
-
-        loadingDelay: 300,
-
-        animation: true,
-
-        darkMode: true,
-
-        autoFit: true
-
-    }
 
 };
 
