@@ -67,4 +67,4 @@
 
 })();
 
-console.log("✅ Embed Sync Loaded");
+

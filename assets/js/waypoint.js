@@ -375,4 +375,4 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-console.log("Waypoint Module Loaded");
+

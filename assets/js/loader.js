@@ -216,8 +216,3 @@ window.Loader = Loader;
    Ready
 ========================================================== */
 
-console.log(
-
-    "✅ Loader Loaded"
-
-);

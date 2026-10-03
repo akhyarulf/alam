@@ -405,8 +405,3 @@ document.addEventListener(
    Ready
 ========================================================== */
 
-console.log(
-
-    "✅ Stats Module Loaded"
-
-);

@@ -125,36 +125,8 @@ const DownloadManager = {
 
         );
 
-        button.onclick = () => {
-
-            this.trackDownload(
-
-                type,
-
-                url
-
-            );
-
-        };
-
     },
 
-    /* ======================================================
-       Track
-    ====================================================== */
-
-    trackDownload(type, url) {
-
-        console.log(
-
-            `⬇ Download ${type.toUpperCase()}`,
-
-            url
-
-        );
-
-    },
-	
     /* ======================================================
        Open Download
     ====================================================== */
@@ -184,8 +156,6 @@ const DownloadManager = {
             "noopener"
 
         );
-
-        this.trackDownload(type, url);
 
         return true;
 
@@ -296,8 +266,3 @@ document.addEventListener(
    Ready
 ========================================================== */
 
-console.log(
-
-    "✅ Download Module Loaded"
-
-);

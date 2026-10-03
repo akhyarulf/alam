@@ -29,10 +29,6 @@ const App = {
 
             this.routeId = this.detectRoute();
 
-            console.log(
-                "Route:",
-                this.routeId
-            );
 
             await this.loadManifest();
 
@@ -46,9 +42,6 @@ const App = {
 
             Loader.hide();
 
-            console.log(
-                "✅ Alam Viewer Ready"
-            );
 
         }
 
@@ -166,14 +159,6 @@ const App = {
 
         const url = this.getManifestURL();
 
-        console.log(
-
-            "Loading manifest:",
-
-            url
-
-        );
-
         const response = await fetch(url, {
 
             cache: "no-cache"
@@ -207,12 +192,6 @@ const App = {
             );
 
         }
-
-        console.log(
-
-            "✅ Manifest Loaded"
-
-        );
 
     },
 
@@ -252,14 +231,6 @@ const App = {
 
         }
 
-        console.log(
-
-            "Loading track:",
-
-            url
-
-        );
-
         const response = await fetch(url, {
 
             cache: "no-cache"
@@ -293,12 +264,6 @@ const App = {
             );
 
         }
-
-        console.log(
-
-            "✅ Track Loaded"
-
-        );
 
     },
 
@@ -609,12 +574,6 @@ const App = {
     ====================================================== */
 
     async reload() {
-
-        console.log(
-
-            "🔄 Reload Viewer..."
-
-        );
 
         Loader.show();
 
@@ -970,10 +929,3 @@ window.addEventListener(
    Ready
 ========================================================== */
 
-console.log(
-
-    "%c✅ Alam Viewer v1.0 Started",
-
-    "color:#22c55e;font-weight:bold;font-size:13px;"
-
-);

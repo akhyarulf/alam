@@ -421,12 +421,6 @@ const ElevationChart = {
 
         );
 
-        console.log(
-
-            "📈 Elevation chart rendered"
-
-        );
-
     },
 
     /* ======================================================
@@ -693,8 +687,3 @@ window.ElevationChart = ElevationChart;
    Ready
 ========================================================== */
 
-console.log(
-
-    "✅ Elevation Chart Loaded"
-
-);

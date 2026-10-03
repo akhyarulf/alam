@@ -115,12 +115,6 @@ const CONFIG = {
 
     },
 
-    get jsonURL() {
-
-        return `${this.rawBase}/${this.route}/track.json`;
-
-    },
-
     get geojsonURL() {
 
         return `${this.rawBase}/${this.route}/track.geojson`;
@@ -240,20 +234,7 @@ GLOBAL
 
 window.CONFIG = CONFIG;
 
-console.log(
 
-    `${CONFIG.appName} ${CONFIG.version}`
 
-);
 
-console.log(
 
-    "Route :", CONFIG.route
-
-);
-
-console.log(
-
-    "Manifest :", CONFIG.manifestURL
-
-);

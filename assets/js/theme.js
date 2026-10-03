@@ -301,4 +301,4 @@ document.addEventListener("DOMContentLoaded", () => {
    Ready
 ========================================================== */
 
-console.log("✅ Theme Loaded");
+

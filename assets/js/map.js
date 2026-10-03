@@ -57,7 +57,6 @@ const MapViewer = {
 
         this.initialized = true;
 
-        console.log("🗺️ Map initialized");
 
         return this.map;
 
@@ -333,7 +332,6 @@ const MapViewer = {
 
         }
 
-        console.log("✅ Track loaded");
 
     },
 
@@ -828,8 +826,3 @@ document.addEventListener(
    Ready
 ========================================================== */
 
-console.log(
-
-    "✅ Map Module Loaded"
-
-);
