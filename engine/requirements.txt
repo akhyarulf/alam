@@ -1,5 +1,0 @@
-flask
-gpxpy
-geopy
-requests
-python-dotenv
