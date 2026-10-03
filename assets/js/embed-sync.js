@@ -40,7 +40,7 @@
 
         try {
             window.parent.postMessage(
-                { source: "alam-viewer", type: "resize", height: height },
+                { source: "alam", type: "resize", height: height },
                 "*"
             );
         } catch (e) {

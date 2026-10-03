@@ -11,7 +11,7 @@
 
 const Theme = {
 
-    STORAGE_KEY: "alam-viewer-theme",
+    STORAGE_KEY: "alam-theme",
 
     current: "light",
 
@@ -149,7 +149,7 @@ const Theme = {
 
         try {
             window.parent.postMessage(
-                { source: "alam-viewer", type: "ready" },
+                { source: "alam", type: "ready" },
                 "*"
             );
         } catch (e) {

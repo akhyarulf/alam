@@ -1,9 +1,13 @@
 /*
+
 =========================================
  Alam Viewer
  Config
- Powered by Alam Engine
+
+ githubRepo now points to: akhyarulf/alam
+
 =========================================
+
 */
 
 window.AlamViewer = window.AlamViewer || {};
@@ -11,14 +15,18 @@ window.AlamViewer = window.AlamViewer || {};
 const CONFIG = {
 
     /*
+
     =========================================
+
     DATA REPOSITORY
+
     =========================================
+
     */
 
     githubUser: "akhyarulf",
 
-    githubRepo: "alam-viewer",
+    githubRepo: "alam",
 
     githubBranch: "main",
 
@@ -26,9 +34,13 @@ const CONFIG = {
 
 
     /*
+
     =========================================
+
     RAW URL
+
     =========================================
+
     */
 
     get rawBase() {
@@ -39,14 +51,19 @@ const CONFIG = {
 
 
     /*
+
     =========================================
+
     ROUTE
+
     Priority:
 
     1 window.AlamViewer.route
     2 ?route=
     3 defaultRoute
+
     =========================================
+
     */
 
     defaultRoute: "butak-via-panderman",
@@ -89,9 +106,13 @@ const CONFIG = {
 
 
     /*
+
     =========================================
+
     URL
+
     =========================================
+
     */
 
     get manifestURL() {
@@ -110,14 +131,14 @@ const CONFIG = {
 
 
 /*
+
 =========================================
+
 GLOBAL
+
 =========================================
+
 */
 
 window.CONFIG = CONFIG;
-
-
-
-
 
