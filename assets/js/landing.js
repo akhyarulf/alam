@@ -592,6 +592,7 @@
         `  src="${src.href}"\n` +
         `  style="width:100%;height:600px;border:0;border-radius:12px;overflow:hidden"\n` +
         `  loading="lazy"\n` +
+        `  allowfullscreen\n` +
         `  title="Viewer jalur ${slug}"\n` +
         `></iframe>`;
 

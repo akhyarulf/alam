@@ -235,7 +235,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | 7 | Error masih pakai `alert()` + judul "Viewer Error" (Inggris). | `assets/js/app.js` | Belum dikerjakan |
 | 8 | Bahasa bercampur: `Distance`, `Elevation Gain/Loss`, `Highest/Lowest Point` berdampingan dengan `Gunung`, `Jalur`, `Total Naik/Turun`. | `viewer.html` | Belum dikerjakan |
 | 9 | Tidak ada pemilih jalur di dalam viewer; harus lewat `?route=` atau datang dari landing. | `viewer.html` | Belum dikerjakan |
-| 10 | Tombol fullscreen gagal di iframe Blogger (snippet embed belum punya `allowfullscreen`). | `index.html` | Belum dikerjakan |
+| 10 | Tombol fullscreen gagal di iframe Blogger. | `index.html`, `upload.html` | **Selesai** — snippet embed (landing & uploader) sudah memakai `allowfullscreen` |
 | 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | Belum dikerjakan |
 
 ### B3. Kekurangan — embed Blogger
@@ -318,6 +318,7 @@ Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 - `7ed8972` — ganti CARTO (wajib API key) ke OpenTopoMap + Esri, anti overflow, `?v=3`.
 - `d14de63` / `28790fb` — hapus data dummy Butak, Lawu jadi default, `?v=4`.
 - B1 — index `data/routes.json` + workflow otomatis, `?v=5`.
+- Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
 
 ## Files
 
