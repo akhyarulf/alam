@@ -18,8 +18,8 @@
     "lowest": 1900.3,
     "start": 1900.3,
     "finish": 3247.68,
-    "ascent_duration_minutes_low": 240,
-    "ascent_duration_minutes_high": 330,
+    "ascent_duration_minutes_low": 255,
+    "ascent_duration_minutes_high": 390,
     "descent_duration_minutes_low": 90,
     "descent_duration_minutes_high": 120,
     "direction": "ascent",
@@ -87,7 +87,7 @@
     {
       "from": "Hargo Dumilab",
       "to": "Finish",
-      "distance_km": 0.0,
+      "distance_km": 0,
       "duration_minutes_low": 15,
       "duration_minutes_high": 30
     }

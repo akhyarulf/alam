@@ -1580,7 +1580,7 @@ function waypointFeaturesGeojson(waypoints) {
    rentang 0.85x - 1.3x, dibulatkan kelipatan 5 menit.
 ====================================== */
 
-function buildLegs(waypoints) {
+function buildLegs(waypoints, pts) {
 
     const legs = [];
 
@@ -1594,7 +1594,42 @@ function buildLegs(waypoints) {
 
         if (distanceKm <= 0) continue;
 
-        const hours = distanceKm / 4 + Math.max(0, to.ele - from.ele) / 600;
+        /* Gain & jarak mendaki per ruas dihitung dari geometri,
+           bukan hanya beda elevasi dua ujung, supaya jumlah
+           durasi ruas sinkron dengan Total Naik/Turun. */
+        let gain = 0, upKm = 0, downKm = 0;
+
+        if (pts && pts.length) {
+
+            for (let k = Math.min(from.index, to.index) + 1; k <= Math.max(from.index, to.index); k++) {
+
+                const km = haversineKm(pts[k - 1].lat, pts[k - 1].lng, pts[k].lat, pts[k].lng);
+
+                const diff = pts[k].ele - pts[k - 1].ele;
+
+                if (diff > 0) {
+
+                    upKm += km;
+
+                    gain += diff;
+
+                } else {
+
+                    downKm += km;
+
+                }
+
+            }
+
+        } else {
+
+            gain = Math.max(0, to.ele - from.ele);
+
+            upKm = distanceKm;
+
+        }
+
+        const hours = (upKm + downKm) / 4 + gain / 600;
 
         const low = Math.max(5, Math.round((hours * 60 * 0.85) / 5) * 5);
 
@@ -1607,6 +1642,8 @@ function buildLegs(waypoints) {
             to: to.name,
 
             distance_km: distanceKm,
+
+            gain_m: Math.round(gain),
 
             duration_minutes_low: low,
 
@@ -2300,7 +2337,7 @@ function renderPreview(autoWaypoints) {
 
     );
 
-    const manifest = buildManifestSkeleton(meta.route_id, meta, state.stats, buildLegs(currentWaypoints()));
+    const manifest = buildManifestSkeleton(meta.route_id, meta, state.stats, buildLegs(currentWaypoints(), state.points));
 
     el("st-points").textContent = state.stats.points;
 
@@ -2608,7 +2645,7 @@ async function publish() {
 
         const publishedWaypoints = currentWaypoints();
 
-        const publishedLegs = buildLegs(publishedWaypoints);
+        const publishedLegs = buildLegs(publishedWaypoints, state.points);
 
         const geojson = buildGeojson(meta, state.stats, state.coords, publishedWaypoints);
 

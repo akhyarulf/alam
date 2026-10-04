@@ -137,6 +137,11 @@ Referensi lengkap:
 - **Theme dark/light**: dikontrol di `viewer.html` / `index.html` oleh `?theme=dark|light` dan sinkron
   dengan iframe parent via `embed-sync.js`.
 - **Download**: GPX autorun / KML panggilan tambahan dapat diunduh dari `data/<slug>/`.
+- **Ruas waypoint**: tiap ruas hasil upload punya `gain_m` dan durasi yang dihitung
+  per segmen (bukan hanya beda elevasi dua ujung), dan **Total Naik di viewer diambil dari
+  jumlah ruas** (`stats.js`) supaya angka di sidebar selalu sama dengan total.
+  Data `lawu-via-candi-cetho` (12 ruas → 275–435 mnt) dan `lawu-via-cemoro-sewu`
+  (8 ruas → 255–390 mnt) sudah diselaraskan.
 - **Waktu naik/turun**: baris “Total Naik/Turun” memakai `stats.ascent/descent_duration_minutes_*`
   di manifest. Kalau field itu tidak ada (jalur hasil upload browser), `Utils.climbTimes()`
   menghitungnya dari `track.geojson` dengan formula Naismith (4 km/jam + 600 m/jam elevasi,
@@ -387,6 +392,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
 - Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
 - Uploader: nama jalur otomatis dari Gunung + Jalur (`buildTrackName()`), `extractMountainRoute()` sekarang juga memecah `X via Y` tanpa awalan "Gunung".
+- Ruas waypoint disinkronkan dengan total: `buildLegs()` menghitung gain per segmen + `gain_m`, dan `stats.js` memakai jumlah ruas sebagai Total Naik.
 - “Total Naik/Turun” tidak lagi “---”: `upload.html` menulis `ascent/descent_duration_minutes_*` + `ascent_km`/`return_km`/`profile_descent_km`, `stats.js` jatuh ke estimasi `Utils.climbTimes()` bila field kosong, dan `data/lawu-via-candi-cetho/manifest.json` di-backfill. Semantik turun diubah ke “finish → start”; untuk Cemoro Sewu angka engine (90–120 mnt) cocok dengan hitungan itu (80–125).
 
 ## Files

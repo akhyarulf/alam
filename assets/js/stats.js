@@ -168,9 +168,24 @@ const Stats = {
 
         if (!data) return "Data tidak tersedia";
 
-        const low = data[`${kind}_low`];
+        let low = data[`${kind}_low`];
 
-        const high = data[`${kind}_high`];
+        let high = data[`${kind}_high`];
+
+        /* Kalau jalur punya daftar ruas, Total Naik diambil dari
+           jumlah ruas supaya angka di sidebar dan angka total
+           selalu sama (tidak berbeda 15-30 menit). */
+        if (kind === "ascent" && Array.isArray(this.manifest.legs) && this.manifest.legs.length) {
+
+            const legs = this.manifest.legs;
+
+            low = legs.reduce((s, l) => s + (Number(l.duration_minutes_low) || 0), 0);
+
+            high = legs.reduce((s, l) => s + (Number(l.duration_minutes_high) || 0), 0);
+
+            if (low > 0) return `${Utils.formatDuration(low)} - ${Utils.formatDuration(high)}`;
+
+        }
 
         return `${Utils.formatDuration(low)} - ${Utils.formatDuration(high)}`;
 
