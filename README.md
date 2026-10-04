@@ -62,6 +62,27 @@ Contoh:
 
 Halaman `/` adalah landing page: daftar jalur, statistik, dan generator kode embed.
 
+### Daftar Jalur di Landing (otomatis)
+
+Daftar jalur pada landing page **tidak ditulis manual**. Alurnya:
+
+1. `upload.html` commit `data/<slug>/manifest.json` ke repo.
+2. GitHub Actions (`.github/workflows/routes-index.yml`) menjalankan
+   `scripts/build-routes-index.js` → menulis ulang `data/routes.json`.
+3. `assets/js/landing.js` membaca `data/routes.json` (satu request untuk semua jalur)
+   lalu menampilkan kartunya.
+
+Jadi setelah publish, jalur baru **otomatis muncul** di landing page — tidak perlu
+menambah slug di `landing.js`. Kalau workflow gagal, jalankan manual:
+
+```bash
+node scripts/build-routes-index.js
+```
+
+Kalau `data/routes.json` belum ada sama sekali, landing page jatuh ke daftar cadangan
+`ROUTE_SLUGS` di `assets/js/landing.js`, jadi halaman tidak pernah kosong.
+Rincian implementasi ada di bagian [Kekurangan & Rencana Perbaikan](#c-rencana-perbaikan-14).
+
 Tanpa parameter, versi default menggunakan `defaultRoute` di `config.js`:
 - `lawu-via-cemoro-sewu`
 
@@ -144,7 +165,9 @@ Gunakan uploader di:
 4. Klik **Publish** → 3 file (`track.json`, `track.geojson`, `manifest.json`) ter-commit
    ke `data/<slug>/`.
 
-Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`.
+Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`, dan daftar jalur
+di landing page ikut ter-update otomatis oleh GitHub Actions (lihat
+[Daftar Jalur di Landing](#daftar-jalur-di-landing-otomatis)).
 
 ## Catatan Penting
 
