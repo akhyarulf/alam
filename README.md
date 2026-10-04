@@ -76,14 +76,14 @@ Setiap `data/<slug>/` harus memiliki:
     "route": "Jalur ..."
   },
   "stats": {
-    "points": 434,
-    "distance_km": 5.92,
-    "gain": 1410,
-    "loss": 62,
-    "highest": 3250.99,
-    "lowest": 1900.3,
-    "start": 1900.3,
-    "finish": 3247.68
+    "points": 107,
+    "distance_km": 3.36,
+    "gain": 532,
+    "loss": 43,
+    "highest": 1895.0,
+    "lowest": 1406.0,
+    "start": 1406.0,
+    "finish": 1895.0
   },
   "viewer": {
     "json": "track.json",
@@ -91,6 +91,9 @@ Setiap `data/<slug>/` harus memiliki:
   }
 }
 ```
+
+> Angka `stats` di atas mengikuti data nyata `butak-via-panderman`.
+> Versi README sebelumnya salah menulis angka Lawu (434 titik / 5,92 km) di contoh Butak.
 
 Referensi lengkap:
 - https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/manifest.json
@@ -154,15 +157,122 @@ Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`.
 - `butak-via-panderman` — Gunung Butak via Panderman
 - `lawu-via-cemoro-sewu` — Lawu via Cemoro Sewu
 
-## Roadmap / Follow-up (rekomendasi, belum diimplementasikan)
+## Status Landing Page (2026-10-04)
 
-- Menampilkan daftar jalur (slug, mountain, route, distance, gain/loss) di halaman utama.
-- Menambahkan tombol copy embed dari halaman detail.
-- Menambah halaman jumlah terpendek: `viewer.html?route=<slug>` detail.
-- Menambahkan validasi schema `manifest.json` lebih ketat di `upload.html`.
-- Menambahkan notifikasi upload progress per file.
-- Menghapus data lama/placeholder `exports` dari `manifest.json` jika ingin lebih clean.
-- Menyesuaikan `README.md` jika fungsi `engine/` dipakai lebih lanjut di pipeline internal.
+Landing page sudah ditulis ulang dan **sudah terdeploy** di
+`https://alam.nyasarnyaman.my.id/`:
+
+- `index.html` mandiri: tidak lagi memakai `assets/css/style.css` (viewer stylesheet),
+  hanya memuat Leaflet + `config.js` + `assets/js/landing.js`.
+- Kartu jalur, peta mini, dan statistik dibangun dari `data/<slug>/manifest.json`
+  (lokal dulu, fallback ke `CONFIG.rawBase`).
+- Basemap tanpa API key: **OpenTopoMap** (terang) + **Esri Dark Gray Canvas** (gelap).
+  CARTO tidak dipakai karena sekarang mewajibkan API key.
+- URL aset di-version (`?v=3`) agar cache GitHub Pages tidak menahan versi lama.
+
+Commit terkait: `f8240cb` (rewrite landing), `ca94a50` (cache-busting),
+`7ed8972` (ganti basemap + anti overflow).
+
+---
+
+## Kekurangan & Rencana Perbaikan
+
+Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
+`upload.html`, `assets/js/*`, `assets/css/*`, dan `data/*`.
+
+### A. Yang sudah beres
+
+- Landing page merender: daftar jalur, peta (dengan `fitBounds`), marker
+  start/finish, waypoint, statistik, dark mode, generator kode embed.
+- Embed diarahkan ke `viewer.html` (sebelumnya ke `/` yang kini menjadi landing).
+- Ubin peta tidak lagi ber-watermark "API KEY REQUIRED".
+
+### B1. Kekurangan — yang dipakai sehari-hari
+
+| # | Masalah | Dampak | Status |
+|---|---------|--------|--------|
+| 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | Belum dikerjakan |
+| 2 | `upload.html` **tidak punya satu pun `@media` query** → layout berdesakan di layar kecil. | Upload dari HP terasa sempit. | Belum dikerjakan |
+| 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`). | Kalau file Drive hilang/dibatasi, tombol mati. Butak juga `kml: null`. | Belum dikerjakan |
+
+### B2. Kekurangan — viewer
+
+| # | Masalah | Lokasi | Status |
+|---|---------|--------|--------|
+| 4 | Tidak ada tombol ganti tema (`#btn-theme` tidak pernah dibuat, padahal `theme.js` sudah siap). | `viewer.html` | Belum dikerjakan |
+| 5 | `scrollWheelZoom` default Leaflet (`true`) → saat viewer di-embed, scroll halaman ikut terjerat di atas peta. | `assets/js/map.js` | Belum dikerjakan |
+| 6 | `min-height:100vh` memaksa dokumen embedded setinggi viewport → ruang kosong/gulir dobel. | `assets/css/style.css` | Belum dikerjakan |
+| 7 | Error masih pakai `alert()` + judul "Viewer Error" (Inggris). | `assets/js/app.js` | Belum dikerjakan |
+| 8 | Bahasa bercampur: `Distance`, `Elevation Gain/Loss`, `Highest/Lowest Point` berdampingan dengan `Gunung`, `Jalur`, `Total Naik/Turun`. | `viewer.html` | Belum dikerjakan |
+| 9 | Tidak ada pemilih jalur di dalam viewer; harus lewat `?route=` atau datang dari landing. | `viewer.html` | Belum dikerjakan |
+| 10 | Tombol fullscreen gagal di iframe Blogger (snippet embed belum punya `allowfullscreen`). | `index.html` | Belum dikerjakan |
+| 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | Belum dikerjakan |
+
+### B3. Kekurangan — embed Blogger
+
+| # | Masalah | Lokasi | Status |
+|---|---------|--------|--------|
+| 12 | Auto-height **tidak jalan** untuk snippet dari landing: `embed-sync.js` mengirim `{source:"alam",type:"resize"}`, tapi receiver-nya harus ada di theme Blogger (`index.xml`) dan tidak disertakan. | `assets/js/embed-sync.js` | Belum dikerjakan |
+| 13 | Handshake tema tidak dijawab: `theme.js` mengirim `{source:"alam",type:"ready"}`, tetapi tidak ada skrip di sisi blog yang membalas `{source:"nyasar-blog",theme}`. | `assets/js/theme.js` | Belum dikerjakan |
+| 14 | Iframe dipatok `height:600px` + `overflow:hidden` → jebakan scroll di tengah artikel. | `index.html` | Belum dikerjakan |
+
+### B4. Kekurangan — data & dokumentasi
+
+| # | Masalah | Lokasi | Status |
+|---|---------|--------|--------|
+| 15 | `track.json` (±92 KB total) **tidak pernah dibaca** halaman mana pun; uploader masih mem-publish-nya. | `data/*/track.json` | Belum dikerjakan |
+| 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | Belum dikerjakan |
+| 17 | `exports[]` di `manifest.json` Butak masih menyimpan path internal Windows (`output\\viewer\\...`). | `data/butak-via-panderman/manifest.json` | Belum dikerjakan |
+| 18 | `engine.version` tidak sinkron: Butak `1.3.2`, Lawu `1.4.0`. | `data/*/manifest.json` | Belum dikerjakan |
+| 19 | README contoh manifest menulis angka Lawu sebagai Butak (434 titik / 5,92 km). | `README.md` | **Sudah diperbaiki** |
+
+### B5. Kekurangan — polish situs
+
+| # | Masalah | Status |
+|---|---------|--------|
+| 20 | Tidak ada `404.html` → tautan rusak tampil error GitHub. | Belum dikerjakan |
+| 21 | Tidak ada `robots.txt` dan `sitemap.xml` untuk domain kustom. | Belum dikerjakan |
+| 22 | Tidak ada Open Graph / Twitter Card → tidak ada preview saat link dibagikan. | Belum dikerjakan |
+| 23 | Tidak ada `apple-touch-icon` / `webmanifest` → ikon "Add to Home Screen" memakai screenshot. | Belum dikerjakan |
+| 24 | Tidak ada analytics (disarankan GoatCounter/Umami untuk situs statik). | Belum dikerjakan |
+
+### C. Rencana perbaikan 1–4 (disetujui secara konsep, belum dikerjakan)
+
+**1. Jalur baru otomatis muncul di landing**
+Tambah GitHub Actions (`.github/workflows/routes-index.yml`) + `scripts/build-routes-index.js`
+(Node murni, tanpa npm install) yang memindai `data/*/manifest.json` lalu menulis
+`data/routes.json` tiap push ke `main`. `landing.js` membaca `routes.json`, dengan fallback
+ke `ROUTE_SLUGS` bila file belum ada. Estimasi ~30 menit, risiko rendah.
+
+**2. `upload.html` responsif**
+Tambah satu blok `@media (max-width: 720px)` di `<style>` inline: kolom jadi 1,
+tombol full width, `<pre>` JSON gets `overflow:auto`. Estimasi ~20 menit, risiko rendah.
+
+**3. Unduh GPX/KML tanpa Drive**
+Buat `GPX` (`<wpt>` + `<trk>`) dan `KML` (`Placemark` + `LineString`) langsung di browser
+dari `track.geojson` yang sudah ada. Nol dependency eksternal, jalan untuk semua jalur
+(termasuk Butak), tidak pernah mati. Link Drive dipertahankan sebagai tombol kedua
+"GPX asli". Estimasi ~45 menit, risiko sedang → hasil file harus divalidasi (XML) dulu.
+
+**4. Tombol ganti tema di viewer**
+Sisipkan satu tombol `#btn-theme` di `viewer.html` (Font Awesome sudah termuat) plus
+gaya tombolnya di `assets/css/style.css`. Logika `theme.js` tidak berubah sama sekali.
+Estimasi ~15 menit, risiko sangat rendah.
+
+Saran urutan pengerjaan: **4 → 2 → 1 → 3**.
+
+### D. Yang diputuskan tidak dikerjakan
+
+- **Sinkron tema dua arah dengan Blogger** (tombol di viewer mengubah tema blog).
+  Pengguna situs ini hanya pemilik, jadi dianggap tidak penting.
+- Embed auto-height mandiri, `upload.html` responsif penuh, SEO/social metadata
+  ditunda; landing page sudah cukup untuk pemakaian pribadi.
+
+### E. Riwayat perubahan landing page
+
+- `f8240cb` — landing page mandiri (dulu `landing.js` tidak pernah dimuat).
+- `ca94a50` — versioning URL aset (`?v=2`) agar cache Pages tidak menahan CSS lama.
+- `7ed8972` — ganti CARTO (wajib API key) ke OpenTopoMap + Esri, anti overflow, `?v=3`.
 
 ## Files
 
