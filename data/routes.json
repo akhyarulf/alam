@@ -1,7 +1,24 @@
 {
-  "generated": "2026-10-04T13:56:42.679Z",
-  "count": 1,
+  "generated": "2026-10-04T15:51:24.452Z",
+  "count": 2,
   "routes": [
+    {
+      "slug": "lawu-via-candi-cetho",
+      "name": "Lawu via Candi Cetho",
+      "mountain": "Lawu",
+      "route": "Candi Cetho",
+      "points": 538,
+      "distance_km": 8.66,
+      "gain": 1864,
+      "loss": 50,
+      "highest": 3250.99,
+      "lowest": 1433.39,
+      "center": {
+        "lat": -7.610461,
+        "lng": 111.176862
+      },
+      "updated": "2026-10-04T15:51:12.897Z"
+    },
     {
       "slug": "lawu-via-cemoro-sewu",
       "name": "Lawu via Cemoro Sewu",
