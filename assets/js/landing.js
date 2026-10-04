@@ -1,8 +1,10 @@
 /* ==========================================
  Alam Viewer — Landing Page
  ==========================================
- Data   : data/<slug>/manifest.json + track.geojson
-            (lokal dulu, fallback ke CONFIG.rawBase)
+ Data   : data/routes.json (index, satu request untuk semua jalur)
+            + data/<slug>/track.geojson (hanya saat kartu dilihat)
+            Fallback : manifest per slug + ROUTE_SLUGS
+            (lokal dulu, remote CONFIG.rawBase sebagai cadangan)
  Peta   : Leaflet
  ========================================== */
 
@@ -12,8 +14,9 @@
 
   /* ==========================================================
      KONFIGURASI
-     Tambah slug baru di sini; kartu, statistik, dan select
-     embed otomatis ikut bertambah.
+     ROUTE_SLUGS hanya dipakai sebagai cadangan kalau
+     data/routes.json belum ada (mis. workflow belum pernah jalan).
+     Jalur baru tidak perlu ditambah di sini lagi.
      ========================================================== */
   const ROUTE_SLUGS = [
     "lawu-via-cemoro-sewu",
@@ -42,6 +45,7 @@
     routes: [],
     maps: [],
     theme: "light",
+    source: null, // "index" | "manifest"
   };
 
   /* ==========================================================
@@ -89,6 +93,66 @@
 
   function loadManifest(slug) {
     return fetchFirst([localUrl(slug, "manifest.json"), remoteUrl(slug, "manifest.json")]);
+  }
+
+  /** Index daftar jalur: satu request untuk seluruh koleksi. */
+  function loadRouteIndex() {
+    return fetchFirst(["data/routes.json", BASE ? `${BASE}/routes.json` : null]);
+  }
+
+  /** Ubah entri index menjadi bentuk yang dipakai komponen di bawah. */
+  function fromIndex(entry) {
+    return {
+      slug: entry.slug,
+      track: {
+        name: entry.name || slugToTitle(entry.slug),
+        mountain: entry.mountain || "",
+        route: entry.route || "",
+      },
+      stats: {
+        points: entry.points,
+        distance_km: entry.distance_km,
+        gain: entry.gain,
+        loss: entry.loss,
+        highest: entry.highest,
+        lowest: entry.lowest,
+        center: entry.center || null,
+      },
+    };
+  }
+
+  /**
+   * Sumber daftar jalur:
+   * 1. data/routes.json (dibuat otomatis oleh scripts/build-routes-index.js)
+   * 2. fallback — baca manifest tiap slug di ROUTE_SLUGS
+   */
+  async function loadRoutes() {
+    try {
+      const index = await loadRouteIndex();
+      const list = Array.isArray(index && index.routes)
+        ? index.routes.filter((r) => r && r.slug)
+        : [];
+
+      if (list.length) {
+        state.source = "index";
+        return list.map(fromIndex);
+      }
+    } catch (err) {
+      console.warn("Daftar jalur dari routes.json tidak dipakai:", err.message);
+    }
+
+    const results = await Promise.all(
+      ROUTE_SLUGS.map((slug) =>
+        loadManifest(slug)
+          .then((manifest) => ({ slug, manifest, ok: true }))
+          .catch(() => ({ slug, manifest: null, ok: false }))
+      )
+    );
+
+    state.source = "manifest";
+    return results
+      .filter((r) => r.ok)
+      .map((r) => Object.assign({ slug: r.slug }, r.manifest));
   }
 
   function loadGeoJSON(slug) {
@@ -471,7 +535,8 @@
       link.href = `viewer.html?route=${encodeURIComponent(featured.slug)}`;
     }
 
-    initHeroMap(featured || { slug: ROUTE_SLUGS[0], stats: {} });
+    const heroRoute = featured || (ROUTE_SLUGS[0] ? { slug: ROUTE_SLUGS[0], stats: {} } : null);
+    if (heroRoute) initHeroMap(heroRoute);
   }
 
   /* ==========================================================
@@ -591,17 +656,7 @@
     initTheme();
     skeletonCards(ROUTE_SLUGS.length);
 
-    const results = await Promise.all(
-      ROUTE_SLUGS.map((slug) =>
-        loadManifest(slug)
-          .then((manifest) => ({ slug, manifest, ok: true }))
-          .catch(() => ({ slug, manifest: null, ok: false }))
-      )
-    );
-
-    state.routes = results
-      .filter((r) => r.ok)
-      .map((r) => Object.assign({ slug: r.slug }, r.manifest));
+    state.routes = await loadRoutes();
 
     renderRoutes();
     renderStats();

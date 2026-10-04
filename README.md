@@ -34,10 +34,16 @@ alam/
 │       └── waypoint.js
 ├── config.js         # sumber data: githubUser / githubRepo / githubBranch / dataFolder
 ├── data/
+│   ├── routes.json        # index daftar jalur (dibuat otomatis, dibaca landing)
 │   └── <slug>/
 │       ├── manifest.json   # metadata + statistik
 │       ├── track.geojson   # garis jalur untuk peta
 │       └── track.json      # format lengkap engine (meta, stats, waypoints, segments)
+├── scripts/
+│   └── build-routes-index.js  # scan data/*/manifest.json -> data/routes.json
+├── .github/
+│   └── workflows/
+│       └── routes-index.yml   # jalankan script di atas tiap data/ berubah
 ├── .gitignore
 └── README.md
 ```
@@ -192,7 +198,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Dampak | Status |
 |---|---------|--------|--------|
-| 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | Belum dikerjakan |
+| 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | **Selesai** — `data/routes.json` dibuat otomatis oleh `scripts/build-routes-index.js` via `.github/workflows/routes-index.yml` |
 | 2 | `upload.html` **tidak punya satu pun `@media` query** → layout berdesakan di layar kecil. | Upload dari HP terasa sempit. | Belum dikerjakan |
 | 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`). | Kalau file Drive hilang/dibatasi, tombol mati. KML juga hanya ada kalau uploader berhasil menguggahnya. | Belum dikerjakan |
 
@@ -237,30 +243,43 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | 23 | Tidak ada `apple-touch-icon` / `webmanifest` → ikon "Add to Home Screen" memakai screenshot. | Belum dikerjakan |
 | 24 | Tidak ada analytics (disarankan GoatCounter/Umami untuk situs statik). | Belum dikerjakan |
 
-### C. Rencana perbaikan 1–4 (disetujui secara konsep, belum dikerjakan)
+### C. Rencana perbaikan 1–4
 
-**1. Jalur baru otomatis muncul di landing**
-Tambah GitHub Actions (`.github/workflows/routes-index.yml`) + `scripts/build-routes-index.js`
-(Node murni, tanpa npm install) yang memindai `data/*/manifest.json` lalu menulis
-`data/routes.json` tiap push ke `main`. `landing.js` membaca `routes.json`, dengan fallback
-ke `ROUTE_SLUGS` bila file belum ada. Estimasi ~30 menit, risiko rendah.
+**1. Jalur baru otomatis muncul di landing — ✅ SELESAI**
+- `scripts/build-routes-index.js`: script Node tanpa dependency yang memindai
+  `data/*/manifest.json` lalu menulis `data/routes.json` (slug, nama, gunung, jalur,
+  points, distance_km, gain, loss, highest, lowest, center). Idempoten: perubahan
+  hanya pada field `generated` tidak menghasilkan commit baru.
+- `.github/workflows/routes-index.yml`: jalan di setiap push ke `main` yang menyentuh
+  `data/**`, `scripts/build-routes-index.js`, atau workflow itu sendiri. Hanya commit
+  ulang `data/routes.json` bila isinya berubah (menghindari loop). Ada juga
+  `workflow_dispatch` untuk menjalankan manual.
+- `assets/js/landing.js`: membaca `data/routes.json` dengan **satu request** untuk seluruh
+  daftar; `track.geojson` per jalur tetap diambil saat kartu mendekati layar. Kalau
+  `routes.json` tidak ada/gagal → fallback ke `ROUTE_SLUGS` + `manifest.json` seperti
+  sebelumnya, jadi halaman tidak pernah rusak. Status sumber data terekspos di
+  `window.ALAM.landing.state.source` (`"index"` atau `"manifest"`).
 
-**2. `upload.html` responsif**
+Cara menambah jalur sekarang: upload lewat `upload.html` seperti biasa → workflow
+memperbarui `data/routes.json` → jalur muncul di landing. **Tidak perlu edit kode lagi.**
+Untuk menjalankan manual: `node scripts/build-routes-index.js`.
+
+**2. `upload.html` responsif — belum**
 Tambah satu blok `@media (max-width: 720px)` di `<style>` inline: kolom jadi 1,
 tombol full width, `<pre>` JSON gets `overflow:auto`. Estimasi ~20 menit, risiko rendah.
 
-**3. Unduh GPX/KML tanpa Drive**
+**3. Unduh GPX/KML tanpa Drive — belum**
 Buat `GPX` (`<wpt>` + `<trk>`) dan `KML` (`Placemark` + `LineString`) langsung di browser
 dari `track.geojson` yang sudah ada. Nol dependency eksternal, jalan untuk semua jalur
 tidak pernah mati. Link Drive dipertahankan sebagai tombol kedua
 "GPX asli". Estimasi ~45 menit, risiko sedang → hasil file harus divalidasi (XML) dulu.
 
-**4. Tombol ganti tema di viewer**
+**4. Tombol ganti tema di viewer — belum**
 Sisipkan satu tombol `#btn-theme` di `viewer.html` (Font Awesome sudah termuat) plus
 gaya tombolnya di `assets/css/style.css`. Logika `theme.js` tidak berubah sama sekali.
 Estimasi ~15 menit, risiko sangat rendah.
 
-Saran urutan pengerjaan: **4 → 2 → 1 → 3**.
+Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 
 ### D. Yang diputuskan tidak dikerjakan
 
@@ -274,6 +293,8 @@ Saran urutan pengerjaan: **4 → 2 → 1 → 3**.
 - `f8240cb` — landing page mandiri (dulu `landing.js` tidak pernah dimuat).
 - `ca94a50` — versioning URL aset (`?v=2`) agar cache Pages tidak menahan CSS lama.
 - `7ed8972` — ganti CARTO (wajib API key) ke OpenTopoMap + Esri, anti overflow, `?v=3`.
+- `d14de63` / `28790fb` — hapus data dummy Butak, Lawu jadi default, `?v=4`.
+- B1 — index `data/routes.json` + workflow otomatis, `?v=5`.
 
 ## Files
 
@@ -285,4 +306,7 @@ Saran urutan pengerjaan: **4 → 2 → 1 → 3**.
 - `assets/js/landing.js` — script landing page (daftar jalur + peta mini)
 - `assets/css/style.css` — viewer styles
 - `assets/css/landing.css` — landing page styles (standalone)
+- `data/routes.json` — index daftar jalur (otomatis, dipakai landing page)
 - `data/*/manifest.json`, `track.json`, `track.geojson` — jalur data
+- `scripts/build-routes-index.js` — pembuat `data/routes.json`
+- `.github/workflows/routes-index.yml` — otomatisasi pembuat index

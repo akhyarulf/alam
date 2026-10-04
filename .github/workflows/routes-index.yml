@@ -1,0 +1,50 @@
+name: Build routes index
+
+# Membuat ulang data/routes.json setiap ada perubahan di folder data/.
+# Scriptnya idempoten: kalau isinya sama persis, tidak ada commit baru,
+# jadi push dari workflow ini hanya memicu satu putaran tambahan yang
+# berakhir tanpa commit (tidak loops).
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "scripts/build-routes-index.js"
+      - ".github/workflows/routes-index.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: routes-index
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build data/routes.json
+        run: node scripts/build-routes-index.js
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/routes.json; then
+            echo "routes.json tidak berubah, tidak ada commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/routes.json
+          git commit -m "data: regenerate routes index"
+          git push
