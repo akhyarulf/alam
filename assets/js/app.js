@@ -683,13 +683,45 @@ const App = {
 
         }
 
-        alert(
+        /* Tampilkan panel error di halaman (bukan alert() yang
+           memblokir artikel Blogger), isi dengan textContent
+           supaya pesan error tidak jadi markup. */
 
-            "Gagal memuat jalur.\n\n" +
+        const box = document.getElementById(
 
-            (error.message || error)
+            "error-box"
 
         );
+
+        if (box) {
+
+            box.classList.remove("hidden");
+
+            box.textContent = "";
+
+            const titleEl = document.createElement("div");
+
+            titleEl.className = "error-title";
+
+            titleEl.textContent = "⚠ Gagal memuat jalur";
+
+            const messageEl = document.createElement("div");
+
+            messageEl.className = "error-message";
+
+            messageEl.textContent = error.message || String(error);
+
+            box.appendChild(titleEl);
+
+            box.appendChild(messageEl);
+
+            if (typeof box.scrollIntoView === "function") {
+
+                box.scrollIntoView({ behavior: "smooth", block: "start" });
+
+            }
+
+        }
 
     },
 

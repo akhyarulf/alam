@@ -143,14 +143,40 @@ Referensi lengkap:
 ```html
 <iframe
   src="https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu"
-  style="width:100%;height:600px;border:0;border-radius:10px"
+  style="width:100%;height:2000px;border:0;border-radius:10px"
   loading="lazy"
+  scrolling="no"
+  allowfullscreen
+  title="Viewer jalur Lawu via Cemoro Sewu"
 ></iframe>
 ```
 
 - `?route=<slug>` memilih jalur; tanpa parameter memakai `defaultRoute` di `config.js`.
 - Tambah `&theme=dark` / `&theme=light` biar senada blog — viewer juga auto-sinkron
   tema halaman parent via `postMessage`.
+- `scrolling="no"` + `scrollWheelZoom` otomatis mati saat di-embed, jadi scroll di
+  atas peta tidak lagi menggerakkan halaman artikel (zoom tetap pakai tombol `+`/`-`).
+
+### Tinggi iframe otomatis (disarankan)
+
+`assets/js/embed-sync.js` sudah mengirim tinggi konten ke halaman induk
+(`postMessage {source:"alam", type:"resize", height}`). Blogger/Derelogy belum punya
+penerima pesan itu, jadi `height:2000px` di atas hanya perkiraan. Tambahkan script
+ini di tema Blogger (**Tema → Edit HTML**, sebelum `</body>`), lalu tinggi iframe
+menyesuaikan sendiri di HP maupun desktop:
+
+```html
+<script>
+window.addEventListener("message", function (e) {
+  if (!e.data || e.data.source !== "alam" || e.data.type !== "resize") return;
+  document.querySelectorAll('iframe[src*="alam.nyasarnyaman.my.id"]').forEach(function (f) {
+    if (f.dataset.h === String(e.data.height)) return;
+    f.dataset.h = String(e.data.height);
+    f.style.height = e.data.height + "px";
+  });
+});
+</script>
+```
 
 ## Upload Data Baru
 
@@ -231,14 +257,14 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
-| 4 | Tidak ada tombol ganti tema (`#btn-theme` tidak pernah dibuat, padahal `theme.js` sudah siap). | `viewer.html` | Belum dikerjakan |
-| 5 | `scrollWheelZoom` default Leaflet (`true`) → saat viewer di-embed, scroll halaman ikut terjerat di atas peta. | `assets/js/map.js` | Belum dikerjakan |
-| 6 | `min-height:100vh` memaksa dokumen embedded setinggi viewport → ruang kosong/gulir dobel. | `assets/css/style.css` | Belum dikerjakan |
-| 7 | Error masih pakai `alert()` + judul "Viewer Error" (Inggris). | `assets/js/app.js` | Belum dikerjakan |
+| 4 | Tidak ada tombol ganti tema (`#btn-theme` tidak pernah dibuat, padahal `theme.js` sudah siap). | `viewer.html` | **Selesai** — tombol `#btn-theme` + gaya `.theme-toggle`; ikonLight/CA_DARKThemesmilTheme.js yang mengisinya |
+| 5 | `scrollWheelZoom` default Leaflet (`true`) → saat viewer di-embed, scroll halaman ikut terjerat di atas peta. | `assets/js/map.js` | **Selesai** — `scrollWheelZoom: !(window.self !== window.top)`: di iframe mati, dibuka langsung tetap normal |
+| 6 | `min-height:100vh` memaksa dokumen embedded setinggi viewport → ruang kosong/gulir dobel. | `assets/css/style.css` | **Selesai** — `min-height:100svh` dengan fallback `100vh` |
+| 7 | Error masih pakai `alert()` + judul "Viewer Error" (Inggris). | `assets/js/app.js` | **Selesai** — panel `#error-box` (CSS `.error-box`) diisi pakai `textContent`, tanpa alert |
 | 8 | Bahasa bercampur: `Distance`, `Elevation Gain/Loss`, `Highest/Lowest Point` berdampingan dengan `Gunung`, `Jalur`, `Total Naik/Turun`. | `viewer.html` | Belum dikerjakan |
 | 9 | Tidak ada pemilih jalur di dalam viewer; harus lewat `?route=` atau datang dari landing. | `viewer.html` | Belum dikerjakan |
 | 10 | Tombol fullscreen gagal di iframe Blogger. | `index.html`, `upload.html` | **Selesai** — snippet embed (landing & uploader) sudah memakai `allowfullscreen` |
-| 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | Belum dikerjakan |
+| 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | Belum dikerjakan (tombol tema sudah punya `aria-label`) |
 
 ### B3. Kekurangan — embed Blogger
 
@@ -311,12 +337,17 @@ Sekarang uploader juga menulis:
 Data `lawu-via-candi-cetho` yang terlanjur ter-publish diperbaiki dengan algoritma
 yang sama: 14 waypoint, 12 ruas, total 8,66 km (sesuai `stats.distance_km`).
 
-**4. Tombol ganti tema di viewer — belum**
-Sisipkan satu tombol `#btn-theme` di `viewer.html` (Font Awesome sudah termuat) plus
-gaya tombolnya di `assets/css/style.css`. Logika `theme.js` tidak berubah sama sekali.
-Estimasi ~15 menit, risiko sangat rendah.
+**4. Tombol ganti tema di viewer — ✅ SELESAI**
+Tombol `#btn-theme` sudah ada di hero `viewer.html` (dengan `aria-label`), gaya
+`.theme-toggle` di `assets/css/style.css`. `theme.js` tidak berubah sama sekali,
+hanya `meta theme-color` yang mengikuti aksen baru.
 
-Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
+**6. Embed di artikel Blogger — ✅ SELESAI (sebagian)**
+`scrollWheelZoom` dimatikan saat embedded, snippet embed dapat `scrolling="no"` +
+`title`, dan README sekarang memuat script penerima auto-height
+(`{source:"alam", type:"resize"}`) yang tinggal ditempel di tema Blogger.
+
+Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 
 ### D. Yang diputuskan tidak dikerjakan
 
@@ -335,6 +366,7 @@ Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 - Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
 - Viewer: unduh GPX/KML dibuat di browser dari `track.geojson`; tombol "GPX asli" dan seluruh referensi layanan eksternal dibuang.
 - `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
+- Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; aksen disamakan ke tema Derelogy (`#ed783c`); snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height.
 
 ## Files
 

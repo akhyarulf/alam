@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Alam Viewer — Nyasar Nyaman</title>
     <meta name="description" content="Pemutaran jalur pendakian berbasis data GitHub alam.nyasarnyaman.my.id/">
-    <meta name="theme-color" content="#5a7562">
+    <meta name="theme-color" content="#ed783c">
     <meta name="color-scheme" content="light dark">
     <link rel="icon" href="assets/img/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,6 +35,8 @@ VIEWER
 =========================== -->
     <div id="viewer">
 
+        <div id="error-box" class="error-box hidden" role="alert" aria-live="polite"></div>
+
         <header class="hero">
             <div class="hero-cover"></div>
             <div class="hero-overlay"></div>
@@ -50,6 +52,9 @@ VIEWER
                         Loading route...
                     </p>
                 </div>
+                <button id="btn-theme" class="theme-toggle" type="button" title="Ganti tema" aria-label="Ganti tema terang atau gelap">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
             </div>
         </header>
 

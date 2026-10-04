@@ -41,6 +41,11 @@ const MapViewer = {
 
         this.map = L.map("map", {
 
+            /* Kalau viewer di-embed di iframe (artikel Blogger),
+               scroll roda dibiarkan untuk menggulir halaman induk.
+               dibuka langsung -> zoom pakai roda tetap normal. */
+            scrollWheelZoom: !(window.self !== window.top),
+
             zoomControl: true,
 
             attributionControl: true,
@@ -275,7 +280,7 @@ const MapViewer = {
 
                 style: feature => ({
 
-                    color: "#5a7562",
+                    color: "#ed783c",
 
                     weight: 5,
 

@@ -178,11 +178,11 @@ const ElevationChart = {
 
                 data: this.elevations,
 
-                borderColor: "#5a7562",
+                borderColor: "#ed783c",
 
                 backgroundColor:
 
-                    "rgba(90,117,98,.18)",
+                    "rgba(237,120,60,.18)",
 
                 fill: true,
 
