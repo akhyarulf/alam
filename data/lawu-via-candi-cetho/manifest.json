@@ -1,0 +1,84 @@
+{
+  "id": "lawu-via-candi-cetho",
+  "engine": {
+    "name": "Alam Engine",
+    "version": "1.4.0"
+  },
+  "track": {
+    "name": "Lawu via Candi Cetho",
+    "mountain": "Lawu",
+    "route": "Candi Cetho"
+  },
+  "stats": {
+    "points": 538,
+    "distance_km": 8.66,
+    "gain": 1864,
+    "loss": 50,
+    "highest": 3250.99,
+    "lowest": 1433.39,
+    "start": 1433.39,
+    "finish": 3247.72,
+    "bbox": {
+      "min_lat": -7.627381,
+      "max_lat": -7.593541,
+      "min_lng": 111.155754,
+      "max_lng": 111.197969
+    },
+    "center": {
+      "lat": -7.610461,
+      "lng": 111.1768615
+    }
+  },
+  "viewer": {
+    "json": "track.json",
+    "geojson": "track.geojson"
+  },
+  "downloads": {
+    "gpx": null,
+    "kml": null,
+    "kmz": null,
+    "fit": null,
+    "tcx": null
+  },
+  "exports": [
+    {
+      "route_id": "lawu-via-candi-cetho",
+      "format": "json",
+      "filename": "track.json",
+      "folder": "data",
+      "path": "data/lawu-via-candi-cetho/track.json",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 84824,
+      "status": "success",
+      "file": "track.json",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam/main/data/lawu-via-candi-cetho/track.json",
+      "html_url": "https://github.com/akhyarulf/alam/blob/main/data/lawu-via-candi-cetho/track.json",
+      "sha": "3349336a3e8b3efc244aa84d061e93894381976e",
+      "commit": "002530e91d07bfe6db477ed7608f2e5bd79eef6d",
+      "uploaded_at": "2026-10-04T15:51:12.899Z",
+      "error": null
+    },
+    {
+      "route_id": "lawu-via-candi-cetho",
+      "format": "geojson",
+      "filename": "track.geojson",
+      "folder": "data",
+      "path": "data/lawu-via-candi-cetho/track.geojson",
+      "destination": "github",
+      "public": true,
+      "exists": true,
+      "size": 49777,
+      "status": "success",
+      "file": "track.geojson",
+      "raw_url": "https://raw.githubusercontent.com/akhyarulf/alam/main/data/lawu-via-candi-cetho/track.geojson",
+      "html_url": "https://github.com/akhyarulf/alam/blob/main/data/lawu-via-candi-cetho/track.geojson",
+      "sha": "4869e471bafcb56dd893a97d7a812cb4bab05b3b",
+      "commit": "47f7cb74bd94e0a21ffe7711650dd138380835b6",
+      "uploaded_at": "2026-10-04T15:51:12.900Z",
+      "error": null
+    }
+  ],
+  "created_at": "2026-10-04T15:51:12.897Z"
+}
