@@ -2,56 +2,20 @@
 <html lang="id">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1">
-
-<title>Alam Viewer</title>
-
-<meta
-name="description"
-content="Interactive Hiking Trail Viewer powered by Alam Engine">
-
-<meta
-name="theme-color"
-content="#5a7562">
-
-<meta
-name="color-scheme"
-content="light dark">
-
-<link
-rel="icon"
-href="assets/img/favicon.svg">
-
-<link
-rel="preconnect"
-href="https://fonts.googleapis.com">
-
-<link
-rel="preconnect"
-href="https://fonts.gstatic.com"
-crossorigin>
-
-<link
-href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap"
-rel="stylesheet">
-
-<link
-rel="stylesheet"
-href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-
-<link
-rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-
-<link
-rel="stylesheet"
-href="assets/css/style.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alam Viewer — Nyasar Nyaman</title>
+<meta name="description" content="Data pendakian langsung dari GitHub. Peta jalur, waypoint, dan elevasi — tanpa install.">
+<meta name="theme-color" content="#5a7562">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" href="assets/img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/landing.css">
 </head>
 
 <body>
@@ -59,375 +23,201 @@ href="assets/css/style.css">
 <!-- ===========================
 LOADER
 =========================== -->
-
 <div id="loader">
-
 <div class="loader-box">
-
 <div class="loader-circle"></div>
-
-<h2>Preparing Adventure...</h2>
-
-<p>Mengambil data dari Alam Engine</p>
-
+<h2>Menyiapkan halaman...</h2>
+<p>Mengambil daftar jalur dari GitHub Pages</p>
 </div>
-
 </div>
 
 <!-- ===========================
-HERO / NAV
+LANDING
 =========================== -->
-
-<header class="hero">
-
-<div class="hero-cover"></div>
-
-<div class="hero-overlay"></div>
-
-<div class="hero-content">
-
-<div class="hero-left">
-
-<div class="badge">
-
-🥾 Nyasar Nyaman
-
-</div>
-
-<h1 id="track-title">
-
-Alam Viewer
-
-</h1>
-
-<p id="track-route">
-
-Data pendakian langsung dari GitHub Pages
-
-</p>
-
-</div>
-
-</div>
-
-<div class="hero-actions">
-
-<a class="btn btn-primary" href="viewer.html">
-
-Mulai Lihat
-
+<div id="landing">
+<header>
+<div class="site-header">
+<div class="container">
+<a class="brand" href="/">
+<span class="brand-mark">🥾</span>
+<span>
+<span class="brand-name">Nyasar Nyaman</span>
+<span class="brand-tag">Alam Viewer</span>
+</span>
 </a>
-
-<a class="btn btn-secondary" href="upload.html">
-
-Upload Data
-
-</a>
-
+<nav class="site-nav">
+<a href="#jalur">Daftar Jalur</a>
+<a href="#fitur">Fitur</a>
+<a href="#embed">Embed</a>
+</nav>
+<a class="btn btn-accent" href="upload.html">Upload Data</a>
 </div>
-
+</div>
 </header>
 
-<main class="viewer-layout">
+<main class="container">
 
-<!-- ===========================
-SIDEBAR
-=========================== -->
-
-<aside class="sidebar">
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-location-dot"></i>
-
-Waypoint
-
-</h3>
-
-<div id="waypoint-list">
-
-<div class="empty">
-
-Belum ada waypoint.
-
+<!-- hero -->
+<section class="hero">
+<div class="hero-media">
+<div class="hero-map-card">
+<div id="hero-map"></div>
 </div>
-
 </div>
-
+<div class="hero-copy">
+<span class="badge">🥾 Nyasar Nyaman</span>
+<h1>Data Pendakian, <span>Langsung dari GitHub</span></h1>
+<p>Pilih jalur pendakian, lihat peta, waypoint, dan profil elevasi — semuanya dibaca dari repository statis tanpa server.</p>
+<div class="hero-actions">
+<a class="btn btn-primary" href="viewer.html">Mulai Lihat</a>
+<a class="btn btn-secondary" href="upload.html">Upload Jalur</a>
 </div>
-
-<div class="card" id="poi-card">
-
-<h3>
-
-<i class="fa-solid fa-map-pin"></i>
-
-Points of Interest
-
-</h3>
-
-<div id="poi-list">
-
-<div class="empty">
-
-Tidak ada POI di jalur ini.
-
 </div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-download"></i>
-
-Download
-
-</h3>
-
-<div id="download-list">
-
-    <a id="btn-download-gpx" class="download-btn disabled">
-        <i class="fa-solid fa-file"></i>
-        GPX
-    </a>
-
-    <a id="btn-download-kml" class="download-btn disabled">
-        <i class="fa-solid fa-file"></i>
-        KML
-    </a>
-
-    <button id="btn-print" class="download-btn" type="button">
-        <i class="fa-solid fa-print"></i>
-        Print / PDF
-    </button>
-
-</div>
-
-</div>
-
-</aside>
-
-<!-- ===========================
-CONTENT
-=========================== -->
-
-<section class="content">
-
-<div class="card map-card">
-
-<div class="toolbar">
-
-<button
-id="btn-fit"
-title="Fit Map">
-
-<i class="fa-solid fa-expand"></i>
-
-</button>
-
-<button
-id="btn-fullscreen"
-title="Fullscreen">
-
-<i class="fa-solid fa-maximize"></i>
-
-</button>
-
-<button
-id="btn-basemap"
-title="Basemap">
-
-<i class="fa-solid fa-layer-group"></i>
-
-</button>
-
-</div>
-
-<div id="map">
-
-<div class="map-loading">
-
-Preparing Map...
-
-</div>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-mountain"></i>
-
-Elevation Profile
-
-</h3>
-
-<canvas id="elevation-chart"></canvas>
-
-</div>
-
-<div class="card">
-
-<h3>
-
-<i class="fa-solid fa-circle-info"></i>
-
-Informasi Jalur
-
-<button id="btn-direction-info" class="info-toggle-btn" type="button" title="Arah jalur">
-<i class="fa-solid fa-circle-question"></i>
-</button>
-
-</h3>
-
-<div id="direction-info-panel" class="direction-panel hidden"></div>
-
-<table class="info-table">
-
-<tr>
-
-<td>Gunung</td>
-
-<td id="mountain">-</td>
-
-</tr>
-
-<tr>
-
-<td>Jalur</td>
-
-<td id="route">-</td>
-
-</tr>
-
-<tr>
-
-<td>Distance</td>
-
-<td id="distance-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Total Naik</td>
-
-<td id="ascent-duration-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Total Turun</td>
-
-<td id="descent-duration-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Elevation Gain</td>
-
-<td id="gain-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Elevation Loss</td>
-
-<td id="loss-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Highest Point</td>
-
-<td id="highest-info">-</td>
-
-</tr>
-
-<tr>
-
-<td>Lowest Point</td>
-
-<td id="lowest-info">-</td>
-
-</tr>
-
-</table>
-
-</div>
-
 </section>
 
-</main>
+<!-- route list -->
+<section class="card route-list" id="jalur">
+<h2>Daftar Jalur</h2>
+<div class="route-grid">
+<a class="route-card" href="viewer.html?route=butak-via-panderman">
+<div class="route-map">
+<div id="route-preview-bvk"></div>
+</div>
+<div class="route-body">
+<span class="route-slug">butak-via-panderman</span>
+<h3>Gunung Butak via Panderman</h3>
+<p class="route-meta"><i class="fa-solid fa-map"></i> Panderman</p>
+<p class="route-stat" id="rv-bvk">Sedang memuat...</p>
+</div>
+</a>
+<a class="route-card" href="viewer.html?route=lawu-via-cemoro-sewu">
+<div class="route-map">
+<div id="route-preview-lcs"></div>
+</div>
+<div class="route-body">
+<span class="route-slug">lawu-via-cemoro-sewu</span>
+<h3>Lawu via Cemoro Sewu</h3>
+<p class="route-meta"><i class="fa-solid fa-map"></i> Cemoro Sewu</p>
+<p class="route-stat" id="rv-lcs">Sedang memuat...</p>
+</div>
+</a>
+</div>
+</section>
 
+<!-- stats -->
+<section class="stats">
+<div class="container stats-grid">
+<div class="stat">
+<span class="stat-num" id="stat-jalur">0</span>
+<span class="stat-label">Jalur</span>
+</div>
+<div class="stat">
+<span class="stat-num" id="stat-poity">0</span>
+<span class="stat-label">Waypoint</span>
+</div>
+<div class="stat">
+<span class="stat-num" id="stat-berjalan">0</span>
+<span class="stat-label">Berjalan</span>
+</div>
+<div class="stat">
+<span class="stat-num" id="stat-kilometer">0</span>
+<span class="stat-label">Km</span>
+</div>
+</div>
+</section>
+
+<!-- features -->
+<section class="card features" id="fitur">
+<h2>Fitur</h2>
+<div class="feature-grid">
+<div class="feature">
+<span class="feature-icon">🗺️</span>
+<h3>Peta Interaktif</h3>
+<p>Leaflet + Layer baru untuk setiap jalur, basemap, dan zoom fit.</p>
+</div>
+<div class="feature">
+<span class="feature-icon">📈</span>
+<h3>Profil Elevasi</h3>
+<p>Grafik kelengkungan jalur per-segment dengan Chart.js.</p>
+</div>
+<div class="feature">
+<span class="feature-icon">📍</span>
+<h3>Waypoint & POI</h3>
+<p>Daftar stop, posisi, dan titik-titik menarik di sisi kiri.</p>
+</div>
+<div class="feature">
+<span class="feature-icon">⬇️</span>
+<h3>Download</h3>
+<p>GPX/KML langsung dari menu di viewer.</p>
+</div>
+</div>
+</section>
+
+<!-- embed blog -->
+<section class="card embed-note" id="embed">
+<h2>Embed di Blogger</h2>
+<p>Tempel kode berikut di postingan Blogger untuk menampilkan viewer dalam <code>&lt;iframe&gt;</code>.</p>
+<div class="embed-box">
+<textarea id="embed-code" readonly title="Embed code">&lt;iframe
+  src="https://alam.nyasarnyaman.my.id/?route=butak-via-panderman"
+  style="width:100%;height:600px;border:0;border-radius:10px;overflow:hidden"
+  loading="lazy"
+&gt;&lt;/iframe&gt;</textarea>
+<button id="btn-copy-embed" type="button">Salin</button>
+</div>
+<p class="embed-note-sub">
+Gunakan <code>?theme=dark</code> / <code>?theme=light</code> di URL iframe agar warna cocok dengan blog kamu.
+</p>
+</section>
+
+<!-- footer -->
 <footer>
-
-Powered by
-
-<strong>Alam Engine</strong>
-
-•
-
-Nyasar Nyaman
-
+<div class="container footer-grid">
+<div>
+<strong>Nyasar Nyaman</strong>
+<p class="footer-sub">data pendakian dari GitHub Pages, dibuat untuk pemandian, perjalanan, dan dokumentasi.</p>
+</div>
+<div>
+<a href="viewer.html">Mulai Lihat Jalur</a>
+<a href="upload.html">Upload Data</a>
+</div>
+<div>
+<h3>Diajukan oleh</h3>
+<p>⬆️ <strong>akhyarulf/alam</strong></p>
+<p>⌘ <code>main</code></p>
+</div>
+</div>
+<p class="footer-copy">© 2026 Nyasar Nyaman · Alam Viewer · <a href="viewer.html">Peta jalur</a></p>
 </footer>
-
 </div>
 
 <!-- ===========================
 LIBRARY
 =========================== -->
-
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
 
 <!-- ===========================
 CONFIG
 =========================== -->
-
 <script>
 window.AlamViewer = window.AlamViewer || {};
 window.ALAM = window.ALAM || {};
 </script>
 
-
-
+<!-- ===========================
+APP
+=========================== -->
 <script src="config.js"></script>
-
 <script src="assets/js/utils.js"></script>
-
 <script src="assets/js/loader.js"></script>
-
 <script src="assets/js/map.js"></script>
-
-<script src="assets/js/chart.js"></script>
-
 <script src="assets/js/stats.js"></script>
-
 <script src="assets/js/waypoint.js"></script>
-
 <script src="assets/js/download.js"></script>
-
 <script src="assets/js/theme.js"></script>
-
 <script src="assets/js/app.js"></script>
-
 <script src="assets/js/embed-sync.js"></script>
-
 </body>
-
 </html>
+

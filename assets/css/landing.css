@@ -1,0 +1,493 @@
+/* ==========================================
+ Alam Viewer v2 — Landing page CSS
+ ========================================== */
+
+:root {
+  --primary: #5a7562;
+  --primary-dark: #415447;
+  --text: #232428;
+  --text-light: #606060;
+  --bg: #f6f6fa;
+  --card: #ffffff;
+  --border: #dededf;
+  --accent: #d97706;
+  --radius: 14px;
+}
+
+body {
+  font-family: "Noto Sans", system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.6;
+}
+
+#loader {
+  position: fixed;
+  inset: 0;
+  background: rgba(246, 246, 250, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.loader-box {
+  text-align: center;
+}
+
+.loader-circle {
+  width: 56px;
+  height: 56px;
+  border: 6px solid #e5e5ea;
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ===========================
+HEADER / NAV
+=========================== */
+.site-header {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  gap: 16px;
+  padding: 0 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.brand-mark {
+  font-size: 28px;
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.brand-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+  letter-spacing: 0.5px;
+}
+
+.site-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.site-nav a {
+  text-decoration: none;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ===========================
+MAIN LAYOUT
+=========================== */
+main.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ===========================
+HERO
+=========================== */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 48px 0 56px;
+  margin-top: 16px;
+}
+
+.hero-media {
+  min-height: 280px;
+}
+
+.hero-map-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+#hero-map {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  padding-right: 24px;
+}
+
+.hero-copy .badge {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.hero-copy h1 {
+  font-size: 38px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin: 4px 0 12px;
+}
+
+.hero-copy h1 span {
+  color: var(--primary);
+}
+
+.hero-copy p {
+  color: var(--text-light);
+  font-size: 16px;
+  max-width: 520px;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* ===========================
+ROUTE LIST
+=========================== */
+.route-list {
+  padding: 32px 0;
+  margin-top: 24px;
+}
+
+.route-list h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}
+
+.route-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.route-card {
+  display: flex;
+  gap: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.route-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.route-map {
+  width: 160px;
+  min-height: 110px;
+  background: #e8e8ef;
+  border-radius: var(--radius) 0 0 var(--radius);
+  overflow: hidden;
+}
+
+.route-map iframe,
+.route-map .leaflet-container {
+  width: 100%;
+  height: 100%;
+}
+
+.route-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 18px;
+}
+
+.route-slug {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--primary);
+  background: #eef3ef;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.route-body h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0 4px;
+}
+
+.route-meta {
+  font-size: 13px;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.route-stat {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ===========================
+STATS
+=========================== */
+.stats {
+  padding: 32px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-num {
+  display: block;
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+/* ===========================
+FEATURES
+=========================== */
+.features {
+  padding: 32px 0;
+}
+
+.features h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.feature {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.feature-icon {
+  font-size: 22px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.feature h3 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.feature p {
+  font-size: 14px;
+  color: var(--text-light);
+}
+
+/* ===========================
+EMBED NOTE
+=========================== */
+.embed-note {
+  padding: 32px 0;
+}
+
+.embed-note h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.embed-note p {
+  color: var(--text-light);
+  margin-bottom: 16px;
+}
+
+.embed-box {
+  position: relative;
+  margin-bottom: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #fafafa;
+}
+
+.embed-box textarea {
+  width: 100%;
+  height: 110px;
+  border: none;
+  background: #fafafa;
+  padding: 12px;
+  font-family: "SF Mono", "Fira Code", monospace;
+  font-size: 12px;
+  color: var(--text);
+  resize: none;
+  outline: none;
+}
+
+.embed-box button {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.embed-note-sub {
+  font-size: 13px;
+  color: var(--text-light);
+}
+
+/* ===========================
+FOOTER
+=========================== */
+footer {
+  margin-top: 48px;
+  padding: 32px 0 24px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  text-align: center;
+}
+
+.footer-grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-grid strong {
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.footer-sub {
+  color: var(--text-light);
+  font-size: 13px;
+  max-width: 320px;
+  margin: 0;
+}
+
+.footer-grid a {
+  font-size: 13px;
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.footer-copy {
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-light);
+  margin-top: 20px;
+}
+
+.footer-copy a {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* ===========================
+DARK THEME TOKENS
+=========================== */
+body.dark {
+  --text: #e6e6e6;
+  --text-light: #999;
+  --bg: #1c1c1e;
+  --card: #262628;
+  --border: #3a3a3c;
+  --primary: #6f8f7a;
+  --primary-dark: #5a7562;
+  --accent: #f08a24;
+}
+
+body.dark .hero-copy h1 span,
+body.dark .route-body h3,
+body.dark .stat-num,
+body.dark .route-slug {
+  color: var(--primary);
+}
