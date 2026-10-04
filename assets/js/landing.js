@@ -23,9 +23,20 @@
   const THEME_KEY = "alam-theme";
   const BASE = (window.CONFIG && window.CONFIG.rawBase) || null;
 
+  /* Basemap tanpa API key — CARTO sekarang mewajibkan key, jadi pakai
+   OpenTopoMap (terang, topografis) dan Esri Dark Gray (gelap),
+   sama seperti layer yang dipakai viewer. */
   const tiles = {
-    light: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+    light: {
+      url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
+      maxZoom: 17,
+      attribution: '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    },
+    dark: {
+      url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+      maxZoom: 16,
+      attribution: '&copy; Esri, HERE, Garmin &copy; OpenStreetMap contributors',
+    },
   };
 
   const state = {
@@ -120,7 +131,10 @@
     // tile layer peta ikut tema
     state.maps.forEach((m) => {
       if (!m || !m.tileLayer) return;
-      m.tileLayer.setUrl(theme === "dark" ? tiles.dark : tiles.light);
+      const t = tiles[theme === "dark" ? "dark" : "light"];
+      m.tileLayer.options.maxZoom = t.maxZoom;
+      m.tileLayer.setUrl(t.url);
+      if (typeof m.tileLayer.redraw === "function") m.tileLayer.redraw();
     });
   }
 
@@ -138,13 +152,6 @@
   /* ==========================================================
      PETA
      ========================================================== */
-  function baseTile() {
-    return L.tileLayer(state.theme === "dark" ? tiles.dark : tiles.light, {
-      maxZoom: 19,
-      detectRetina: true,
-    });
-  }
-
   const trackStyle = (weight) => ({
     color: "#3f6b52",
     weight,
@@ -152,6 +159,11 @@
     lineCap: "round",
     lineJoin: "round",
   });
+
+  function baseTile() {
+    const t = tiles[state.theme === "dark" ? "dark" : "light"];
+    return L.tileLayer(t.url, { maxZoom: t.maxZoom, attribution: t.attribution });
+  }
 
   const waypointStyle = {
     radius: 3.5,
