@@ -1,16 +1,13 @@
 /* ==========================================================
-   Alam Viewer v1.1
+   Alam Viewer v1.2
    download.js
 
    Download Manager
 
    - GPX & KML dibuat langsung di browser dari track.geojson
-     (lewat assets/js/export-file.js), jadi tidak ada ketergantungan
-     ke file luar maupun Google Drive.
-   - Kalau manifest menyediakan link Drive, link itu tetap dipakai
-     sebagai tombol tambahan "GPX asli".
-   - Kalau GeoJSON belum tersedia, tombol kembali ke perilaku lama
-     (link langsung dari manifest.downloads).
+     (lewat assets/js/export-file.js). Tidak ada layanan eksternal.
+   - Kalau GeoJSON belum tersedia, tombol memakai tautan yang
+     dicantumkan di manifest.downloads (bila ada).
 ========================================================== */
 
 "use strict";
@@ -39,9 +36,7 @@ const DownloadManager = {
 
             gpx: document.getElementById("btn-download-gpx"),
 
-            kml: document.getElementById("btn-download-kml"),
-
-            original: document.getElementById("btn-download-original")
+            kml: document.getElementById("btn-download-kml")
 
         };
 
@@ -128,7 +123,7 @@ const DownloadManager = {
 
     onGenerateClick(event, type) {
 
-        /* Tanpa GeoJSON: biarkan tautan bawaan (Drive) bekerja. */
+        /* Tanpa GeoJSON: biarkan tautan dari manifest bekerja. */
 
         if (!this.canGenerate()) return;
 
@@ -203,8 +198,6 @@ const DownloadManager = {
 
         });
 
-        this.updateOriginal();
-
     },
 
     /* Tombol dibuat dari GeoJSON: tautan dummy + aksi klik. */
@@ -231,7 +224,7 @@ const DownloadManager = {
 
     },
 
-    /* Tautan langsung (mis. Google Drive). */
+    /* Tautan langsung dari manifest.downloads. */
 
     updateButton(type, url) {
 
@@ -265,38 +258,6 @@ const DownloadManager = {
 
     },
 
-    /* "GPX asli" hanya muncul kalau manifest menyediakan link. */
-
-    updateOriginal() {
-
-        const button = this.buttons.original;
-
-        if (!button) return;
-
-        const url = this.downloads.gpx;
-
-        if (!url) {
-
-            button.style.display = "none";
-
-            button.removeAttribute("href");
-
-            return;
-
-        }
-
-        button.style.display = "";
-
-        button.href = url;
-
-        button.target = "_blank";
-
-        button.rel = "noopener";
-
-        button.title = "File GPX asli (Google Drive)";
-
-    },
-
     /* ======================================================
        Disable All
     ====================================================== */
@@ -314,8 +275,6 @@ const DownloadManager = {
             button.classList.add("disabled");
 
             button.setAttribute("aria-disabled", "true");
-
-            if (type === "original") button.style.display = "none";
 
         });
 

@@ -2,7 +2,7 @@
    Alam Viewer — Export File (GPX & KML)
  ==========================================================
    Mengubah track.geojson menjadi file GPX 1.1 dan KML 2.2
-   langsung di browser. Tidak butuh server, tidak butuh Drive.
+   langsung di browser. Tidak butuh server, tidak butuh layanan eksternal.
 
    Dipakai oleh assets/js/download.js.
 
