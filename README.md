@@ -24,6 +24,7 @@ alam/
 │       ├── app.js
 │       ├── chart.js
 │       ├── download.js
+│       ├── export-file.js
 │       ├── embed-sync.js
 │       ├── landing.js
 │       ├── loader.js
@@ -223,7 +224,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 |---|---------|--------|--------|
 | 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | **Selesai** — `data/routes.json` dibuat otomatis oleh `scripts/build-routes-index.js` via `.github/workflows/routes-index.yml` |
 | 2 | `upload.html` **tidak punya satu pun `@media` query** → layout berdesakan di layar kecil. | Upload dari HP terasa sempit. | Belum dikerjakan |
-| 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`). | Kalau file Drive hilang/dibatasi, tombol mati. KML juga hanya ada kalau uploader berhasil menguggahnya. | Belum dikerjakan |
+| 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`); jalur hasil upload browser punya `downloads: null` sehingga tombolnya mati. | Viewer & landing tidak lagi butuh Drive. | **Selesai** — GPX & KML dibuat di browser dari `track.geojson` (`assets/js/export-file.js`); link Drive (bila ada) tetap sebagai tombol **"GPX asli"** |
 
 ### B2. Kekurangan — viewer
 
@@ -291,7 +292,7 @@ Untuk menjalankan manual: `node scripts/build-routes-index.js`.
 Tambah satu blok `@media (max-width: 720px)` di `<style>` inline: kolom jadi 1,
 tombol full width, `<pre>` JSON gets `overflow:auto`. Estimasi ~20 menit, risiko rendah.
 
-**3. Unduh GPX/KML tanpa Drive — belum**
+**3. Unduh GPX/KML tanpa Drive — ✅ SELESAI** (`assets/js/export-file.js` + `download.js`)
 Buat `GPX` (`<wpt>` + `<trk>`) dan `KML` (`Placemark` + `LineString`) langsung di browser
 dari `track.geojson` yang sudah ada. Nol dependency eksternal, jalan untuk semua jalur
 tidak pernah mati. Link Drive dipertahankan sebagai tombol kedua
@@ -319,6 +320,7 @@ Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 - `d14de63` / `28790fb` — hapus data dummy Butak, Lawu jadi default, `?v=4`.
 - B1 — index `data/routes.json` + workflow otomatis, `?v=5`.
 - Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
+- Viewer: unduh GPX/KML dibuat di browser dari `track.geojson` — tidak bergantung Drive.
 
 ## Files
 
@@ -328,6 +330,7 @@ Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 - `config.js` — config GitHub Pages data
 - `assets/js/*.js` — viewer modules
 - `assets/js/landing.js` — script landing page (daftar jalur + peta mini)
+- `assets/js/export-file.js` — pembuat file GPX & KML dari `track.geojson`
 - `assets/css/style.css` — viewer styles
 - `assets/css/landing.css` — landing page styles (standalone)
 - `data/routes.json` — index daftar jalur (otomatis, dipakai landing page)

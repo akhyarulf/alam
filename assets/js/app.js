@@ -427,7 +427,9 @@ const App = {
 
             DownloadManager.refresh(
 
-                this.manifest
+                this.manifest,
+
+                this.geojson
 
             );
 
