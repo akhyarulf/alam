@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="assets/css/style.css?v=1">
+    <link rel="stylesheet" href="assets/css/style.css?v=5">
 </head>
 
 <body>
@@ -133,12 +133,17 @@ CONTENT
                     </div>
                 </div>
 
-                <div class="card">
+                <div class="card" id="elevation-card">
                     <h3>
                         <i class="fa-solid fa-mountain"></i>
                         Elevation Profile
+                        <button id="btn-elevation-toggle" class="info-toggle-btn" type="button" title="Sembunyikan / tampilkan grafik" aria-expanded="true" aria-controls="elevation-body">
+                            <i class="fa-solid fa-chevron-up"></i>
+                        </button>
                     </h3>
-                    <canvas id="elevation-chart"></canvas>
+                    <div id="elevation-body">
+                        <canvas id="elevation-chart"></canvas>
+                    </div>
                 </div>
 
                 <div class="card">
@@ -151,14 +156,6 @@ CONTENT
                     </h3>
                     <div id="direction-info-panel" class="direction-panel hidden"></div>
                     <table class="info-table">
-                        <tr>
-                            <td>Gunung</td>
-                            <td id="mountain">-</td>
-                        </tr>
-                        <tr>
-                            <td>Jalur</td>
-                            <td id="route">-</td>
-                        </tr>
                         <tr>
                             <td>Distance</td>
                             <td id="distance-info">-</td>
@@ -223,12 +220,12 @@ APP
     <script src="assets/js/utils.js?v=3"></script>
     <script src="assets/js/loader.js?v=1"></script>
     <script src="assets/js/map.js?v=1"></script>
-    <script src="assets/js/chart.js?v=1"></script><script src="assets/js/stats.js?v=4"></script>
-        <script src="assets/js/waypoint.js?v=1"></script>
+    <script src="assets/js/chart.js?v=5"></script><script src="assets/js/stats.js?v=4"></script>
+        <script src="assets/js/waypoint.js?v=5"></script>
         <script src="assets/js/export-file.js?v=1"></script>
         <script src="assets/js/download.js?v=1"></script>
     <script src="assets/js/theme.js?v=1"></script>
-    <script src="assets/js/app.js?v=2"></script>
+    <script src="assets/js/app.js?v=5"></script>
     <script src="assets/js/embed-sync.js?v=1"></script>
 
 </body>

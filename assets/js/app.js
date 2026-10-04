@@ -357,6 +357,12 @@ const App = {
 
             ElevationChart.init();
 
+            if (typeof ElevationChart.initToggle === "function") {
+
+                ElevationChart.initToggle();
+
+            }
+
         }
 
         /* Stats */

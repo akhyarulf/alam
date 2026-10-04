@@ -461,6 +461,62 @@ gap:24px;
 }
 
 /* ===========================
+WAYPOINT: RUAS DISEMBUNYIKAN + TOMBOL
+=========================== */
+
+.waypoint.is-hidden{
+
+display:none;
+
+}
+
+.waypoint-more{
+
+width:100%;
+
+margin-top:10px;
+
+padding:12px;
+
+border:1px dashed var(--border);
+
+border-radius:14px;
+
+background:transparent;
+
+color:var(--text-light);
+
+font:inherit;
+
+font-size:13px;
+
+font-weight:600;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.waypoint-more:hover{
+
+color:var(--primary);
+
+border-color:var(--primary);
+
+}
+
+/* ===========================
+GRAFIK YANG BISA DILIPAT
+=========================== */
+
+#elevation-card.is-collapsed #elevation-body{
+
+display:none;
+
+}
+
+/* ===========================
 THEME TOGGLE
 =========================== */
 
@@ -2140,7 +2196,11 @@ RESPONSIVE
 
 .waypoint{
 
-padding:14px;
+padding:10px;
+
+gap:10px;
+
+border-radius:14px;
 
 }
 
@@ -2158,7 +2218,37 @@ font-size:12px;
 
 #elevation-chart{
 
-height:240px !important;
+height:200px !important;
+
+}
+
+/* Tombol unduh jadi 3 kolom supaya tidak memanjang ke bawah */
+
+#download-list{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:8px;
+
+}
+
+#download-list .download-btn{
+
+flex-direction:column;
+
+justify-content:center;
+
+gap:6px;
+
+padding:12px 6px;
+
+font-size:12px;
+
+text-align:center;
+
+border-radius:14px;
 
 }
 

@@ -684,6 +684,73 @@ window.ElevationChart = ElevationChart;
 
 
 /* ==========================================================
+   Lipat / buka grafik
+   Di HP default-nya tertutup supaya halaman tidak panjang,
+   di desktop tetap terbuka.
+========================================================== */
+
+ElevationChart.collapsed = false;
+
+ElevationChart.toggleCollapsed = function (force) {
+
+    const card = document.getElementById("elevation-card");
+
+    const button = document.getElementById("btn-elevation-toggle");
+
+    if (!card) return;
+
+    const next = typeof force === "boolean" ? force : !this.collapsed;
+
+    this.collapsed = next;
+
+    card.classList.toggle("is-collapsed", next);
+
+    if (button) {
+
+        button.setAttribute("aria-expanded", String(!next));
+
+        const icon = button.querySelector("i");
+
+        if (icon) {
+
+            icon.className = next
+
+                ? "fa-solid fa-chevron-down"
+
+                : "fa-solid fa-chevron-up";
+
+        }
+
+    }
+
+    if (!next) {
+
+        setTimeout(() => this.resize(), 60);
+
+    }
+
+};
+
+ElevationChart.initToggle = function () {
+
+    const button = document.getElementById("btn-elevation-toggle");
+
+    if (button) {
+
+        button.addEventListener("click", () => this.toggleCollapsed());
+
+    }
+
+    /* Default tertutup di layar kecil (HP), terbuka di desktop */
+    if (window.matchMedia && window.matchMedia("(max-width: 768px)").matches) {
+
+        this.toggleCollapsed(true);
+
+    }
+
+};
+
+/* ==========================================================
    Ready
 ========================================================== */
 

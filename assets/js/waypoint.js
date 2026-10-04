@@ -20,16 +20,25 @@ const POI_META = {
     poi_view: { icon: "📷", label: "Spot View" },
     poi_parkir: { icon: "🅿️", label: "Basecamp/Parkiran" },
     poi_lain: { icon: "📌", label: "POI" },
-};
-
-const WaypointManager = {
+};const WaypointManager = {
 
     container: null,
+
     poiContainer: null,
 
     points: [],
+
     legs: [],
+
     pois: [],
+
+    /* Di layar kecil hanya 6 ruas pertama yang ditampilkan,
+       sisanya lewat tombol "lihat semua". */
+    LEGS_PREVIEW: 6,
+
+    legsExpanded: false,
+
+    legItems: [],
 
     initialized: false,
 
@@ -64,9 +73,7 @@ const WaypointManager = {
 
     /* ======================================================
        Render
-    ====================================================== */
-
-    render() {
+    ====================================================== */render() {
 
         if (!this.container) return;
 
@@ -82,13 +89,77 @@ const WaypointManager = {
 
         } else {
 
+            this.legItems = [];
+
             this.legs.forEach((leg, index) => {
-                this.container.appendChild(this.createLegItem(leg, index));
+
+                const item = this.createLegItem(leg, index);
+
+                if (index >= this.LEGS_PREVIEW && !this.legsExpanded) item.classList.add("is-hidden");
+
+                this.legItems.push(item);
+
+                this.container.appendChild(item);
+
             });
+
+            if (this.legs.length > this.LEGS_PREVIEW) {
+
+                this.container.appendChild(this.createMoreButton());
+
+            }
 
         }
 
         this.renderPois();
+
+    },
+
+    /* ======================================================
+       Tombol "lihat semua ruas"
+    ====================================================== */
+
+    createMoreButton() {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+
+        button.className = "waypoint-more";
+
+        button.setAttribute("aria-expanded", "false");
+
+        this.updateMoreButton(button);
+
+        button.addEventListener("click", () => {
+
+            this.legsExpanded = !this.legsExpanded;
+
+            /* Pakai indeks, bukan query .is-hidden, supaya tombol
+               bisa dipakai bolak-balik (buka -> tutup lagi). */
+            (this.legItems || []).forEach((el, i) => {
+
+                el.classList.toggle("is-hidden", !this.legsExpanded && i >= this.LEGS_PREVIEW);
+
+            });
+
+            this.updateMoreButton(button);
+
+        });
+
+        return button;
+
+    },
+
+    updateMoreButton(button) {
+
+        const total = this.legs.length;
+
+        button.innerHTML = this.legsExpanded
+
+            ? `Tampilkan lebih sedikit <i class="fa-solid fa-chevron-up"></i>`
+
+            : `Lihat semua ${total} ruas <i class="fa-solid fa-chevron-down"></i>`;
 
     },
 

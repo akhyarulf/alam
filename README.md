@@ -154,7 +154,7 @@ Referensi lengkap:
 ```html
 <iframe
   src="https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu"
-  style="width:100%;height:2000px;border:0;border-radius:10px"
+  style="width:100%;height:1600px;border:0;border-radius:10px"
   loading="lazy"
   scrolling="no"
   allowfullscreen
@@ -167,6 +167,19 @@ Referensi lengkap:
   tema halaman parent via `postMessage`.
 - `scrolling="no"` + `scrollWheelZoom` otomatis mati saat di-embed, jadi scroll di
   atas peta tidak lagi menggerakkan halaman artikel (zoom tetap pakai tombol `+`/`-`).
+
+### Tampilan ringkas di HP
+
+Supaya tidak terlalu memanjang ke bawah di artikel:
+
+- Tabel Informasi Jalur tidak lagi mengulang **Gunung/Jalur** (sudah ada di judul hero) — 9 → 7 baris.
+- Grafik elevasi **200px** di ≤768px, dan bisa **dilipat** lewat tombol di judul card
+  (default tertutup di HP, terbuka di desktop).
+- Daftar pos menampilkan **6 ruas pertama** + tombol “Lihat semua N ruas” (indeks & klik untuk
+  fly-to tetap utuh karena semua ruas tetap ada di DOM).
+- Tombol unduh GPX/KML/Print jadi **3 kolom** di HP, dan baris pos lebih rapat (`padding:10px`).
+- Efeknya tinggi konten di HP turun dari ~2.000px jadi ~1.500–1.600px, cocok dengan
+  `height:1600px` di snippet embed.
 
 ### Tampilan di dalam artikel
 
@@ -392,6 +405,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
 - Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
 - Uploader: nama jalur otomatis dari Gunung + Jalur (`buildTrackName()`), `extractMountainRoute()` sekarang juga memecah `X via Y` tanpa awalan "Gunung".
+- Tampilan HP diringkas: hapus 2 baris duplikat, grafik 200px + bisa dilipat, 6 pos pertama + “lihat semua”, tombol unduh 3 kolom.
 - Ruas waypoint disinkronkan dengan total: `buildLegs()` menghitung gain per segmen + `gain_m`, dan `stats.js` memakai jumlah ruas sebagai Total Naik.
 - “Total Naik/Turun” tidak lagi “---”: `upload.html` menulis `ascent/descent_duration_minutes_*` + `ascent_km`/`return_km`/`profile_descent_km`, `stats.js` jatuh ke estimasi `Utils.climbTimes()` bila field kosong, dan `data/lawu-via-candi-cetho/manifest.json` di-backfill. Semantik turun diubah ke “finish → start”; untuk Cemoro Sewu angka engine (90–120 mnt) cocok dengan hitungan itu (80–125).
 
