@@ -73,7 +73,7 @@ const Stats = {
        Set Manifest
     ====================================================== */
 
-    setManifest(manifest) {
+    setManifest(manifest, geojson) {
 
         if (!this.initialized) {
 
@@ -86,6 +86,10 @@ const Stats = {
         this.stats = this.manifest.stats || {};
 
         this.track = this.manifest.track || {};
+
+        this.geojson = geojson || null;
+
+        this.climbCache = undefined;
 
     },
 
@@ -110,6 +114,65 @@ const Stats = {
             `${this.track.mountain || "-"} • ${this.track.route || "-"}`
 
         );
+
+    },
+
+    /* ======================================================
+       Waktu naik / turun
+       ======================================================
+       Sumber: stats.ascent/descent_duration_minutes_* di
+       manifest. Kalau field itu tidak ada (jalur hasil upload
+       browser), dihitung dari track.geojson dengan formula
+       Naismith yang sama seperti upload.html.
+    ====================================================== */
+
+    climbData() {
+
+        const fromManifest = {
+
+            ascent_low: this.stats.ascent_duration_minutes_low,
+
+            ascent_high: this.stats.ascent_duration_minutes_high,
+
+            descent_low: this.stats.descent_duration_minutes_low,
+
+            descent_high: this.stats.descent_duration_minutes_high
+
+        };
+
+        if (Object.keys(fromManifest).every((k) => Number.isFinite(fromManifest[k]))) {
+
+            return fromManifest;
+
+        }
+
+        if (this.climbCache === undefined) {
+
+            const line = this.geojson && (this.geojson.features || []).find((f) => f.geometry && f.geometry.type === "LineString");
+
+            this.climbCache = line && window.Utils && typeof Utils.climbTimes === "function"
+
+                ? Utils.climbTimes(line.geometry.coordinates)
+
+                : null;
+
+        }
+
+        return this.climbCache;
+
+    },
+
+    formatClimbTime(kind) {
+
+        const data = this.climbData();
+
+        if (!data) return "Data tidak tersedia";
+
+        const low = data[`${kind}_low`];
+
+        const high = data[`${kind}_high`];
+
+        return `${Utils.formatDuration(low)} - ${Utils.formatDuration(high)}`;
 
     },
 
@@ -145,23 +208,21 @@ const Stats = {
 
 			)
 
-		);
+		);Utils.setText(
 
-		Utils.setText(
+            this.elements.ascentDurationInfo,
 
-			this.elements.ascentDurationInfo,
+            this.formatClimbTime("ascent")
 
-			`${Utils.formatDuration(this.stats.ascent_duration_minutes_low)} - ${Utils.formatDuration(this.stats.ascent_duration_minutes_high)}`
+        );
 
-		);
+        Utils.setText(
 
-		Utils.setText(
+            this.elements.descentDurationInfo,
 
-			this.elements.descentDurationInfo,
+            this.formatClimbTime("descent")
 
-			`${Utils.formatDuration(this.stats.descent_duration_minutes_low)} - ${Utils.formatDuration(this.stats.descent_duration_minutes_high)}`
-
-		);
+        );
 
 		Utils.setText(
 
@@ -330,9 +391,9 @@ const Stats = {
        Refresh
     ====================================================== */
 
-    refresh(manifest) {
+    refresh(manifest, geojson) {
 
-        this.setManifest(manifest);
+        this.setManifest(manifest, geojson);
 
         this.update();
 

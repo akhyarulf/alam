@@ -415,7 +415,9 @@ const App = {
 
             Stats.refresh(
 
-                this.manifest
+                this.manifest,
+
+                this.geojson
 
             );
 

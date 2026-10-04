@@ -123,6 +123,100 @@ function loadLocal(key, fallback = null) {
 }
 
 /* ==========================================================
+   Waktu naik / turun (Naismith)
+   Dipakai kalau manifest tidak punya
+   ascent/descent_duration_minutes_* (mis. jalur hasil
+   upload browser). Jarak & gain ascent/descent dihitung
+   dari arah elevasi tiap segmen track.
+========================================================== */
+
+const CLIMB_SPEED_KMH = 4;
+
+const CLIMB_GAIN_M_PER_HOUR = 600;
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+
+    const R = 6371;
+
+    const toRad = (d) => d * Math.PI / 180;
+
+    const dlat = toRad(lat2 - lat1);
+
+    const dlon = toRad(lon2 - lon1);
+
+    const a =
+        Math.sin(dlat / 2) * Math.sin(dlat / 2) +
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dlon / 2) * Math.sin(dlon / 2);
+
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+}
+
+function roundMinutes(minutes) {
+
+    return Math.max(5, Math.round(minutes / 5) * 5);
+
+}
+
+function climbTimes(coords) {
+
+    if (!Array.isArray(coords) || coords.length < 2) return null;
+
+    let upKm = 0, downKm = 0, gain = 0, loss = 0;
+
+    for (let i = 1; i < coords.length; i++) {
+
+        const a = coords[i - 1], b = coords[i];
+
+        const km = haversineKm(a[1], a[0], b[1], b[0]);
+
+        const ea = Number.isFinite(a[2]) ? a[2] : 0;
+
+        const eb = Number.isFinite(b[2]) ? b[2] : 0;
+
+        const diff = eb - ea;
+
+        if (diff > 0) {
+
+            upKm += km;
+
+            gain += diff;
+
+        } else {
+
+            downKm += km;
+
+            loss += Math.abs(diff);
+
+        }
+
+    }
+
+    if (upKm + downKm <= 0) return null;
+
+    const ascentHours = upKm / CLIMB_SPEED_KMH + gain / CLIMB_GAIN_M_PER_HOUR;
+
+    const descentHours = downKm / CLIMB_SPEED_KMH + loss / CLIMB_GAIN_M_PER_HOUR;
+
+    return {
+
+        ascent_km: Math.round(upKm * 100) / 100,
+
+        descent_km: Math.round(downKm * 100) / 100,
+
+        ascent_low: roundMinutes(ascentHours * 60 * 0.85),
+
+        ascent_high: roundMinutes(ascentHours * 60 * 1.3),
+
+        descent_low: roundMinutes(descentHours * 60 * 0.85),
+
+        descent_high: roundMinutes(descentHours * 60 * 1.3)
+
+    };
+
+}
+
+/* ==========================================================
    Export Global
 ========================================================== */
 
@@ -136,5 +230,6 @@ window.Utils = {
     openFullscreen,
     closeFullscreen,
     saveLocal,
-    loadLocal
+    loadLocal,
+    climbTimes
 };

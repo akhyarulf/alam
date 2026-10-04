@@ -27,7 +27,13 @@
     "center": {
       "lat": -7.610461,
       "lng": 111.1768615
-    }
+    },
+    "ascent_duration_minutes_low": 260,
+    "ascent_duration_minutes_high": 400,
+    "descent_duration_minutes_low": 15,
+    "descent_duration_minutes_high": 20,
+    "ascent_km": 7.99,
+    "descent_km": 0.67
   },
   "legs": [
     {
