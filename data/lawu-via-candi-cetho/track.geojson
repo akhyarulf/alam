@@ -2708,6 +2708,258 @@
           ]
         ]
       }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Start",
+        "ele": 1433.39,
+        "distance_km": 0,
+        "locked": true,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.155754,
+          -7.595031,
+          1433.39
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Basecamp",
+        "ele": 1481.02,
+        "distance_km": 0.29,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.158042,
+          -7.595211,
+          1481.021629281681
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pos 1",
+        "ele": 1688.46,
+        "distance_km": 1.68,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.166966,
+          -7.597967,
+          1688.4604849734976
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pos 2",
+        "ele": 1926.15,
+        "distance_km": 2.43,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.172473,
+          -7.600214,
+          1926.1475070609013
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pos 3",
+        "ele": 2228.29,
+        "distance_km": 3.54,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.179326,
+          -7.60212,
+          2228.285038312689
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Sumber Air",
+        "ele": 2232.37,
+        "distance_km": 3.55,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.179354,
+          -7.602182,
+          2232.3702148876882
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pos 4",
+        "ele": 2516.44,
+        "distance_km": 4.46,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.186276,
+          -7.603609,
+          2516.4403106497098
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pos 5 Bulak Peperangan",
+        "ele": 2861.98,
+        "distance_km": 5.9,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.195902,
+          -7.607601,
+          2861.975930147505
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Gupakan Menjangan",
+        "ele": 2941.77,
+        "distance_km": 6.5,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.197788,
+          -7.612253,
+          2941.76916987692
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Pasar Dieng",
+        "ele": 3116.78,
+        "distance_km": 7.79,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.196023,
+          -7.622547,
+          3116.7808350040823
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hargo Dalem",
+        "ele": 3141.86,
+        "distance_km": 8.15,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.19669,
+          -7.625095,
+          3141.8552230358164
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Highest Point",
+        "ele": 3250.99,
+        "distance_km": 8.63,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.194371,
+          -7.627139,
+          3250.99
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Finish",
+        "ele": 3247.72,
+        "distance_km": 8.66,
+        "locked": true,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.194315,
+          -7.627381,
+          3247.72
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Hargo Dumilah",
+        "ele": 3247.18,
+        "distance_km": 8.66,
+        "locked": false,
+        "category": "pos"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          111.194312,
+          -7.627385,
+          3247.1760455181357
+        ]
+      }
     }
   ]
 }

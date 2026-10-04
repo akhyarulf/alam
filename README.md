@@ -183,6 +183,7 @@ di landing page ikut ter-update otomatis oleh GitHub Actions (lihat
 
 ## Daftar Jalur Saat Ini
 
+- `lawu-via-candi-cetho` — Lawu via Candi Cetho
 - `lawu-via-cemoro-sewu` — Lawu via Cemoro Sewu
 
 > Jalur `butak-via-panderman` pernah ada sebagai data dummy dan sudah dihapus
@@ -298,6 +299,18 @@ dari `track.geojson` yang sudah ada. Nol dependency eksternal, jalan untuk semua
 tidak pernah mati. Semua referensi layanan eksternal kemudian dibuang dari kode,
 data (`manifest.json`), dan README. Estimasi ~45 menit → hasil file divalidasi (XML).
 
+**5. Waypoint & ruas otomatis untuk jalur hasil upload — ✅ SELESAI** (`upload.html` + `data/lawu-via-candi-cetho`)
+Viewer membaca waypoint dari **Point features di `track.geojson`**, bukan dari
+`manifest.legs`. Sebelumnya `upload.html` hanya menulis satu fitur `LineString`,
+jadi semua `<wpt>` dari GPX hilang (marker peta kosong + sidebar “Belum ada waypoint”).
+Sekarang uploader juga menulis:
+- `Point` per waypoint (Start/Finish/Highest Point + `<wpt>` dari GPX), diurutkan
+  sesuai arah jalan, snapped ke titik track terdekat, plus `distance_km` & `locked`;
+- `manifest.legs` (breakdown antar waypoint, estimasi Naismith 4 km/jam + 600 m/jam).
+
+Data `lawu-via-candi-cetho` yang terlanjur ter-publish diperbaiki dengan algoritma
+yang sama: 14 waypoint, 12 ruas, total 8,66 km (sesuai `stats.distance_km`).
+
 **4. Tombol ganti tema di viewer — belum**
 Sisipkan satu tombol `#btn-theme` di `viewer.html` (Font Awesome sudah termuat) plus
 gaya tombolnya di `assets/css/style.css`. Logika `theme.js` tidak berubah sama sekali.
@@ -321,6 +334,7 @@ Saran urutan pengerjaan: **1 ✅ sudah** → **4 → 2 → 3**.
 - B1 — index `data/routes.json` + workflow otomatis, `?v=5`.
 - Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
 - Viewer: unduh GPX/KML dibuat di browser dari `track.geojson`; tombol "GPX asli" dan seluruh referensi layanan eksternal dibuang.
+- `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
 
 ## Files
 
