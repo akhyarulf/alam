@@ -1,235 +1,615 @@
 /* ==========================================
- Alam Viewer v2 — Landing Page
+ Alam Viewer — Landing Page
  ==========================================
- Gaya: layout responsif 2 kolom (desktop) / vertical (mobile).
- Data: header dari manifest.json / track.geojson di data/<slug>/.
- Kode: bawaan web + Leaflet + Chart.js + Turf (CDN).
- ========================================================== */
+ Data   : data/<slug>/manifest.json + track.geojson
+            (lokal dulu, fallback ke CONFIG.rawBase)
+ Peta   : Leaflet
+ ========================================== */
 
 "use strict";
 
-// ==========================================================
-// KONFIG
-// ==========================================================
-window.ALAM = window.ALAM || {};
-window.ALAM.landing = window.ALAM.landing || {};
-window.ALAM.landing.routes = [
-  { slug: "butak-via-panderman", uri: "https://raw.githubusercontent.com/akhyarulf/alam/main/data/butak-via-panderman/manifest.json" },
-  { slug: "lawu-via-cemoro-sewu", uri: "https://raw.githubusercontent.com/akhyarulf/alam/main/data/lawu-via-cemoro-sewu/manifest.json" },
-];
-window.ALAM.landing.defaultRoute = "butak-via-panderman";
+(function () {
 
-// ==========================================================
-// MODE
-// ==========================================================
-window.ALAM.landing.mode = (function () {
-  const m = new URLSearchParams(location.search).get("mode") || "grid";
-  return (m === "list" || m === "grid") ? m : "grid";
-})();
+  /* ==========================================================
+     KONFIGURASI
+     Tambah slug baru di sini; kartu, statistik, dan select
+     embed otomatis ikut bertambah.
+     ========================================================== */
+  const ROUTE_SLUGS = [
+    "butak-via-panderman",
+    "lawu-via-cemoro-sewu",
+  ];
 
-// ==========================================================
-// STATE
-// ==========================================================
-window.ALAM.landing.state = {
-  routes: [],
-  loading: true,
-  error: null,
-  ids: {}
-};
+  const THEME_KEY = "alam-theme";
+  const BASE = (window.CONFIG && window.CONFIG.rawBase) || null;
 
-// ==========================================================
-// UTIL
-// ==========================================================
-const L = window.ALAM.landing;
-const $ = (sel) => document.querySelector(sel);
-const $$ = (sel) => Array.from(document.querySelectorAll(sel));
-const el = (tag, attrs = {}, children = []) => {
-  const e = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (k === "className") e.className = v;
-    else if (k === "dataset" || k === "children") Object.assign(e, v);
-    else if (v !== false && v != null) e.setAttribute(k, v);
+  const tiles = {
+    light: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    dark: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+  };
+
+  const state = {
+    routes: [],
+    maps: [],
+    theme: "light",
+  };
+
+  /* ==========================================================
+     UTIL
+     ========================================================== */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const nfInt = new Intl.NumberFormat("id-ID", { maximumFractionDigits: 0 });
+  const nf2 = new Intl.NumberFormat("id-ID", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  const fmtInt = (n) => (Number.isFinite(n) ? nfInt.format(Math.round(n)) : "–");
+  const fmtKm = (n) => (Number.isFinite(n) ? `${nf2.format(n)} km` : "–");
+  const fmtM = (n) => (Number.isFinite(n) ? `+${fmtInt(n)} m` : "–");
+  const fmtElev = (n) => (Number.isFinite(n) ? `${nfInt.format(Math.round(n))} mdpl` : "–");
+
+  const slugToTitle = (slug) =>
+    slug.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+
+  function localUrl(slug, file) {
+    return `data/${slug}/${file}`;
   }
-  for (const c of children) e.append(c);
-  return e;
-};
 
-const escapeHtml = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({
-  "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-}[c]));
+  function remoteUrl(slug, file) {
+    return BASE ? `${BASE}/${slug}/${file}` : null;
+  }
 
-// ==========================================================
-// HERO MAP
-// ==========================================================
-function initHeroMap() {
-  const el = document.getElementById("hero-map");
-  if (!el) return;
-  // gunakan icon default leaflet; kita set icon footer nanti
-  const map = L.map(el, { center: [-7.9, 112.49], zoom: 14, scrollWheelZoom: false, attributionControl: false });
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 18
-  }).addTo(map);
-  L.control.attribution({ position: "bottomright" }).setPrefix("").addTo(map);
-  return map;
-}
+  /** Coba beberapa URL berurutan; kembali hasil fetch pertama yang sukses. */
+  async function fetchFirst(urls) {
+    const list = urls.filter(Boolean);
+    let lastError = null;
 
-// ==========================================================
-// PREVIEW MAP (per route)
-// ==========================================================
-function initRoutePreview(slug, containerId) {
-  const id = containerId || `route-preview-${slug}`;
-  const el = document.getElementById(id);
-  if (!el) return null;
-  const map = L.map(el, { scrollWheelZoom: false, attributionControl: false });
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-    maxZoom: 18
-  }).addTo(map);
-
-  // load geojson dari data repo, fallback ke remote
-  const geoUrl = `https://raw.githubusercontent.com/akhyarulf/alam/main/data/${slug}/track.geojson`;
-  fetch(geoUrl)
-    .then(r => { if (!r.ok) throw new Error("fetch " + r.status); return r.json(); })
-    .then(data => {
-      if (data.features?.length) {
-        L.geoJSON(data, {
-          style: { color: "#5a7562", weight: 4, opacity: 1, fillColor: "#5a7562", fillOpacity: 0.10 },
-          onEachFeature: (f, layer) => {
-            const name = f.properties?.name || f.properties?.route || slug;
-            layer.bindPopup(name);
-          }
-        }).addTo(map);
+    for (const url of list) {
+      try {
+        const res = await fetch(url, { cache: "no-cache" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        lastError = err;
       }
-    })
-    .catch(() => {});
-  return map;
-}
-
-// ==========================================================
-// ROUTE CARDS
-// ==========================================================
-function renderRouteCards() {
-  const grid = document.getElementById("route-grid");
-  if (!grid) return;
-  const slug = L.routeId || L.defaultRoute;
-  const cards = grid.querySelectorAll(".route-card");
-  cards.forEach(card => {
-    const path = card.dataset.slug || card.querySelector(".route-slug")?.textContent;
-    const mapEl = card.querySelector(".route-map");
-    const preview = initRoutePreview(slug, `route-preview-${slug}`);
-    if (preview && path) {
-      // preview map di card
-      const map = L.map(mapEl, { scrollWheelZoom: false, attributionControl: false });
-      L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { maxZoom: 18 }).addTo(map);
-      fetch(`https://raw.githubusercontent.com/akhyarulf/alam/main/data/${path}/track.geojson`)
-        .then(r => r.json())
-        .then(data => {
-          if (data.features?.length) L.geoJSON(data, {
-            style: { color: "#5a7562", weight: 3, fillColor: "#5a7562", fillOpacity: 0.08 },
-            onEachFeature: (f, l) => l.bindPopup(f.properties?.name || "")
-          }).addTo(map);
-        })
-        .catch(() => {});
     }
-  });
-}
 
-// ==========================================================
-// STATS
-// ==========================================================
-function renderStats(routes) {
-  const totalWays = routes.reduce((s, r) => s + (r.stats?.points || 0), 0);
-  const totalDist = routes.reduce((s, r) => s + (r.stats?.distance_km || 0), 0);
-  const ids = { route: routes.length, poi: totalWays, walk: 0, km: totalDist };
-  Object.assign(window.ALAM.landing.state.ids, ids);
-  document.getElementById("stat-jalur")?.textContent = routes.length;
-  document.getElementById("stat-poity")?.textContent = totalWays;
-  document.getElementById("stat-berjalan")?.textContent = "—"; // akan diisi stats detail
-  document.getElementById("stat-kilometer")?.textContent = totalDist.toFixed(2);
-}
-
-// ==========================================================
-// EMBED
-// ==========================================================
-function initEmbed() {
-  const textarea = document.getElementById("embed-code");
-  if (!textarea) return;
-  const btn = document.getElementById("btn-copy-embed");
-  function copy() {
-    textarea.select();
-    document.execCommand("copy");
-    btn.textContent = "Tersalin!";
+    throw lastError || new Error("tidak ada sumber data");
   }
-  if (btn) btn.addEventListener("click", copy);
-}
 
-// ==========================================================
-// ROUTE RESOLVER (cocok sama ?route=/?alambora=)
-// ==========================================================
-function resolveRoute() {
-  const params = new URLSearchParams(location.search);
-  if (params.has("route")) return params.get("route");
-  if (params.has("alambora")) return params.get("alambora");
-  if (window.AlamViewer?.route) return window.AlamViewer.route;
-  return "butak-via-panderman";
-}
+  function loadManifest(slug) {
+    return fetchFirst([localUrl(slug, "manifest.json"), remoteUrl(slug, "manifest.json")]);
+  }
 
-window.ALAM.landing.routeId = resolveRoute();
+  function loadGeoJSON(slug) {
+    return fetchFirst([localUrl(slug, "track.geojson"), remoteUrl(slug, "track.geojson")]);
+  }
 
-// ==========================================================
-// LOADER
-// ==========================================================
-function showLoader(visible) {
-  const l = document.getElementById("loader");
-  if (!l) return;
-  l.style.display = visible ? "flex" : "none";
-}
+  /* ==========================================================
+     TEMA
+     ========================================================== */
+  function initialTheme() {
+    const param = new URLSearchParams(location.search).get("theme");
+    if (param === "dark" || param === "light") return param;
 
-// ==========================================================
-// INISIALISASI
-// ==========================================================
-async function init() {
-  const route = window.ALAM.landing.routeId;
-  try {
-    const ids = { route: window.ALAM.landing.routes.length, poi: 0, walk: 0, km: 0 };
-    window.ALAM.landing.state.ids = ids;
-    for (const r of window.ALAM.landing.routes) {
-      const res = await fetch(r.uri);
-      const json = await res.json();
-      ids.route = json.id || ids.route;
-      ids.poi = (json.stats?.points || 0) + ids.poi;
-      ids.walk = (json.stats?.distance_km || 0) + ids.walk;
-      ids.km = json.stats?.distance_km || 0;
-      window.ALAM.landing.state.routes.push({ ...r, ...json });
+    try {
+      const saved = localStorage.getItem(THEME_KEY);
+      if (saved === "dark" || saved === "light") return saved;
+    } catch (_) { /* storage diblokir */ }
+
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+
+  function applyTheme(theme, persist) {
+    state.theme = theme;
+    document.body.classList.toggle("dark", theme === "dark");
+    $("meta[name='theme-color']").setAttribute("content", theme === "dark" ? "#14181a" : "#2f4638");
+
+    if (persist) {
+      try {
+        localStorage.setItem(THEME_KEY, theme);
+      } catch (_) { /* abaikan */ }
     }
-    window.ALAM.landing.state.loading = false;
-    document.title = "Alam Viewer — Nyasar Nyaman";
-    renderRouteCards();
-    renderStats(window.ALAM.landing.state.routes);
-    document.querySelectorAll('.route-card').forEach(card => {
-      const slug = card.dataset.slug || card.querySelector(".route-slug")?.textContent;
-      if (slug) {
-        const map = L.map(`route-preview-${slug}`, { scrollWheelZoom: false, attributionControl: false });
-        L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", { maxZoom: 18 }).addTo(map);
-        fetch(`https://raw.githubusercontent.com/akhyarulf/alam/main/data/${slug}/track.geojson`)
-          .then(r => r.json())
-          .then(data => {
-            if (data.features?.length) L.geoJSON(data, {
-              style: { color: "#5a7562", weight: 3, fillColor: "#5a7562", fillOpacity: 0.08 },
-              onEachFeature: (f, l) => l.bindPopup(f.properties?.name || "")
-            }).addTo(map);
-          })
-          .catch(() => {});
+
+    $$("#btn-theme").forEach((btn) => {
+      btn.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
+    });
+
+    // tile layer peta ikut tema
+    state.maps.forEach((m) => {
+      if (!m || !m.tileLayer) return;
+      m.tileLayer.setUrl(theme === "dark" ? tiles.dark : tiles.light);
+    });
+  }
+
+  function initTheme() {
+    applyTheme(initialTheme(), false);
+
+    const btn = $("#btn-theme");
+    if (btn) {
+      btn.addEventListener("click", () => {
+        applyTheme(state.theme === "dark" ? "light" : "dark", true);
+      });
+    }
+  }
+
+  /* ==========================================================
+     PETA
+     ========================================================== */
+  function baseTile() {
+    return L.tileLayer(state.theme === "dark" ? tiles.dark : tiles.light, {
+      maxZoom: 19,
+      detectRetina: true,
+    });
+  }
+
+  const trackStyle = (weight) => ({
+    color: "#3f6b52",
+    weight,
+    opacity: 0.95,
+    lineCap: "round",
+    lineJoin: "round",
+  });
+
+  const waypointStyle = {
+    radius: 3.5,
+    color: "#2f4638",
+    weight: 1.4,
+    fillColor: "#f2c14e",
+    fillOpacity: 0.95,
+  };
+
+  /** Pasang garis jalur, waypoint, dan marker start/finish pada peta. */
+  function paintTrack(map, geo, weight) {
+    const lineStarts = [];
+    const lineEnds = [];
+
+    const layer = L.geoJSON(geo, {
+      style: (feature) =>
+        feature.geometry && feature.geometry.type === "LineString"
+          ? trackStyle(weight)
+          : { stroke: false, ...waypointStyle },
+      pointToLayer: (feature, latlng) => L.circleMarker(latlng, waypointStyle),
+      onEachFeature: (feature, lyr) => {
+        const geometry = feature.geometry;
+
+        if (geometry && geometry.type === "LineString" && geometry.coordinates.length) {
+          const c = geometry.coordinates;
+          lineStarts.push([c[0][1], c[0][0]]);
+          lineEnds.push([c[c.length - 1][1], c[c.length - 1][0]]);
+        }
+
+        const name = (feature.properties && (feature.properties.name || feature.properties.route)) || "";
+        if (name) lyr.bindPopup(name);
+      },
+    }).addTo(map);
+
+    if (lineStarts.length) {
+      L.circleMarker(lineStarts[0], {
+        radius: 5.5, color: "#2f4638", weight: 2, fillColor: "#f2c14e", fillOpacity: 1,
+      }).bindTooltip("Start").addTo(map);
+    }
+
+    if (lineEnds.length) {
+      L.circleMarker(lineEnds[lineEnds.length - 1], {
+        radius: 5.5, color: "#6d2424", weight: 2, fillColor: "#d94f4f", fillOpacity: 1,
+      }).bindTooltip("Finish").addTo(map);
+    }
+
+    const bounds = layer.getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds, { padding: [12, 12] });
+    }
+  }
+
+  /** Peta hero: lebih interaktif, ada tombol zoom. */
+  function initHeroMap(route) {
+    const node = $("#hero-map");
+    if (!node || typeof L === "undefined") return null;
+
+    const stats = (route && route.stats) || {};
+    const center = stats.center || null;
+
+    const map = L.map(node, {
+      center: center ? [center.lat, center.lng] : [-7.8, 112.4],
+      zoom: 12,
+      scrollWheelZoom: false,
+      attributionControl: false,
+    });
+
+    const tileLayer = baseTile().addTo(map);
+    L.control.zoom({ position: "bottomright" }).addTo(map);
+
+    state.maps.push({ map, tileLayer });
+
+    loadGeoJSON(route.slug)
+      .then((geo) => {
+        paintTrack(map, geo, 5);
+        setTimeout(() => map.invalidateSize(), 250);
+      })
+      .catch(() => {
+        if (center) {
+          L.circleMarker([center.lat, center.lng], {
+            radius: 8, color: "#3f6b52", weight: 3, fillOpacity: 0.25,
+          }).addTo(map);
+        }
+      });
+
+    return map;
+  }
+
+  /** Peta kecil di dalam kartu: non-interaktif supaya klik tetap membuka viewer. */
+  function initPreviewMap(node, route) {
+    const stats = (route && route.stats) || {};
+    const center = stats.center || null;
+
+    const map = L.map(node, {
+      center: center ? [center.lat, center.lng] : [-7.8, 112.4],
+      zoom: 13,
+      zoomControl: false,
+      attributionControl: false,
+      dragging: false,
+      scrollWheelZoom: false,
+      doubleClickZoom: false,
+      boxZoom: false,
+      keyboard: false,
+      touchZoom: false,
+    });
+
+    const tileLayer = baseTile().addTo(map);
+    state.maps.push({ map, tileLayer });
+
+    // cegah klik/seret pada peta agar tidak memicu navigasi kartu
+    L.DomEvent.disableClickPropagation(node);
+    L.DomEvent.disableScrollPropagation(node);
+
+    loadGeoJSON(route.slug)
+      .then((geo) => {
+        paintTrack(map, geo, 3.5);
+        setTimeout(() => map.invalidateSize(), 200);
+      })
+      .catch(() => {
+        if (center) {
+          L.circleMarker([center.lat, center.lng], {
+            radius: 6, color: "#3f6b52", weight: 2, fillOpacity: 0.3,
+          }).addTo(map);
+        }
+      });
+  }
+
+  /** Peta cukup dibuat saat kartunya benar-benar terlihat. */
+  function observePreviews() {
+    const nodes = $$("[data-preview]");
+
+    if (!("IntersectionObserver" in window)) {
+      nodes.forEach(boot);
+      return;
+    }
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        obs.unobserve(entry.target);
+        boot(entry.target);
+      });
+    }, { rootMargin: "200px" });
+
+    nodes.forEach((node) => io.observe(node));
+
+    function boot(node) {
+      if (node.dataset.ready === "1") return;
+      node.dataset.ready = "1";
+      const route = state.routes.find((r) => r.slug === node.dataset.preview);
+      if (route) initPreviewMap(node, route);
+      node.classList.add("is-loaded");
+    }
+  }
+
+  /* ==========================================================
+     KARTU JALUR
+     ========================================================== */
+  function cardTemplate(route, index) {
+    const stats = route.stats || {};
+    const track = route.track || {};
+
+    const a = document.createElement("a");
+    a.className = "route-card reveal";
+    a.href = `viewer.html?route=${encodeURIComponent(route.slug)}`;
+    a.style.setProperty("--delay", `${Math.min(index, 6) * 60}ms`);
+    a.dataset.slug = route.slug;
+    a.setAttribute("aria-label", `Buka viewer ${track.name || slugToTitle(route.slug)}`);
+
+    a.innerHTML = `
+      <div class="route-map">
+        <div class="route-map-canvas" data-preview="${route.slug}"></div>
+        <span class="route-map-badge">${track.mountain || slugToTitle(route.slug)}</span>
+      </div>
+      <div class="route-body">
+        <span class="route-slug">${route.slug}</span>
+        <h3 class="route-title">${track.name || slugToTitle(route.slug)}</h3>
+        <p class="route-meta">
+          <span><span class="route-meta-ico" aria-hidden="true">▸</span>${track.route || "—"}</span>
+        </p>
+        <ul class="route-stats">
+          <li><strong>${fmtKm(Number(stats.distance_km))}</strong><span>jarak</span></li>
+          <li><strong>${fmtM(Number(stats.gain))}</strong><span>gain</span></li>
+          <li><strong>${fmtElev(Number(stats.highest))}</strong><span>tertinggi</span></li>
+        </ul>
+      </div>
+      <span class="route-go" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+      </span>
+    `;
+
+    return a;
+  }
+
+  function renderRoutes() {
+    const grid = $("#route-grid");
+    if (!grid) return;
+
+    grid.textContent = "";
+
+    if (!state.routes.length) {
+      const empty = $("#route-empty");
+      if (empty) empty.hidden = false;
+      return;
+    }
+
+    const active = new URLSearchParams(location.search).get("route");
+    const frag = document.createDocumentFragment();
+
+    state.routes.forEach((route, i) => {
+      const card = cardTemplate(route, i);
+      if (route.slug === active) card.classList.add("is-active");
+      frag.appendChild(card);
+    });
+
+    grid.appendChild(frag);
+    observePreviews();
+  }
+
+  function skeletonCards(count) {
+    const grid = $("#route-grid");
+    if (!grid) return;
+
+    grid.textContent = "";
+    for (let i = 0; i < count; i += 1) {
+      const box = document.createElement("div");
+      box.className = "route-card route-card--skeleton";
+      box.innerHTML = `
+        <div class="route-map skeleton"></div>
+        <div class="route-body">
+          <span class="skeleton skeleton-line w-40"></span>
+          <span class="skeleton skeleton-line w-80"></span>
+          <span class="skeleton skeleton-line w-60"></span>
+        </div>
+      `;
+      grid.appendChild(box);
+    }
+  }
+
+  /* ==========================================================
+     STATISTIK
+     ========================================================== */
+  function renderStats() {
+    const sum = (key) =>
+      state.routes.reduce((acc, r) => acc + (Number(r.stats && r.stats[key]) || 0), 0);
+
+    const count = state.routes.length;
+    const distance = sum("distance_km");
+    const highest = state.routes.reduce(
+      (acc, r) => Math.max(acc, Number(r.stats && r.stats.highest) || 0),
+      0,
+    );
+
+    const set = (sel, value) => {
+      const node = $(sel);
+      if (node) node.textContent = value;
+    };
+
+    set("#stat-jalur", `${count}`);
+    set("#stat-titik", `${fmtInt(sum("points"))}`);
+    set("#stat-jarak", fmtKm(distance));
+    set("#stat-elevasi", count ? fmtElev(highest) : "–");
+
+    // chip ringkasan di hero
+    const chips = $("#hero-chips");
+    if (!chips) return;
+
+    const items = count
+      ? [
+        { v: `${count}`, l: "jalur" },
+        { v: fmtKm(distance), l: "total jarak" },
+        { v: fmtElev(highest), l: "titik tertinggi" },
+      ]
+      : [{ v: "–", l: "jalur" }];
+
+    chips.textContent = "";
+    items.forEach((item) => {
+      const wrap = document.createElement("div");
+      wrap.className = "hero-chip";
+      wrap.innerHTML = `<strong>${item.v}</strong><span>${item.l}</span>`;
+      chips.appendChild(wrap);
+    });
+  }
+
+  /* ==========================================================
+     HERO
+     ========================================================== */
+  function renderHero() {
+    const featured =
+      state.routes.find((r) => r.slug === window.CONFIG?.route) || state.routes[0];
+
+    const label = $("#hero-map-label");
+    const link = $("#hero-map-link");
+    const cta = $("[data-hero-cta]");
+
+    if (featured) {
+      const name = (featured.track && featured.track.name) || slugToTitle(featured.slug);
+      if (label) label.textContent = name;
+      if (cta) cta.href = `viewer.html?route=${encodeURIComponent(featured.slug)}`;
+    } else {
+      if (label) label.textContent = "Peta belum tersedia";
+    }
+
+    if (link && featured) {
+      link.href = `viewer.html?route=${encodeURIComponent(featured.slug)}`;
+    }
+
+    initHeroMap(featured || { slug: ROUTE_SLUGS[0], stats: {} });
+  }
+
+  /* ==========================================================
+     EMBED
+     ========================================================== */
+  function embedSource() {
+    const origin = location.origin && location.origin !== "null"
+      ? location.origin
+      : "https://alam.nyasarnyaman.my.id";
+
+    const page = new URL("viewer.html", origin + location.pathname).href;
+    return page;
+  }
+
+  function initEmbed() {
+    const select = $("#embed-route");
+    const themeSelect = $("#embed-theme");
+    const textarea = $("#embed-code");
+    const btn = $("#btn-copy-embed");
+    const status = $("#embed-status");
+    if (!select || !textarea || !btn) return;
+
+    const slugs = state.routes.length
+      ? state.routes.map((r) => r.slug)
+      : ROUTE_SLUGS;
+
+    slugs.forEach((slug) => {
+      const route = state.routes.find((r) => r.slug === slug);
+      const name = (route && route.track && route.track.name) || slugToTitle(slug);
+      const opt = document.createElement("option");
+      opt.value = slug;
+      opt.textContent = name;
+      select.appendChild(opt);
+    });
+
+    const active = new URLSearchParams(location.search).get("route");
+    if (active && slugs.includes(active)) select.value = active;
+
+    if (themeSelect) {
+      const param = new URLSearchParams(location.search).get("theme");
+      if (param === "dark" || param === "light") themeSelect.value = param;
+      themeSelect.addEventListener("change", build);
+    }
+
+    function build() {
+      const slug = select.value || slugs[0];
+      const src = new URL(embedSource());
+      src.searchParams.set("route", slug);
+      if (themeSelect && themeSelect.value) src.searchParams.set("theme", themeSelect.value);
+
+      textarea.value =
+        `<iframe\n` +
+        `  src="${src.href}"\n` +
+        `  style="width:100%;height:600px;border:0;border-radius:12px;overflow:hidden"\n` +
+        `  loading="lazy"\n` +
+        `  title="Viewer jalur ${slug}"\n` +
+        `></iframe>`;
+
+      if (status) status.textContent = "";
+    }
+
+    select.addEventListener("change", build);
+
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(textarea.value);
+        setStatus("Kode embed disalin ke clipboard.");
+      } catch (_) {
+        textarea.removeAttribute("readonly");
+        textarea.select();
+        textarea.setSelectionRange(0, textarea.value.length);
+        const ok = document.execCommand && document.execCommand("copy");
+        textarea.setAttribute("readonly", "");
+        setStatus(ok ? "Kode embed disalin ke clipboard." : "Gagal menyalin otomatis — blok kodenya lalu salin manual (Ctrl/Cmd + C).");
       }
     });
-    const heroMap = document.getElementById("hero-map");
-    if (heroMap) {
-      // keep existing hero map if any
-    }
-  } catch (e) {
-    window.ALAM.landing.state.error = e;
-    window.ALAM.landing.state.loading = false;
-  }
-}
 
-// run
-init();
+    function setStatus(text) {
+      if (!status) return;
+      status.textContent = text;
+      btn.textContent = text.startsWith("Kode") ? "Tersalin" : btn.textContent;
+      if (text.startsWith("Kode")) {
+        setTimeout(() => {
+          btn.textContent = "Salin kode";
+        }, 1800);
+      }
+    }
+
+    build();
+  }
+
+  /* ==========================================================
+     REVEAL ON SCROLL
+     ========================================================== */
+  function initReveal() {
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce || !("IntersectionObserver" in window)) {
+      $$(".reveal").forEach((n) => n.classList.add("is-visible"));
+      return;
+    }
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        obs.unobserve(entry.target);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.05 });
+
+    $$(".reveal").forEach((n) => io.observe(n));
+  }
+
+  /* ==========================================================
+     INIT
+     ========================================================== */
+  async function init() {
+    initTheme();
+    skeletonCards(ROUTE_SLUGS.length);
+
+    const results = await Promise.all(
+      ROUTE_SLUGS.map((slug) =>
+        loadManifest(slug)
+          .then((manifest) => ({ slug, manifest, ok: true }))
+          .catch(() => ({ slug, manifest: null, ok: false }))
+      )
+    );
+
+    state.routes = results
+      .filter((r) => r.ok)
+      .map((r) => Object.assign({ slug: r.slug }, r.manifest));
+
+    renderRoutes();
+    renderStats();
+    renderHero();
+    initEmbed();
+    initReveal();
+
+    window.addEventListener("resize", () => {
+      state.maps.forEach((m) => m.map && m.map.invalidateSize());
+    });
+  }
+
+  window.ALAM = window.ALAM || {};
+  window.ALAM.landing = { routes: state.routes, state, init };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init, { once: true });
+  } else {
+    init();
+  }
+
+})();

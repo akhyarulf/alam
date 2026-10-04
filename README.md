@@ -11,11 +11,13 @@ Live:
 
 ```
 alam/
-├── index.html        # viewer (halaman utama)
+├── index.html        # landing page (daftar jalur, statistik, embed)
+├── viewer.html       # viewer (halaman pemutaran jalur)
 ├── upload.html       # uploader browser: GPX -> commit ke data/
 ├── assets/
 │   ├── css/
-│   │   └── style.css
+│   │   ├── style.css
+│   │   └── landing.css
 │   ├── img/
 │   │   └── favicon.svg
 │   └── js/
@@ -23,6 +25,7 @@ alam/
 │       ├── chart.js
 │       ├── download.js
 │       ├── embed-sync.js
+│       ├── landing.js
 │       ├── loader.js
 │       ├── map.js
 │       ├── stats.js
@@ -48,8 +51,10 @@ alam/
 `?route=<slug>` dipakai untuk memilih jalur.
 
 Contoh:
-- https://alam.nyasarnyaman.my.id/?route=butak-via-panderman
-- https://alam.nyasarnyaman.my.id/?route=butak-via-panderman&theme=dark
+- https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman
+- https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman&theme=dark
+
+Halaman `/` adalah landing page: daftar jalur, statistik, dan generator kode embed.
 
 Tanpa parameter, versi default menggunakan `defaultRoute` di `config.js`:
 - `butak-via-panderman`
@@ -99,7 +104,7 @@ Referensi lengkap:
   diambil lewat `config.js` → `rawBase`/`manifestURL`/`geojsonURL`.
 - **Uploader browser**: `upload.html` memproses GPX 100% di browser
   (`@mapbox/togeojson` + Turf.js), lalu commit ke `data/<slug>/` melalui GitHub API.
-- **Theme dark/light**: dikontrol di `index.html` oleh `?theme=dark|light` dan sinkron
+- **Theme dark/light**: dikontrol di `viewer.html` / `index.html` oleh `?theme=dark|light` dan sinkron
   dengan iframe parent via `embed-sync.js`.
 - **Download**: GPX autorun / KML panggilan tambahan dapat diunduh dari `data/<slug>/`.
 
@@ -107,7 +112,7 @@ Referensi lengkap:
 
 ```html
 <iframe
-  src="https://alam.nyasarnyaman.my.id/?route=butak-via-panderman"
+  src="https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman"
   style="width:100%;height:600px;border:0;border-radius:10px"
   loading="lazy"
 ></iframe>
@@ -153,7 +158,7 @@ Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`.
 
 - Menampilkan daftar jalur (slug, mountain, route, distance, gain/loss) di halaman utama.
 - Menambahkan tombol copy embed dari halaman detail.
-- Menambah halaman jumlah terpendek: `index.html?route=<slug>` detail.
+- Menambah halaman jumlah terpendek: `viewer.html?route=<slug>` detail.
 - Menambahkan validasi schema `manifest.json` lebih ketat di `upload.html`.
 - Menambahkan notifikasi upload progress per file.
 - Menghapus data lama/placeholder `exports` dari `manifest.json` jika ingin lebih clean.
@@ -161,9 +166,12 @@ Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`.
 
 ## Files
 
-- `index.html` — viewer
+- `index.html` — landing page
+- `viewer.html` — viewer jalur (`viewer.html?route=<slug>`)
 - `upload.html` — uploader
 - `config.js` — config GitHub Pages data
 - `assets/js/*.js` — viewer modules
+- `assets/js/landing.js` — script landing page (daftar jalur + peta mini)
 - `assets/css/style.css` — viewer styles
+- `assets/css/landing.css` — landing page styles (standalone)
 - `data/*/manifest.json`, `track.json`, `track.geojson` — jalur data
