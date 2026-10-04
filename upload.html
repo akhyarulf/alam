@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1">
+
+<title>Uploader Jalur — Nyasar Nyaman</title>
+
+<meta
+name="description"
+content="Uploader GPX ke data/ alam. Diproses 100% di browser, publish langsung ke GitHub.">
+
+<meta
+name="theme-color"
+content="#5a7562">
+
+<link
+rel="icon"
+href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥾</text></svg>">
+
+<link
+rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link
+rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link
+href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;700;800&display=swap"
+rel="stylesheet">
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+<style>
+
+/* ==========================================================
+   Alam Uploader
+   Tema mengikuti Alam Viewer (style.css)
+   ========================================================== */
+
+:root {
+
+    --primary: #5a7562;
+
+    --primary-dark: #415447;
+
+    --secondary: #779680;
+
+    --bg: #f6f6fa;
+
+    --card: #ffffff;
+
+    --border: #dededf;
+
+    --text: #232428;
+
+    --text-light: #606060;
+
+    --danger: #dc2626;
+
+    --ok: #3f9142;
+
+    --radius: 10px;
+
+    --font: 'Noto Sans', sans-serif;
+
+}
+
+body.dark {
+
+    --bg: #202124;
+
+    --card: #232327;
+
+    --border: #303136;
+
+    --text: #f8f9fa;
+
+    --text-light: #7f8893;
+
+}
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+body {
+
+    margin: 0;
+
+    padding: 24px 16px 64px;
+
+    background: var(--bg);
+
+    color: var(--text);
+
+    font-family: var(--font);
+
+    line-height: 1.55;
+
+}
+
+.wrap {
+
+    max-width: 780px;
+
+    margin: 0 auto;
+
+}
+
+.badge {
+
+    display: inline-block;
+
+    background: var(--primary);
+
+    color: #fff;
+
+    padding: 6px 14px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+h1 {
+
+    margin: 14px 0 4px;
+
+    font-size: 28px;
+
+}
+
+.subtitle {
+
+    margin: 0 0 24px;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+
+}
+
+.card {
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 20px;
+
+    margin-bottom: 18px;
+
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+
+}
+
+.card h3 {
+
+    margin: 0 0 14px;
+
+    font-size: 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+.card h3 i {
+
+    color: var(--secondary);
+
+}
+
+label {
+
+    display: block;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: var(--text-light);
+
+    margin: 12px 0 4px;
+
+}
+
+input[type="text"],
+
+input[type="password"] {
+
+    width: 100%;
+
+    background: var(--bg);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    color: var(--text);
+
+    padding: 10px 12px;
+
+    font-family: var(--font);
+
+    font-size: 14px;
+
+}
+
+input:focus {
+
+    outline: 2px solid var(--secondary);
+
+    outline-offset: -1px;
+
+}
+
+#drop {
+
+    border: 2px dashed var(--border);
+
+    border-radius: var(--radius);
+
+    padding: 28px 16px;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    cursor: pointer;
+
+    transition: border-color .2s ease, background .2s ease;
+
+}
+
+#drop:hover,
+
+#drop.over {
+
+    border-color: var(--secondary);
+
+    background: rgba(119, 150, 128, .08);
+
+}
+
+#drop i {
+
+    font-size: 22px;
+
+    margin-bottom: 8px;
+
+    color: var(--secondary);
+
+}
+
+.file-info {
+
+    margin-top: 10px;
+
+    font-size: 13px;
+
+    color: var(--text-light);
+
+}
+
+.slug-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 14px;
+
+    flex-wrap: wrap;
+
+}
+
+.slug-row code {
+
+    background: var(--bg);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    padding: 8px 12px;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: var(--secondary);
+
+    word-break: break-all;
+
+}
+
+.slug-status {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+.slug-status.free { color: var(--ok); }
+
+.slug-status.taken { color: var(--danger); }
+
+.slug-status.unknown { color: var(--text-light); }
+
+.stats-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+
+    gap: 10px;
+
+    margin: 6px 0 4px;
+
+}
+
+.stat {
+
+    background: var(--bg);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+}
+
+.stat b {
+
+    display: block;
+
+    font-size: 16px;
+
+}
+
+.stat span {
+
+    font-size: 12px;
+
+    color: var(--text-light);
+
+}
+
+details {
+
+    margin-top: 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    overflow: hidden;
+
+}
+
+summary {
+
+    cursor: pointer;
+
+    padding: 10px 14px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    background: var(--bg);
+
+}
+
+pre {
+
+    margin: 0;
+
+    padding: 14px;
+
+    max-height: 320px;
+
+    overflow: auto;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+
+    color: var(--text-light);
+
+}
+
+.check {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-weight: 400;
+
+    color: var(--text-light);
+
+    margin: 12px 0;
+
+}
+
+.check input {
+
+    width: auto;
+
+}
+
+button.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    width: 100%;
+
+    background: var(--primary);
+
+    color: #fff;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    padding: 13px 18px;
+
+    font-family: var(--font);
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: background .2s ease;
+
+}
+
+button.btn:hover:not(:disabled) {
+
+    background: var(--primary-dark);
+
+}
+
+button.btn:disabled {
+
+    opacity: .45;
+
+    cursor: not-allowed;
+
+}
+
+.hint {
+
+    font-size: 12.5px;
+
+    color: var(--text-light);
+
+    margin: 6px 0 0;
+
+}
+
+.hint a {
+
+    color: var(--secondary);
+
+}
+
+.warn-box {
+
+    margin-top: 10px;
+
+    font-size: 13px;
+
+    color: #e6b450;
+
+}
+
+#log {
+
+    margin-top: 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+
+}
+
+.log-row {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 10px;
+
+    font-size: 13.5px;
+
+    padding: 9px 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--bg);
+
+    word-break: break-word;
+
+}
+
+.log-row.ok i { color: var(--ok); }
+
+.log-row.err { color: var(--danger); border-color: var(--danger); }
+
+.log-row.err i { color: var(--danger); }
+
+#result {
+
+    margin-top: 16px;
+
+    border: 1px solid var(--ok);
+
+    border-radius: 8px;
+
+    padding: 14px;
+
+}
+
+#result a {
+
+    color: var(--secondary);
+
+    font-weight: 700;
+
+    word-break: break-all;
+
+}
+
+#result textarea {
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    background: var(--bg);
+
+    color: var(--text-light);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    font-family: monospace;
+
+    font-size: 12px;
+
+    padding: 10px;
+
+    min-height: 72px;
+
+}
+
+footer {
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+
+    margin-top: 28px;
+
+}
+
+.hidden { display: none; }
+
+</style>
+
+</head>
+
+<body class="dark">
+
+<div class="wrap">
+
+    <header>
+
+        <span class="badge">🥾 Nyasar Nyaman</span>
+
+        <h1>Uploader Jalur</h1>
+
+        <p class="subtitle">
+
+            GPX → <code>data/</code> alam. Diproses 100% di browser —
+
+            file GPX tidak pernah dikirim ke mana pun selain GitHub (hasil akhirnya saja).
+
+        </p>
+
+    </header>
+
+    <!-- ==============================
+         1. FILE GPX
+    =============================== -->
+
+    <section class="card">
+
+        <h3><i class="fa-solid fa-file-import"></i> 1. File GPX</h3>
+
+        <div id="drop">
+
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+            <div><strong>Klik untuk pilih file GPX</strong> atau drag &amp; drop ke sini</div>
+
+        </div>
+
+        <input
+        type="file"
+        id="file-input"
+        accept=".gpx,application/gpx+xml"
+        class="hidden">
+
+        <div id="file-info" class="file-info"></div>
+
+        <div id="gpx-warn" class="warn-box hidden"></div>
+
+    </section>
+
+    <!-- ==============================
+         2. INFO JALUR
+    =============================== -->
+
+    <section class="card">
+
+        <h3><i class="fa-solid fa-pen"></i> 2. Info Jalur</h3>
+
+        <label for="track-name">Nama Jalur</label>
+
+        <input
+        type="text"
+        id="track-name"
+        placeholder="Jalur pendakian Gunung Butak via Panderman"
+        autocomplete="off">
+
+        <label for="mountain">Gunung</label>
+
+        <input
+        type="text"
+        id="mountain"
+        placeholder="Gunung Butak"
+        autocomplete="off">
+
+        <label for="route">Jalur / Rute</label>
+
+        <input
+        type="text"
+        id="route"
+        placeholder="Panderman"
+        autocomplete="off">
+
+        <div class="slug-row">
+
+            <code id="slug-preview">…</code>
+
+            <span id="slug-status" class="slug-status unknown"></span>
+
+        </div>
+
+        <p class="hint">
+
+            Slug otomatis mengikuti format engine:
+
+            <code>gunung-</code> dibuang, lalu <code>{gunung}-via-{jalur}</code>.
+
+            Kalau slug sudah dipakai, publish akan ditolak.
+
+        </p>
+
+    </section>
+
+    <!-- ==============================
+         3. PREVIEW
+    =============================== -->
+
+    <section class="card hidden" id="card-preview">
+
+        <h3><i class="fa-solid fa-chart-simple"></i> 3. Preview</h3>
+
+        <div class="stats-grid">
+
+            <div class="stat"><b id="st-points">-</b><span>titik</span></div>
+
+            <div class="stat"><b id="st-distance">-</b><span>km</span></div>
+
+            <div class="stat"><b id="st-gain">-</b><span>gain (m)</span></div>
+
+            <div class="stat"><b id="st-loss">-</b><span>loss (m)</span></div>
+
+            <div class="stat"><b id="st-highest">-</b><span>tertinggi (m)</span></div>
+
+            <div class="stat"><b id="st-lowest">-</b><span>terendah (m)</span></div>
+
+            <div class="stat"><b id="st-segments">-</b><span>segmen</span></div>
+
+        </div>
+
+        <details>
+
+            <summary>manifest.json (format Butak — exports diisi saat publish)</summary>
+
+            <pre id="prev-manifest"></pre>
+
+        </details>
+
+        <details>
+
+            <summary>track.geojson</summary>
+
+            <pre id="prev-geojson"></pre>
+
+        </details>
+
+        <details>
+
+            <summary>track.json</summary>
+
+            <pre id="prev-trackjson"></pre>
+
+        </details>
+
+    </section>
+
+    <!-- ==============================
+         4. PUBLISH
+    =============================== -->
+
+    <section class="card">
+
+        <h3><i class="fa-solid fa-cloud-arrow-up"></i> 4. Publish ke GitHub</h3>
+
+        <label for="token">GitHub Fine-Grained PAT</label>
+
+        <input
+        type="password"
+        id="token"
+        placeholder="github_pat_…"
+        autocomplete="off">
+
+        <p class="hint">
+
+            Buat di
+
+            <a
+            href="https://github.com/settings/personal-access-tokens/new"
+            target="_blank"
+            rel="noopener">Settings → Fine-grained tokens</a>:
+
+            <strong>Repository access → Only select repositories → alam</strong>,
+
+            permission <strong>Contents: Read and write</strong>, dan pakai expiry.
+
+            Token hanya dikirim ke <code>api.github.com</code>.
+
+        </p>
+
+        <label class="check">
+
+            <input
+            type="checkbox"
+            id="remember-token">
+
+            Ingat token di browser ini (jangan centang di komputer umum)
+
+        </label>
+
+        <button
+        class="btn"
+        id="btn-publish"
+        type="button"
+        disabled>
+
+            <i class="fa-solid fa-paper-plane"></i>
+
+            Publish ke GitHub
+
+        </button>
+
+        <div id="log"></div>
+
+        <div id="result" class="hidden"></div>
+
+    </section>
+
+    <footer>
+
+        Powered by <strong>Alam Engine</strong> • Nyasar Nyaman
+
+    </footer>
+
+</div>
+
+<!-- ==============================
+     LIBRARY
+============================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@mapbox/togeojson@0.16.2/togeojson.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@7.2.0/turf.min.js"></script>
+
+<!-- ==============================
+     LOGIKA MURNI (replika Alam Engine)
+     Tidak menyentuh DOM — bisa dites terpisah.
+============================== -->
+
+<script>
+
+"use strict";
+
+const UPLOADER = {
+
+    OWNER: "akhyarulf",
+
+    REPO: "alam",
+
+    BRANCH: "main",
+
+    DATA_FOLDER: "data",
+
+    ENGINE_VERSION: "1.4.0",
+
+    SPIKE_THRESHOLD_M: 80
+
+};
+
+/* ======================================
+   SLUG (replika engine/utils/route_id.py)
+====================================== */
+
+function slugify(text) {
+
+    if (!text) {
+
+        return "";
+
+    }
+
+    return String(text)
+
+        .normalize("NFKD")
+
+        .replace(/[^\x00-\x7F]/g, "")
+
+        .toLowerCase()
+
+        .replace(/[^a-z0-9]+/g, "-")
+
+        .replace(/-+/g, "-")
+
+        .replace(/^-+|-+$/g, "");
+
+}
+
+function createRouteId(mountain, route) {
+
+    let m = slugify(mountain).replace(/gunung-/g, "");
+
+    const r = slugify(route);
+
+    if (r) {
+
+        return `${m}-via-${r}`;
+
+    }
+
+    return m;
+
+}
+
+function extractMountainRoute(title) {
+
+    title = title || "";
+
+    const match = /gunung\s+(.+?)\s+via\s+(.+)/i.exec(title);
+
+    if (match) {
+
+        return ["Gunung " + match[1].trim(), match[2].trim()];
+
+    }
+
+    return [title, ""];
+
+}
+
+/* ======================================
+   JARAK (replika engine stats.haversine, R = 6371 km)
+====================================== */
+
+function haversineKm(lat1, lon1, lat2, lon2) {
+
+    const R = 6371;
+
+    const toRad = (d) => d * Math.PI / 180;
+
+    const dlat = toRad(lat2 - lat1);
+
+    const dlon = toRad(lon2 - lon1);
+
+    const a =
+
+        Math.sin(dlat / 2) * Math.sin(dlat / 2) +
+
+        Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+
+        Math.sin(dlon / 2) * Math.sin(dlon / 2);
+
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+}
+
+/* ======================================
+   CLEANER (replika engine/cleaner/)
+====================================== */
+
+function validatePoints(pts) {
+
+    const clean = pts.filter((p) =>
+
+        Number.isFinite(p.lat) && Number.isFinite(p.lng) &&
+
+        Math.abs(p.lat) <= 90 && Math.abs(p.lng) <= 180
+
+    );
+
+    return { points: clean, removed: pts.length - clean.length };
+
+}
+
+function dedupePoints(pts) {
+
+    const result = [];
+
+    let removed = 0;
+
+    for (const p of pts) {
+
+        const prev = result[result.length - 1];
+
+        if (
+
+            prev &&
+
+            prev.lat.toFixed(6) === p.lat.toFixed(6) &&
+
+            prev.lng.toFixed(6) === p.lng.toFixed(6)
+
+        ) {
+
+            removed++;
+
+            continue;
+
+        }
+
+        result.push(p);
+
+    }
+
+    return { points: result, removed };
+
+}
+
+/* Spike elevasi: titik yang jauh dari tetangga
+   sebelum & sesudahnya (threshold meter) diganti rata-rata.
+   Replika engine/cleaner/spike.py. */
+
+function removeElevationSpikes(pts, threshold = UPLOADER.SPIKE_THRESHOLD_M) {
+
+    if (pts.length < 3) {
+
+        return { points: pts, fixed: 0 };
+
+    }
+
+    const cleaned = pts.map((p) => ({ ...p }));
+
+    let fixed = 0;
+
+    for (let i = 1; i < cleaned.length - 1; i++) {
+
+        const prev = cleaned[i - 1].ele;
+
+        const curr = cleaned[i].ele;
+
+        const next = cleaned[i + 1].ele;
+
+        if (
+
+            Math.abs(curr - prev) > threshold &&
+
+            Math.abs(curr - next) > threshold
+
+        ) {
+
+            cleaned[i].ele = (prev + next) / 2;
+
+            fixed++;
+
+        }
+
+    }
+
+    return { points: cleaned, fixed };
+
+}
+
+/* Jarak kumulatif per titik (km, dibulatkan 3).
+   Replika engine analyzer/stats.calculate_distances. */
+
+function cumulativeDistancesKm(pts) {
+
+    let total = 0;
+
+    const result = [];
+
+    for (let i = 0; i < pts.length; i++) {
+
+        if (i > 0) {
+
+            total += haversineKm(
+
+                pts[i - 1].lat, pts[i - 1].lng,
+
+                pts[i].lat, pts[i].lng
+
+            );
+
+        }
+
+        result.push(Math.round(total * 1000) / 1000);
+
+    }
+
+    return result;
+
+}
+
+/* ======================================
+   STATS (replika engine analyzer/stats.analyze,
+   subset kunci persis manifest Butak)
+====================================== */
+
+function computeStats(pts, distanceKm) {
+
+    let gain = 0;
+
+    let loss = 0;
+
+    let highest = null;
+
+    let lowest = null;
+
+    let minLat = null;
+
+    let maxLat = null;
+
+    let minLng = null;
+
+    let maxLng = null;
+
+    for (let i = 0; i < pts.length; i++) {
+
+        const p = pts[i];
+
+        if (minLat === null || p.lat < minLat) minLat = p.lat;
+
+        if (maxLat === null || p.lat > maxLat) maxLat = p.lat;
+
+        if (minLng === null || p.lng < minLng) minLng = p.lng;
+
+        if (maxLng === null || p.lng > maxLng) maxLng = p.lng;
+
+        if (highest === null || p.ele > highest) highest = p.ele;
+
+        if (lowest === null || p.ele < lowest) lowest = p.ele;
+
+        if (i > 0) {
+
+            const diff = p.ele - pts[i - 1].ele;
+
+            if (diff > 0) {
+
+                gain += diff;
+
+            } else {
+
+                loss += Math.abs(diff);
+
+            }
+
+        }
+
+    }
+
+    return {
+
+        points: pts.length,
+
+        distance_km: distanceKm,
+
+        gain: Math.round(gain),
+
+        loss: Math.round(loss),
+
+        highest: highest,
+
+        lowest: lowest,
+
+        start: pts[0].ele,
+
+        finish: pts[pts.length - 1].ele,
+
+        bbox: {
+
+            min_lat: minLat,
+
+            max_lat: maxLat,
+
+            min_lng: minLng,
+
+            max_lng: maxLng
+
+        },
+
+        center: {
+
+            lat: (minLat + maxLat) / 2,
+
+            lng: (minLng + maxLng) / 2
+
+        }
+
+    };
+
+}
+
+/* ======================================
+   SEGMEN (replika analyzer/segment.py + merge.py)
+====================================== */
+
+function calculateSlope(distanceM, elevationChange) {
+
+    if (distanceM === 0) {
+
+        return 0;
+
+    }
+
+    return (elevationChange / distanceM) * 100;
+
+}
+
+function classifySegment(slope) {
+
+    if (slope >= 20) return "climb_hard";
+
+    if (slope >= 8) return "climb";
+
+    if (slope >= 2) return "climb_easy";
+
+    if (slope <= -20) return "descent_hard";
+
+    if (slope <= -8) return "descent";
+
+    if (slope <= -2) return "descent_easy";
+
+    return "flat";
+
+}
+
+function round2(x) {
+
+    return Math.round(x * 100) / 100;
+
+}
+
+function analyzeSegments(pts, distsKm) {
+
+    const segments = [];
+
+    for (let i = 0; i < pts.length - 1; i++) {
+
+        const distance = (distsKm[i + 1] - distsKm[i]) * 1000;
+
+        const elevationChange = pts[i + 1].ele - pts[i].ele;
+
+        const slope = calculateSlope(distance, elevationChange);
+
+        segments.push({
+
+            from: i,
+
+            to: i + 1,
+
+            distance_m: round2(distance),
+
+            elevation_change: round2(elevationChange),
+
+            slope: round2(slope),
+
+            type: classifySegment(slope)
+
+        });
+
+    }
+
+    return segments;
+
+}
+
+function safeAvgSlope(elevationChange, distanceM) {
+
+    if (!distanceM) {
+
+        return 0;
+
+    }
+
+    return round2(elevationChange / distanceM * 100);
+
+}
+
+function mergeSegments(segments) {
+
+    if (!segments.length) {
+
+        return [];
+
+    }
+
+    const merged = [];
+
+    let current = { ...segments[0] };
+
+    for (const seg of segments.slice(1)) {
+
+        if (seg.type === current.type) {
+
+            current.to = seg.to;
+
+            current.distance_m += seg.distance_m;
+
+            current.elevation_change += seg.elevation_change;
+
+        } else {
+
+            current.avg_slope = safeAvgSlope(current.elevation_change, current.distance_m);
+
+            merged.push(current);
+
+            current = { ...seg };
+
+        }
+
+    }
+
+    current.avg_slope = safeAvgSlope(current.elevation_change, current.distance_m);
+
+    merged.push(current);
+
+    return merged;
+
+}
+
+/* ======================================
+   WAYPOINT otomatis (Start / Finish / Highest Point,
+   seperti manifest Butak)
+====================================== */
+
+function buildAutoWaypoints(pts) {
+
+    let hi = 0;
+
+    for (let i = 1; i < pts.length; i++) {
+
+        if (pts[i].ele > pts[hi].ele) {
+
+            hi = i;
+
+        }
+
+    }
+
+    const last = pts[pts.length - 1];
+
+    return [
+
+        { name: "Start", lat: pts[0].lat, lng: pts[0].lng, ele: pts[0].ele },
+
+        { name: "Finish", lat: last.lat, lng: last.lng, ele: last.ele },
+
+        { name: "Highest Point", lat: pts[hi].lat, lng: pts[hi].lng, ele: pts[hi].ele }
+
+    ];
+
+}
+
+/* ======================================
+   BUILDER output (persis struktur Butak)
+====================================== */
+
+function buildGeojson(meta, stats, coords) {
+
+    return {
+
+        type: "FeatureCollection",
+
+        features: [{
+
+            type: "Feature",
+
+            properties: {
+
+                name: meta.name,
+
+                route_id: meta.route_id,
+
+                mountain: meta.mountain,
+
+                route: meta.route,
+
+                engine: "Alam Engine",
+
+                distance_km: stats.distance_km,
+
+                elevation_gain: stats.gain,
+
+                elevation_loss: stats.loss
+
+            },
+
+            geometry: {
+
+                type: "LineString",
+
+                coordinates: coords
+
+            }
+
+        }]
+
+    };
+
+}
+
+function buildTrackJson(meta, stats, waypoints, geometryCoords, segments) {
+
+    return {
+
+        meta: {
+
+            name: meta.name,
+
+            route_id: meta.route_id,
+
+            mountain: meta.mountain,
+
+            route: meta.route,
+
+            engine: "Alam Engine"
+
+        },
+
+        stats: stats,
+
+        waypoints: waypoints,
+
+        geometry: {
+
+            type: "LineString",
+
+            coordinates: geometryCoords
+
+        },
+
+        segments: segments
+
+    };
+
+}
+
+function buildManifestSkeleton(slug, meta, stats) {
+
+    return {
+
+        id: slug,
+
+        engine: {
+
+            name: "Alam Engine",
+
+            version: UPLOADER.ENGINE_VERSION
+
+        },
+
+        track: {
+
+            name: meta.name,
+
+            mountain: meta.mountain,
+
+            route: meta.route
+
+        },
+
+        stats: stats,
+
+        viewer: {
+
+            json: "track.json",
+
+            geojson: "track.geojson"
+
+        },
+
+        downloads: {
+
+            gpx: null,
+
+            kml: null,
+
+            kmz: null,
+
+            fit: null,
+
+            tcx: null
+
+        },
+
+        exports: [],
+
+        created_at: new Date().toISOString()
+
+    };
+
+}
+
+</script>
+
+<!-- ==============================
+     APP (DOM + fetch)
+============================== -->
+
+<script>
+
+"use strict";
+
+/* ======================================
+   ELEMENTS
+====================================== */
+
+const el = (id) => document.getElementById(id);
+
+const dropZone = el("drop");
+
+const fileInput = el("file-input");
+
+const fileInfo = el("file-info");
+
+const gpxWarn = el("gpx-warn");
+
+const nameInput = el("track-name");
+
+const mountainInput = el("mountain");
+
+const routeInput = el("route");
+
+const slugPreview = el("slug-preview");
+
+const slugStatus = el("slug-status");
+
+const cardPreview = el("card-preview");
+
+const tokenInput = el("token");
+
+const rememberToken = el("remember-token");
+
+const btnPublish = el("btn-publish");
+
+const logBox = el("log");
+
+const resultBox = el("result");
+
+/* ======================================
+   STATE
+====================================== */
+
+const state = {
+
+    loaded: false,
+
+    points: null,
+
+    dists: null,
+
+    coords: null,
+
+    stats: null,
+
+    segments: null,
+
+    gpxWaypoints: [],
+
+    slugTaken: null,
+
+    slugCheckId: 0,
+
+    busy: false
+
+};
+
+/* ======================================
+   URL HELPERS
+====================================== */
+
+function rawManifestURL(slug) {
+
+    return `https://raw.githubusercontent.com/${UPLOADER.OWNER}/${UPLOADER.REPO}/${UPLOADER.BRANCH}/${UPLOADER.DATA_FOLDER}/${slug}/manifest.json`;
+
+}
+
+function contentsURL(path) {
+
+    return `https://api.github.com/repos/${UPLOADER.OWNER}/${UPLOADER.REPO}/contents/${path}`;
+
+}
+
+/* ======================================
+   BASE64 UTF-8 (aman untuk nama non-ASCII)
+====================================== */
+
+function b64utf8(str) {
+
+    const bytes = new TextEncoder().encode(str);
+
+    let binary = "";
+
+    const chunk = 0x8000;
+
+    for (let i = 0; i < bytes.length; i += chunk) {
+
+        binary += String.fromCharCode.apply(
+
+            null,
+
+            bytes.subarray(i, i + chunk)
+
+        );
+
+    }
+
+    return btoa(binary);
+
+}
+
+function byteLength(str) {
+
+    return new TextEncoder().encode(str).length;
+
+}
+
+function pretty(obj) {
+
+    return JSON.stringify(obj, null, 2);
+
+}
+
+/* ======================================
+   SLUG
+====================================== */
+
+function currentSlug() {
+
+    return createRouteId(mountainInput.value, routeInput.value);
+
+}
+
+function updateSlug() {
+
+    const slug = currentSlug();
+
+    slugPreview.textContent = slug || "…";
+
+    state.slugTaken = null;
+
+    slugStatus.className = "slug-status unknown";
+
+    slugStatus.textContent = "";
+
+    refreshPublishButton();
+
+    if (!slug) {
+
+        return;
+
+    }
+
+    const checkId = ++state.slugCheckId;
+
+    slugStatus.className = "slug-status unknown";
+
+    slugStatus.textContent = "memeriksa…";
+
+    fetch(rawManifestURL(slug), { cache: "no-store" })
+
+        .then((res) => {
+
+            if (checkId !== state.slugCheckId) return;
+
+            if (res.status === 200) {
+
+                state.slugTaken = true;
+
+                slugStatus.className = "slug-status taken";
+
+                slugStatus.textContent = "✗ slug sudah dipakai";
+
+            } else if (res.status === 404) {
+
+                state.slugTaken = false;
+
+                slugStatus.className = "slug-status free";
+
+                slugStatus.textContent = "✓ slug tersedia";
+
+            } else {
+
+                state.slugTaken = null;
+
+                slugStatus.className = "slug-status unknown";
+
+                slugStatus.textContent = `? tidak bisa dicek (HTTP ${res.status})`;
+
+            }
+
+            refreshPublishButton();
+
+        })
+
+        .catch(() => {
+
+            if (checkId !== state.slugCheckId) return;
+
+            state.slugTaken = null;
+
+            slugStatus.className = "slug-status unknown";
+
+            slugStatus.textContent = "? jaringan bermasalah";
+
+        });
+
+}
+
+/* ======================================
+   FILE GPX
+====================================== */
+
+function handleFile(file) {
+
+    if (!file) return;
+
+    if (!/\.gpx$/i.test(file.name)) {
+
+        showWarn("File harus .gpx");
+
+        return;
+
+    }
+
+    hideWarn();
+
+    file.text()
+
+        .then((text) => parseGpx(text, file))
+
+        .catch((err) => showWarn("Gagal membaca file: " + err.message));
+
+}
+
+function showWarn(msg) {
+
+    gpxWarn.textContent = "⚠ " + msg;
+
+    gpxWarn.classList.remove("hidden");
+
+}
+
+function hideWarn() {
+
+    gpxWarn.textContent = "";
+
+    gpxWarn.classList.add("hidden");
+
+}
+
+function parseGpx(text, file) {
+
+    if (typeof toGeoJSON === "undefined" || typeof turf === "undefined") {
+
+        showWarn("Library CDN (togeojson/turf) gagal dimuat. Cek koneksi internet lalu refresh.");
+
+        return;
+
+    }
+
+    const dom = new DOMParser().parseFromString(text, "application/xml");
+
+    if (dom.querySelector("parsererror")) {
+
+        showWarn("GPX tidak valid (XML parse error).");
+
+        return;
+
+    }
+
+    const geo = toGeoJSON.gpx(dom);
+
+    const lineFeatures = geo.features.filter((f) =>
+
+        f.geometry && f.geometry.type === "LineString"
+
+    );
+
+    if (!lineFeatures.length) {
+
+        showWarn("Tidak ada track (trk/rte) di GPX ini.");
+
+        return;
+
+    }
+
+    /* gabung semua segmen LineString, urut sesuai file */
+
+    let coords = [];
+
+    for (const f of lineFeatures) {
+
+        coords = coords.concat(f.geometry.coordinates);
+
+    }
+
+    if (coords.length < 2) {
+
+        showWarn("Track terlalu pendek (< 2 titik).");
+
+        return;
+
+    }
+
+    /* waypoint <wpt> di GPX (opsional) */
+
+    const gpxWaypoints = geo.features
+
+        .filter((f) => f.geometry && f.geometry.type === "Point")
+
+        .map((f, i) => ({
+
+            name: (f.properties && f.properties.name) || `Waypoint ${i + 1}`,
+
+            lat: f.geometry.coordinates[1],
+
+            lng: f.geometry.coordinates[0],
+
+            ele: f.geometry.coordinates.length > 2 ? f.geometry.coordinates[2] : null
+
+        }));
+
+    /* points + backfill elevasi kosong */
+
+    let pts = coords.map((c) => ({
+
+        lat: c[1],
+
+        lng: c[0],
+
+        ele: c.length > 2 && Number.isFinite(c[2]) ? c[2] : null
+
+    }));
+
+    let missingEle = pts.some((p) => p.ele === null);
+
+    if (pts[0].ele === null) pts[0].ele = 0;
+
+    for (let i = 1; i < pts.length; i++) {
+
+        if (pts[i].ele === null) pts[i].ele = pts[i - 1].ele;
+
+    }
+
+    /* cleaner: validate -> dedupe -> spike (urutan engine) */
+
+    const v = validatePoints(pts);
+
+    const d = dedupePoints(v.points);
+
+    const s = removeElevationSpikes(d.points);
+
+    pts = s.points;
+
+    if (pts.length < 2) {
+
+        showWarn("Semua titik gugur saat pembersihan.");
+
+        return;
+
+    }
+
+    /* stats */
+
+    const dists = cumulativeDistancesKm(pts);
+
+    const line = { type: "LineString", coordinates: coords };
+
+    const distanceKm = Math.round(turf.length(line, { units: "kilometers" }) * 100) / 100;
+
+    const stats = computeStats(pts, distanceKm);
+
+    const segments = mergeSegments(analyzeSegments(pts, dists));
+
+    const autoWaypoints = buildAutoWaypoints(pts);
+
+    /* simpan */
+
+    state.loaded = true;
+
+    state.points = pts;
+
+    state.dists = dists;
+
+    state.coords = coords;
+
+    state.stats = stats;
+
+    state.segments = segments;
+
+    state.gpxWaypoints = gpxWaypoints;
+
+    /* metadata auto dari <name> GPX / nama file */
+
+    const trkNameNode = dom.querySelector("trk > name, rte > name");
+
+    const title = (trkNameNode && trkNameNode.textContent.trim()) ||
+
+        file.name.replace(/\.gpx$/i, "");
+
+    if (!nameInput.value) nameInput.value = title;
+
+    const [autoMountain, autoRoute] = extractMountainRoute(title);
+
+    if (!mountainInput.value && autoMountain) mountainInput.value = autoMountain;
+
+    if (!routeInput.value && autoRoute) routeInput.value = autoRoute;
+
+    /* render */
+
+    fileInfo.textContent =
+
+        `${file.name} — ${coords.length} titik mentah → ${pts.length} titik bersih` +
+
+        (lineFeatures.length > 1 ? ` (${lineFeatures.length} segmen digabung)` : "") +
+
+        (v.removed ? ` • ${v.removed} titik invalid dibuang` : "") +
+
+        (d.removed ? ` • ${d.removed} duplikat dibuang` : "") +
+
+        (s.fixed ? ` • ${s.fixed} spike elevasi diperbaiki` : "") +
+
+        (gpxWaypoints.length ? ` • ${gpxWaypoints.length} waypoint GPX ikut` : "");
+
+    if (missingEle) {
+
+        showWarn("Sebagian titik tanpa elevasi — di-backfill dari titik sebelumnya. Gain/loss bisa meleset.");
+
+    } else {
+
+        hideWarn();
+
+    }
+
+    renderPreview(autoWaypoints);
+
+    cardPreview.classList.remove("hidden");
+
+    updateSlug();
+
+    refreshPublishButton();
+
+}
+
+function renderPreview(autoWaypoints) {
+
+    const meta = {
+
+        name: nameInput.value,
+
+        mountain: mountainInput.value,
+
+        route: routeInput.value
+
+    };
+
+    meta.route_id = createRouteId(meta.mountain, meta.route);
+
+    const geometryCoords = state.points.map((p, i) =>
+
+        [p.lat, p.lng, p.ele, state.dists[i]]
+
+    );
+
+    const geojson = buildGeojson(meta, state.stats, state.coords);
+
+    const trackJson = buildTrackJson(
+
+        meta,
+
+        state.stats,
+
+        autoWaypoints.concat(state.gpxWaypoints),
+
+        geometryCoords,
+
+        state.segments
+
+    );
+
+    const manifest = buildManifestSkeleton(meta.route_id, meta, state.stats);
+
+    el("st-points").textContent = state.stats.points;
+
+    el("st-distance").textContent = state.stats.distance_km;
+
+    el("st-gain").textContent = state.stats.gain;
+
+    el("st-loss").textContent = state.stats.loss;
+
+    el("st-highest").textContent = Math.round(state.stats.highest);
+
+    el("st-lowest").textContent = Math.round(state.stats.lowest);
+
+    el("st-segments").textContent = state.segments.length;
+
+    el("prev-manifest").textContent = pretty(manifest);
+
+    el("prev-geojson").textContent = pretty(geojson).slice(0, 4000) + "\n…";
+
+    el("prev-trackjson").textContent = pretty(trackJson).slice(0, 4000) + "\n…";
+
+}
+
+/* ======================================
+   PUBLISH
+====================================== */
+
+function refreshPublishButton() {
+
+    btnPublish.disabled =
+
+        state.busy ||
+
+        !state.loaded ||
+
+        !currentSlug() ||
+
+        state.slugTaken !== false ||
+
+        tokenInput.value.trim().length < 10;
+
+}
+
+async function apiGetFile(path, token) {
+
+    const res = await fetch(`${contentsURL(path)}?ref=${UPLOADER.BRANCH}`, {
+
+        headers: {
+
+            Authorization: `Bearer ${token}`,
+
+            Accept: "application/vnd.github+json"
+
+        }
+
+    });
+
+    return res;
+
+}
+
+async function putFile(path, contentStr, message, token, existingSha) {
+
+    const body = {
+
+        message: message,
+
+        content: b64utf8(contentStr),
+
+        branch: UPLOADER.BRANCH
+
+    };
+
+    if (existingSha) {
+
+        body.sha = existingSha;
+
+    }
+
+    const res = await fetch(contentsURL(path), {
+
+        method: "PUT",
+
+        headers: {
+
+            Authorization: `Bearer ${token}`,
+
+            Accept: "application/vnd.github+json",
+
+            "Content-Type": "application/json"
+
+        },
+
+        body: JSON.stringify(body)
+
+    });
+
+    if (!res.ok) {
+
+        let detail = "";
+
+        try {
+
+            const j = await res.json();
+
+            detail = j && j.message ? ` — ${j.message}` : "";
+
+        } catch (e) { /* abaikan */ }
+
+        if (res.status === 401) {
+
+            throw new Error(`Token invalid/expired (401)${detail}`);
+
+        }
+
+        if (res.status === 403) {
+
+            throw new Error(`Akses ditolak (403). Pastikan PAT fine-grained untuk repo ${UPLOADER.REPO} dengan permission Contents: Read and write${detail}`);
+
+        }
+
+        throw new Error(`Gagal commit ${path} (HTTP ${res.status})${detail}`);
+
+    }
+
+    return res.json();
+
+}
+
+function addLog(icon, html, cls = "") {
+
+    const row = document.createElement("div");
+
+    row.className = `log-row ${cls}`.trim();
+
+    const i = document.createElement("i");
+
+    i.className = icon;
+
+    const span = document.createElement("span");
+
+    span.textContent = html;
+
+    row.appendChild(i);
+
+    row.appendChild(span);
+
+    logBox.appendChild(row);
+
+    return span;
+
+}
+
+function updateLog(span, icon, html, cls) {
+
+    const row = span.parentElement;
+
+    row.querySelector("i").className = icon;
+
+    span.textContent = html;
+
+    if (cls) row.className = `log-row ${cls}`.trim();
+
+}
+
+function exportEntry(slug, format, filename, size, apiResult) {
+
+    return {
+
+        route_id: slug,
+
+        format: format,
+
+        filename: filename,
+
+        folder: UPLOADER.DATA_FOLDER,
+
+        path: `${UPLOADER.DATA_FOLDER}/${slug}/${filename}`,
+
+        destination: "github",
+
+        public: true,
+
+        exists: true,
+
+        size: size,
+
+        status: "success",
+
+        file: filename,
+
+        raw_url: `https://raw.githubusercontent.com/${UPLOADER.OWNER}/${UPLOADER.REPO}/${UPLOADER.BRANCH}/${UPLOADER.DATA_FOLDER}/${slug}/${filename}`,
+
+        html_url: `https://github.com/${UPLOADER.OWNER}/${UPLOADER.REPO}/blob/${UPLOADER.BRANCH}/${UPLOADER.DATA_FOLDER}/${slug}/${filename}`,
+
+        sha: apiResult.content.sha,
+
+        commit: apiResult.commit.sha,
+
+        uploaded_at: new Date().toISOString(),
+
+        error: null
+
+    };
+
+}
+
+async function publish() {
+
+    if (state.busy) return;
+
+    const token = tokenInput.value.trim();
+
+    const slug = currentSlug();
+
+    if (!state.loaded || !slug || state.slugTaken !== false || !token) return;
+
+    state.busy = true;
+
+    btnPublish.disabled = true;
+
+    logBox.textContent = "";
+
+    resultBox.classList.add("hidden");
+
+    const meta = {
+
+        name: nameInput.value.trim(),
+
+        mountain: mountainInput.value.trim(),
+
+        route: routeInput.value.trim()
+
+    };
+
+    meta.route_id = slug;
+
+    try {
+
+        /* safety terakhir: manifest tidak boleh sudah ada */
+
+        const span0 = addLog("fa-solid fa-spinner fa-spin", `Memeriksa data/${slug}/manifest.json…`);
+
+        const existing = await apiGetFile(`${UPLOADER.DATA_FOLDER}/${slug}/manifest.json`, token);
+
+        if (existing.status === 200) {
+
+            updateLog(span0, "fa-solid fa-xmark", `Slug "${slug}" ternyata sudah ada di repo. Publish dibatalkan.`, "err");
+
+            return;
+
+        }
+
+        updateLog(span0, "fa-solid fa-check", `Slug "${slug}" tersedia`, "ok");
+
+        /* 1. track.json */
+
+        const span1 = addLog("fa-solid fa-spinner fa-spin", "Meng-commit track.json…");
+
+        const trackJson = buildTrackJson(
+
+            meta,
+
+            state.stats,
+
+            buildAutoWaypoints(state.points).concat(state.gpxWaypoints),
+
+            state.points.map((p, i) => [p.lat, p.lng, p.ele, state.dists[i]]),
+
+            state.segments
+
+        );
+
+        const tjStr = pretty(trackJson);
+
+        let tjSha = null;
+
+        const tjExisting = await apiGetFile(`${UPLOADER.DATA_FOLDER}/${slug}/track.json`, token);
+
+        if (tjExisting.status === 200) {
+
+            tjSha = (await tjExisting.json()).content.sha;
+
+        }
+
+        const r1 = await putFile(
+
+            `${UPLOADER.DATA_FOLDER}/${slug}/track.json`,
+
+            tjStr,
+
+            `Add ${slug}/track.json via uploader`,
+
+            token,
+
+            tjSha
+
+        );
+
+        updateLog(span1, "fa-solid fa-check", "track.json ✓", "ok");
+
+        /* 2. track.geojson */
+
+        const span2 = addLog("fa-solid fa-spinner fa-spin", "Meng-commit track.geojson…");
+
+        const geojson = buildGeojson(meta, state.stats, state.coords);
+
+        const gjStr = pretty(geojson);
+
+        let gjSha = null;
+
+        const gjExisting = await apiGetFile(`${UPLOADER.DATA_FOLDER}/${slug}/track.geojson`, token);
+
+        if (gjExisting.status === 200) {
+
+            gjSha = (await gjExisting.json()).content.sha;
+
+        }
+
+        const r2 = await putFile(
+
+            `${UPLOADER.DATA_FOLDER}/${slug}/track.geojson`,
+
+            gjStr,
+
+            `Add ${slug}/track.geojson via uploader`,
+
+            token,
+
+            gjSha
+
+        );
+
+        updateLog(span2, "fa-solid fa-check", "track.geojson ✓", "ok");
+
+        /* 3. manifest.json (exports diisi dari hasil commit) */
+
+        const span3 = addLog("fa-solid fa-spinner fa-spin", "Meng-commit manifest.json…");
+
+        const manifest = buildManifestSkeleton(slug, meta, state.stats);
+
+        manifest.exports = [
+
+            exportEntry(slug, "json", "track.json", byteLength(tjStr), r1),
+
+            exportEntry(slug, "geojson", "track.geojson", byteLength(gjStr), r2)
+
+        ];
+
+        await putFile(
+
+            `${UPLOADER.DATA_FOLDER}/${slug}/manifest.json`,
+
+            pretty(manifest),
+
+            `Add ${slug}/manifest.json via uploader`,
+
+            token,
+
+            null
+
+        );
+
+        updateLog(span3, "fa-solid fa-check", "manifest.json ✓", "ok");
+
+        showResult(slug);
+
+    } catch (err) {
+
+        addLog("fa-solid fa-xmark", err.message || String(err), "err");
+
+    } finally {
+
+        state.busy = false;
+
+        refreshPublishButton();
+
+    }
+
+}
+
+function showResult(slug) {
+
+    const viewerURL = `https://${UPLOADER.OWNER}.github.io/${UPLOADER.REPO}/?route=${slug}`;
+
+    resultBox.textContent = "";
+
+    const title = document.createElement("div");
+
+    title.innerHTML = "<strong>✅ Selesai!</strong> Lihat hasilnya: ";
+
+    const link = document.createElement("a");
+
+    link.href = viewerURL;
+
+    link.target = "_blank";
+
+    link.rel = "noopener";
+
+    link.textContent = viewerURL;
+
+    title.appendChild(link);
+
+    const label = document.createElement("div");
+
+    label.textContent = "Snippet embed untuk blog:";
+
+    label.style.marginTop = "10px";
+
+    label.style.fontSize = "13px";
+
+    const ta = document.createElement("textarea");
+
+    ta.readOnly = true;
+
+    ta.value = `<iframe src="${viewerURL}" style="width:100%;height:600px;border:0;border-radius:10px" loading="lazy"></iframe>`;
+
+    const btnCopy = document.createElement("button");
+
+    btnCopy.type = "button";
+
+    btnCopy.className = "btn";
+
+    btnCopy.style.marginTop = "10px";
+
+    btnCopy.textContent = "Copy embed";
+
+    btnCopy.addEventListener("click", async () => {
+
+        try {
+
+            await navigator.clipboard.writeText(ta.value);
+
+            btnCopy.textContent = "Tersalin ✓";
+
+        } catch (e) {
+
+            ta.select();
+
+            document.execCommand("copy");
+
+            btnCopy.textContent = "Tersalin ✓";
+
+        }
+
+    });
+
+    resultBox.appendChild(title);
+
+    resultBox.appendChild(label);
+
+    resultBox.appendChild(ta);
+
+    resultBox.appendChild(btnCopy);
+
+    resultBox.classList.remove("hidden");
+
+}
+
+/* ======================================
+   TOKEN (localStorage)
+====================================== */
+
+const TOKEN_KEY = "alam-uploader-token";
+
+function loadToken() {
+
+    try {
+
+        const saved = localStorage.getItem(TOKEN_KEY);
+
+        if (saved) {
+
+            tokenInput.value = saved;
+
+            rememberToken.checked = true;
+
+        }
+
+    } catch (e) { /* localStorage tidak tersedia */ }
+
+}
+
+rememberToken.addEventListener("change", () => {
+
+    try {
+
+        if (rememberToken.checked && tokenInput.value.trim()) {
+
+            localStorage.setItem(TOKEN_KEY, tokenInput.value.trim());
+
+        } else {
+
+            localStorage.removeItem(TOKEN_KEY);
+
+        }
+
+    } catch (e) { /* abaikan */ }
+
+});
+
+tokenInput.addEventListener("input", () => {
+
+    if (rememberToken.checked) {
+
+        try {
+
+            if (tokenInput.value.trim()) {
+
+                localStorage.setItem(TOKEN_KEY, tokenInput.value.trim());
+
+            } else {
+
+                localStorage.removeItem(TOKEN_KEY);
+
+            }
+
+        } catch (e) { /* abaikan */ }
+
+    }
+
+    refreshPublishButton();
+
+});
+
+/* ======================================
+   EVENTS
+====================================== */
+
+dropZone.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", () => handleFile(fileInput.files[0]));
+
+dropZone.addEventListener("dragover", (e) => {
+
+    e.preventDefault();
+
+    dropZone.classList.add("over");
+
+});
+
+dropZone.addEventListener("dragleave", () => dropZone.classList.remove("over"));
+
+dropZone.addEventListener("drop", (e) => {
+
+    e.preventDefault();
+
+    dropZone.classList.remove("over");
+
+    handleFile(e.dataTransfer.files[0]);
+
+});
+
+[nameInput, mountainInput, routeInput].forEach((input) => {
+
+    input.addEventListener("input", () => {
+
+        if (state.loaded) renderPreview(buildAutoWaypoints(state.points));
+
+        updateSlug();
+
+    });
+
+});
+
+btnPublish.addEventListener("click", publish);
+
+/* init */
+
+loadToken();
+
+refreshPublishButton();
+
+</script>
+
+</body>
+
+</html>
+
