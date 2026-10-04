@@ -26,6 +26,12 @@
 
     if (!embedded) return;
 
+    /* Tandai body supaya CSS bisa menyederhanakan tampilan
+       di dalam artikel: footer disembunyikan, hero jadi strip
+       tipis (bukan 200px penuh). Dibuka langsung -> class ini
+       tidak pernah dipasang. */
+    document.body.classList.add("embedded");
+
     let lastHeight = 0;
 
     function reportHeight() {

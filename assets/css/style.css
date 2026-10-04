@@ -1034,6 +1034,73 @@ display:none !important;
 }
 
 /* ===========================
+EMBED (di dalam iframe artikel)
+- footer tidak berguna di artikel -> disembunyikan
+- hero 200px jadi strip tipis, judul jalur tetap tampil
+- tombol tema tetap ada, tidak pindah tempat
+=========================== */
+
+body.embedded footer{
+
+display:none;
+
+}
+
+body.embedded .hero{
+
+height:auto;
+
+min-height:0;
+
+padding:14px 18px;
+
+}
+
+body.embedded .hero-cover{
+
+display:none;
+
+}
+
+body.embedded .badge{
+
+display:none;
+
+}
+
+body.embedded .hero-left{
+
+gap:2px;
+
+max-width:100%;
+
+}
+
+body.embedded #track-title{
+
+font-size:19px;
+
+margin:0;
+
+}
+
+body.embedded #track-route{
+
+font-size:13px;
+
+margin:0;
+
+}
+
+body.embedded .hero-content{
+
+width:100%;
+
+max-width:100%;
+
+}
+
+/* ===========================
 ERROR BOX (gagal muat jalur)
 =========================== */
 

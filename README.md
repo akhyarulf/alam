@@ -157,6 +157,14 @@ Referensi lengkap:
 - `scrolling="no"` + `scrollWheelZoom` otomatis mati saat di-embed, jadi scroll di
   atas peta tidak lagi menggerakkan halaman artikel (zoom tetap pakai tombol `+`/`-`).
 
+### Tampilan di dalam artikel
+
+Saat dibuka di iframe artikel, `assets/js/embed-sync.js` menandai `body.embedded`, lalu
+`assets/css/style.css` menyederhanakan tampilan: footer disembunyikan, hero 200px
+menjadi strip tipis (judul jalur + tombol tema tetap ada), badge disembunyikan.
+Card POI juga otomatis disembunyikan kalau jalurnya memang tidak punya POI.
+Dibuka langsung (`viewer.html?route=…` tanpa iframe) tampilannya tetap utuh.
+
 ### Tinggi iframe otomatis (disarankan)
 
 `assets/js/embed-sync.js` sudah mengirim tinggi konten ke halaman induk
@@ -367,6 +375,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Viewer: unduh GPX/KML dibuat di browser dari `track.geojson`; tombol "GPX asli" dan seluruh referensi layanan eksternal dibuang.
 - `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
 - Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
+- Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
 
 ## Files
 

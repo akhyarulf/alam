@@ -94,13 +94,15 @@ const WaypointManager = {
 
     /* ======================================================
        Render POI (terpisah dari breakdown Pos Jalur)
-    ====================================================== */
-
-    renderPois() {
+    ====================================================== */renderPois() {
 
         if (!this.poiContainer) return;
 
         this.poiContainer.innerHTML = "";
+
+        /* Card POI disembunyikan kalau memang tidak ada POI,
+           supaya tidak ada kotak kosong di sidebar. */
+        this.togglePoiCard();
 
         if (this.pois.length === 0) {
 
@@ -111,11 +113,22 @@ const WaypointManager = {
             `;
 
             return;
+
         }
 
         this.pois.forEach((poi, index) => {
             this.poiContainer.appendChild(this.createPoiItem(poi, index));
         });
+
+    },
+
+    togglePoiCard() {
+
+        const card = this.poiContainer && this.poiContainer.closest(".card");
+
+        if (!card) return;
+
+        card.classList.toggle("hidden", this.pois.length === 0);
 
     },
 
@@ -329,6 +342,8 @@ const WaypointManager = {
                     Tidak ada POI di jalur ini.
                 </div>
             `;
+
+            this.togglePoiCard();
 
         }
 
