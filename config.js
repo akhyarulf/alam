@@ -66,7 +66,7 @@ const CONFIG = {
 
     */
 
-    defaultRoute: "butak-via-panderman",
+    defaultRoute: "lawu-via-cemoro-sewu",
 
     get route() {
 

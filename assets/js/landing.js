@@ -16,7 +16,6 @@
      embed otomatis ikut bertambah.
      ========================================================== */
   const ROUTE_SLUGS = [
-    "butak-via-panderman",
     "lawu-via-cemoro-sewu",
   ];
 

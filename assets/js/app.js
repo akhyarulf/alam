@@ -67,7 +67,7 @@ const App = {
 
         PRIORITAS
 
-        1. ?route=butak
+        1. ?route=lawu-via-cemoro-sewu
 
         2. window.ROUTE_ID
 

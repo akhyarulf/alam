@@ -51,13 +51,13 @@ alam/
 `?route=<slug>` dipakai untuk memilih jalur.
 
 Contoh:
-- https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman
-- https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman&theme=dark
+- https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu
+- https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu&theme=dark
 
 Halaman `/` adalah landing page: daftar jalur, statistik, dan generator kode embed.
 
 Tanpa parameter, versi default menggunakan `defaultRoute` di `config.js`:
-- `butak-via-panderman`
+- `lawu-via-cemoro-sewu`
 
 ### Format `manifest.json`
 
@@ -76,14 +76,14 @@ Setiap `data/<slug>/` harus memiliki:
     "route": "Jalur ..."
   },
   "stats": {
-    "points": 107,
-    "distance_km": 3.36,
-    "gain": 532,
-    "loss": 43,
-    "highest": 1895.0,
-    "lowest": 1406.0,
-    "start": 1406.0,
-    "finish": 1895.0
+    "points": 434,
+    "distance_km": 5.92,
+    "gain": 1410,
+    "loss": 62,
+    "highest": 3250.99,
+    "lowest": 1900.3,
+    "start": 1900.3,
+    "finish": 3247.68
   },
   "viewer": {
     "json": "track.json",
@@ -92,8 +92,7 @@ Setiap `data/<slug>/` harus memiliki:
 }
 ```
 
-> Angka `stats` di atas mengikuti data nyata `butak-via-panderman`.
-> Versi README sebelumnya salah menulis angka Lawu (434 titik / 5,92 km) di contoh Butak.
+> Angka `stats` di atas mengikuti data nyata `lawu-via-cemoro-sewu` (satu-satunya jalur yang masih ada).
 
 Referensi lengkap:
 - https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/manifest.json
@@ -115,7 +114,7 @@ Referensi lengkap:
 
 ```html
 <iframe
-  src="https://alam.nyasarnyaman.my.id/viewer.html?route=butak-via-panderman"
+  src="https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu"
   style="width:100%;height:600px;border:0;border-radius:10px"
   loading="lazy"
 ></iframe>
@@ -154,8 +153,10 @@ Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`.
 
 ## Daftar Jalur Saat Ini
 
-- `butak-via-panderman` — Gunung Butak via Panderman
 - `lawu-via-cemoro-sewu` — Lawu via Cemoro Sewu
+
+> Jalur `butak-via-panderman` pernah ada sebagai data dummy dan sudah dihapus
+> (lihat bagian Kekurangan & Rencana Perbaikan).
 
 ## Status Landing Page (2026-10-04)
 
@@ -193,7 +194,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 |---|---------|--------|--------|
 | 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | Belum dikerjakan |
 | 2 | `upload.html` **tidak punya satu pun `@media` query** → layout berdesakan di layar kecil. | Upload dari HP terasa sempit. | Belum dikerjakan |
-| 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`). | Kalau file Drive hilang/dibatasi, tombol mati. Butak juga `kml: null`. | Belum dikerjakan |
+| 3 | Tombol unduh GPX/KML **bergantung ke Google Drive** (`manifest.downloads.*`). | Kalau file Drive hilang/dibatasi, tombol mati. KML juga hanya ada kalau uploader berhasil menguggahnya. | Belum dikerjakan |
 
 ### B2. Kekurangan — viewer
 
@@ -222,9 +223,9 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 |---|---------|--------|--------|
 | 15 | `track.json` (±92 KB total) **tidak pernah dibaca** halaman mana pun; uploader masih mem-publish-nya. | `data/*/track.json` | Belum dikerjakan |
 | 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | Belum dikerjakan |
-| 17 | `exports[]` di `manifest.json` Butak masih menyimpan path internal Windows (`output\\viewer\\...`). | `data/butak-via-panderman/manifest.json` | Belum dikerjakan |
-| 18 | `engine.version` tidak sinkron: Butak `1.3.2`, Lawu `1.4.0`. | `data/*/manifest.json` | Belum dikerjakan |
-| 19 | README contoh manifest menulis angka Lawu sebagai Butak (434 titik / 5,92 km). | `README.md` | **Sudah diperbaiki** |
+| 17 | `exports[]` di `manifest.json` Butak menyimpan path internal Windows (`output\\viewer\\...`). | — | **Selesai** — data dummy Butak dihapus |
+| 18 | `engine.version` tidak sinkron antar jalur. | `data/*/manifest.json` | **Selesai untuk sekarang** — tersisa satu jalur (`lawu-via-cemoro-sewu`, versi `1.4.0`); perhatikan sinkronisasi saat menambah jalur baru |
+| 19 | README contoh manifest menulis angka yang salah untuk jalurnya. | `README.md` | **Sudah diperbaiki** |
 
 ### B5. Kekurangan — polish situs
 
@@ -251,7 +252,7 @@ tombol full width, `<pre>` JSON gets `overflow:auto`. Estimasi ~20 menit, risiko
 **3. Unduh GPX/KML tanpa Drive**
 Buat `GPX` (`<wpt>` + `<trk>`) dan `KML` (`Placemark` + `LineString`) langsung di browser
 dari `track.geojson` yang sudah ada. Nol dependency eksternal, jalan untuk semua jalur
-(termasuk Butak), tidak pernah mati. Link Drive dipertahankan sebagai tombol kedua
+tidak pernah mati. Link Drive dipertahankan sebagai tombol kedua
 "GPX asli". Estimasi ~45 menit, risiko sedang → hasil file harus divalidasi (XML) dulu.
 
 **4. Tombol ganti tema di viewer**
