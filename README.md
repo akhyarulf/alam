@@ -140,7 +140,9 @@ Referensi lengkap:
 - **Waktu naik/turun**: baris “Total Naik/Turun” memakai `stats.ascent/descent_duration_minutes_*`
   di manifest. Kalau field itu tidak ada (jalur hasil upload browser), `Utils.climbTimes()`
   menghitungnya dari `track.geojson` dengan formula Naismith (4 km/jam + 600 m/jam elevasi,
-  rentang 0.85x–1.3x). Tanpa sumber data, baris menampilkan “Data tidak tersedia”, bukan “---”.
+  rentang 0.85x–1.3x). **Semantiknya: naik = start → finish (bagian yang mendaki), turun =
+  finish → start (perjalanan balik, profil elevasi dibalik).** Tanpa sumber data, baris
+  menampilkan “Data tidak tersedia”, bukan “---”.
 
 ## Embed di Blog
 
@@ -385,7 +387,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
 - Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
 - Uploader: nama jalur otomatis dari Gunung + Jalur (`buildTrackName()`), `extractMountainRoute()` sekarang juga memecah `X via Y` tanpa awalan "Gunung".
-- “Total Naik/Turun” tidak lagi “---”: `upload.html` menulis `ascent/descent_duration_minutes_*` + `ascent_km`/`descent_km`, `stats.js` jatuh ke estimasi `Utils.climbTimes()` bila field kosong, dan `data/lawu-via-candi-cetho/manifest.json` di-backfill.
+- “Total Naik/Turun” tidak lagi “---”: `upload.html` menulis `ascent/descent_duration_minutes_*` + `ascent_km`/`return_km`/`profile_descent_km`, `stats.js` jatuh ke estimasi `Utils.climbTimes()` bila field kosong, dan `data/lawu-via-candi-cetho/manifest.json` di-backfill. Semantik turun diubah ke “finish → start”; untuk Cemoro Sewu angka engine (90–120 mnt) cocok dengan hitungan itu (80–125).
 
 ## Files
 

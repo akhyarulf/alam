@@ -30,10 +30,11 @@
     },
     "ascent_duration_minutes_low": 260,
     "ascent_duration_minutes_high": 400,
-    "descent_duration_minutes_low": 15,
-    "descent_duration_minutes_high": 20,
+    "descent_duration_minutes_low": 115,
+    "descent_duration_minutes_high": 175,
     "ascent_km": 7.99,
-    "descent_km": 0.67
+    "return_km": 8.66,
+    "profile_descent_km": 0.67
   },
   "legs": [
     {

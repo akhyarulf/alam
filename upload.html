@@ -1222,7 +1222,9 @@ function computeStats(pts, distanceKm) {
 
         ascent_km: climb.ascent_km,
 
-        descent_km: climb.descent_km
+        return_km: climb.total_km,
+
+        profile_descent_km: climb.profile_descent_km
 
     };
 
@@ -1231,9 +1233,10 @@ function computeStats(pts, distanceKm) {
 /* ======================================
    WAKTU NAIK / TURUN (Naismith: 4 km/jam +
    600 m/jam elevasi, rentang 0.85x - 1.3x).
-   Jarak ascent/descent dihitung dari arah elevasi
-   tiap segmen. Mengisi baris "Total Naik/Turun"
-   di viewer untuk jalur hasil upload.
+   - naik  = start -> finish (bagian yang mendaki)
+   - turun = finish -> start (perjalanan balik)
+   Mengisi baris "Total Naik/Turun" di viewer untuk
+   jalur hasil upload.
 ====================================== */
 
 function computeClimbTimes(pts) {
@@ -1266,13 +1269,20 @@ function computeClimbTimes(pts) {
 
     const ascentHours = upKm / 4 + upGain / 600;
 
-    const descentHours = downKm / 4 + downLoss / 600;
+    /* Perjalanan balik: seluruh jarak ditempuh, yang didaki
+       adalah total turunan asli, yang diturun adalah total
+       naikan asli. */
+    const descentHours = (upKm + downKm) / 4 + downLoss / 600;
 
     return {
 
         ascent_km: Math.round(upKm * 100) / 100,
 
-        descent_km: Math.round(downKm * 100) / 100,
+        descent_km: Math.round((upKm + downKm) * 100) / 100,
+
+        profile_descent_km: Math.round(downKm * 100) / 100,
+
+        total_km: Math.round((upKm + downKm) * 100) / 100,
 
         ascent_low: round5(ascentHours * 60 * 0.85),
 
