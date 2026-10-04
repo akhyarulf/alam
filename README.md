@@ -366,7 +366,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
 - Viewer: unduh GPX/KML dibuat di browser dari `track.geojson`; tombol "GPX asli" dan seluruh referensi layanan eksternal dibuang.
 - `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
-- Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; aksen disamakan ke tema Derelogy (`#ed783c`); snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height.
+- Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
 
 ## Files
 

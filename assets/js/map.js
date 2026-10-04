@@ -280,7 +280,7 @@ const MapViewer = {
 
                 style: feature => ({
 
-                    color: "#ed783c",
+                    color: "#5a7562",
 
                     weight: 5,
 

@@ -6,10 +6,10 @@
 
 :root{
 
---primary:#ed783c;
---primary-dark:#c2601c;
+--primary:#5a7562;
+--primary-dark:#415447;
 
---secondary:#f2a05c;
+--secondary:#779680;
 
 --bg:#f6f6fa;
 
@@ -335,7 +335,7 @@ height:72px;
 
 border-radius:50%;
 
-border:6px solid rgba(237,120,60,.15);
+border:6px solid rgba(90,117,98,.15);
 
 border-top-color:var(--primary);
 
@@ -395,9 +395,9 @@ color:#fff;
 background:
 
 linear-gradient(
-135deg,#ed783c,
-
-#c2601c
+135deg,
+#5a7562,
+#415447
 );
 
 }
@@ -1432,11 +1432,11 @@ background:
 
 linear-gradient(
 180deg,
-rgba(237,120,60,.05),
-rgba(237,120,60,.02)
+rgba(90,117,98,.05),
+rgba(90,117,98,.02)
 );
 
-border:1px solid rgba(237,120,60,.08);
+border:1px solid rgba(90,117,98,.08);
 
 transition:.25s;
 
@@ -1452,7 +1452,7 @@ box-shadow:
 
 0 10px 22px rgba(0,0,0,.08);
 
-border-color:rgba(237,120,60,.18);
+border-color:rgba(90,117,98,.18);
 
 }
 
@@ -1599,7 +1599,7 @@ font-size:15px;
 transition:.25s;
 
 box-shadow:
-0 10px 22px rgba(237,120,60,.22);
+0 10px 22px rgba(90,117,98,.22);
 
 }
 
@@ -1619,7 +1619,7 @@ HOVER
 transform:translateY(-3px);
 
 box-shadow:
-0 16px 34px rgba(237,120,60,.30);
+0 16px 34px rgba(90,117,98,.30);
 
 }
 
@@ -1800,7 +1800,7 @@ box-shadow:
 border-color:var(--primary);
 
 box-shadow:
-0 0 0 2px rgba(237,120,60,.25);
+0 0 0 2px rgba(90,117,98,.25);
 
 }
 
@@ -1847,7 +1847,7 @@ width:2px;
 
 height:42px;
 
-background:rgba(237,120,60,.25);
+background:rgba(90,117,98,.25);
 
 transform:translateX(-50%);
 
@@ -1872,7 +1872,7 @@ height:28px;
 
 border-radius:50%;
 
-background:rgba(237,120,60,.12);
+background:rgba(90,117,98,.12);
 
 display:flex;
 
@@ -2032,7 +2032,7 @@ padding:6px 12px;
 
 border-radius:999px;
 
-background:rgba(237,120,60,.12);
+background:rgba(90,117,98,.12);
 
 color:var(--primary);
 
@@ -2589,7 +2589,7 @@ SELECTION
 
 ::selection{
 
-background:rgba(237,120,60,.18);
+background:rgba(90,117,98,.18);
 
 color:inherit;
 
@@ -2629,8 +2629,8 @@ opacity:1;
 .direction-panel{
 font-size:13px;
 line-height:1.5;
-background:rgba(237,120,60,.1);
-border-left:3px solid var(--primary);
+background:rgba(90,117,98,.1);
+border-left:3px solid #5a7562;
 padding:10px 12px;
 border-radius:6px;
 margin-bottom:12px;

@@ -230,7 +230,7 @@ const Theme = {
 
         meta.setAttribute(
             "content",
-            this.current === "dark" ? "#202124" : "#ed783c"
+            this.current === "dark" ? "#202124" : "#5a7562"
         );
 
     },
