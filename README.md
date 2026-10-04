@@ -195,6 +195,10 @@ Gunakan uploader di:
 1. Buka uploader.
 2. Upload file GPX — nama/gunung/jalur terdeteksi otomatis, slug dibuat otomatis
    (format: `gunung-` dibuang → `{gunung}-via-{jalur}`).
+   Nama jalur = gabungan **Gunung + Jalur** (`buildTrackName()`), jadi tidak bisa
+   tidak sinkron: judul `Gunung Lawu via Candi Cetho` maupun `Lawu via Candi Cetho`
+   sama-sama jadi `Lawu` + `Candi Cetho` + nama `Lawu via Candi Cetho`. Kalau nama
+   diketik manual, kolom itu berhenti mengikuti (Gunung/Jalur berubah).
 3. Tempel **GitHub fine-grained PAT** (repo ini saja, permission **Contents:
    Read and write**, pakai expiry). Opsional diingat di `localStorage`.
 4. Klik **Publish** → 3 file (`track.json`, `track.geojson`, `manifest.json`) ter-commit
@@ -376,6 +380,7 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
 - Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
 - Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
+- Uploader: nama jalur otomatis dari Gunung + Jalur (`buildTrackName()`), `extractMountainRoute()` sekarang juga memecah `X via Y` tanpa awalan "Gunung".
 
 ## Files
 

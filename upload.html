@@ -913,19 +913,52 @@ function createRouteId(mountain, route) {
 
 }
 
+/* ======================================
+   NAMA JALUR DARI GUNUNG + JALUR
+   Sumber tunggal nama jalur: "Lawu via Candi Cetho".
+   Awalan "Gunung"/"Gun." dibuang supaya konsisten
+   dengan slug (yang juga membuang "gunung-").
+====================================== */
+
+function cleanMountainName(value) {
+
+    return String(value || "")
+
+        .replace(/^\s*(?:gunung|gun\.)\s+/i, "")
+
+        .trim();
+
+}
+
+function buildTrackName(mountain, route) {
+
+    const m = cleanMountainName(mountain);
+
+    const r = String(route || "").trim();
+
+    if (m && r) return `${m} via ${r}`;
+
+    return m || r || "";
+
+}
+
 function extractMountainRoute(title) {
 
-    title = title || "";
+    title = String(title || "").trim();
 
-    const match = /gunung\s+(.+?)\s+via\s+(.+)/i.exec(title);
+    if (!title) return ["", ""];
+
+    /* "Gunung Lawu via Candi Cetho" maupun "Lawu via Candi Cetho" */
+
+    const match = /^(.+?)\s+via\s+(.+)$/i.exec(title);
 
     if (match) {
 
-        return ["Gunung " + match[1].trim(), match[2].trim()];
+        return [cleanMountainName(match[1]), match[2].trim()];
 
     }
 
-    return [title, ""];
+    return [cleanMountainName(title), ""];
 
 }
 
@@ -1725,6 +1758,9 @@ const state = {
 
     loaded: false,
 
+    /* true = kolom "Nama Jalur" diketik manual, jangan ditimpa otomatis */
+    nameTouched: false,
+
     points: null,
 
     dists: null,
@@ -1808,6 +1844,23 @@ function pretty(obj) {
 function currentSlug() {
 
     return createRouteId(mountainInput.value, routeInput.value);
+
+}
+
+/* Nama jalur yang akan disimpan: isi kolom kalau ada,
+   kalau kosong diturunkan dari gunung + jalur. */
+function currentTrackName() {
+
+    return nameInput.value.trim() || buildTrackName(mountainInput.value, routeInput.value);
+
+}
+
+/* Kolom Nama Jalur mengikuti Gunung + Jalur selama belum diedit manual. */
+function syncNameFromMeta() {
+
+    if (state.nameTouched) return;
+
+    nameInput.value = buildTrackName(mountainInput.value, routeInput.value);
 
 }
 
@@ -2079,13 +2132,19 @@ function parseGpx(text, file) {
 
         file.name.replace(/\.gpx$/i, "");
 
-    if (!nameInput.value) nameInput.value = title;
-
     const [autoMountain, autoRoute] = extractMountainRoute(title);
 
     if (!mountainInput.value && autoMountain) mountainInput.value = autoMountain;
 
     if (!routeInput.value && autoRoute) routeInput.value = autoRoute;
+
+    /* Nama jalur diturunkan dari gunung + jalur (bukan dari <name> GPX),
+       selama kolomnya belum diketik manual sendiri. */
+    if (!state.nameTouched) {
+
+        nameInput.value = buildTrackName(mountainInput.value, routeInput.value) || title;
+
+    }
 
     /* render */
 
@@ -2127,7 +2186,7 @@ function renderPreview(autoWaypoints) {
 
     const meta = {
 
-        name: nameInput.value,
+        name: currentTrackName(),
 
         mountain: mountainInput.value,
 
@@ -2387,7 +2446,7 @@ async function publish() {
 
     const meta = {
 
-        name: nameInput.value.trim(),
+        name: currentTrackName(),
 
         mountain: mountainInput.value.trim(),
 
@@ -2719,6 +2778,10 @@ dropZone.addEventListener("drop", (e) => {
 [nameInput, mountainInput, routeInput].forEach((input) => {
 
     input.addEventListener("input", () => {
+
+        if (input === nameInput) state.nameTouched = true;
+
+        else syncNameFromMeta();
 
         if (state.loaded) renderPreview(buildAutoWaypoints(state.points));
 
