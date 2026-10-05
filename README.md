@@ -182,7 +182,7 @@ Supaya tidak terlalu memanjang ke bawah di artikel:
   **dan** nama jalur (mis. "Lawu via Candi Cetho"), baris "Lawu • Candi Cetho" di bawahnya
   disembunyikan. Kalau nama jalur dikustom ("Rute Favorit Saya"), subjudul tetap tampil.
 - **Header diringkas di HP** (buka langsung maupun embed): foto cover & badge disembunyikan,
-  tinggi otomatis (`padding:12px`), judul 19px, dan tombol tema mengambang di pojok kanan
+  tinggi otomatis (`padding:12px`) dan judul 19px
   supaya tidak turun ke baris sendiri.
 - Efeknya tinggi konten di HP turun dari ~2.000px jadi ~1.500–1.600px, cocok dengan
   `height:1300px` di snippet embed.
@@ -191,7 +191,8 @@ Supaya tidak terlalu memanjang ke bawah di artikel:
 
 Saat dibuka di iframe artikel, `assets/js/embed-sync.js` menandai `body.embedded`, lalu
 `assets/css/style.css` menyederhanakan tampilan: footer disembunyikan, hero 200px
-menjadi strip tipis (judul jalur + tombol tema tetap ada), badge disembunyikan.
+menjadi strip tipis (judul jalur tetap tampil), badge disembunyikan, dan tombol
+tema disembunyikan karena tema sudah ikut blog.
 Card POI juga otomatis disembunyikan kalau jalurnya memang tidak punya POI.
 Dibuka langsung (`viewer.html?route=…` tanpa iframe) tampilannya tetap utuh.
 
@@ -214,9 +215,8 @@ Setelah itu:
    desktop. Nilai `height` di snippet embed hanya cadangan awal kalau script belum
    terpasang.
 2. **Tema sinkron dua arah** — `embed-resize.js` membaca tema blog lalu mengirimnya
-   ke viewer. Kalau tombol dark/light di dalam viewer diklik, script ini mengubah
-   tema blog juga, jadi artikel ikut berubah. Perubahan dari blog tidak dipantulkan
-   balik (anti-loop).
+   ke viewer. Di dalam iframe tombol tema disembunyikan, jadi tema viewer selalu
+   mengikuti tema blog. Perubahan dari blog tidak dipantulkan balik (anti-loop).
 3. **Src iframe yang ditunda** — kalau iframe ditulis tanpa `src`:
 
    ```html

@@ -1146,7 +1146,7 @@ display:none !important;
 EMBED (di dalam iframe artikel)
 - footer tidak berguna di artikel -> disembunyikan
 - hero 200px jadi strip tipis, judul jalur tetap tampil
-- tombol tema tetap ada, tidak pindah tempat
+- tombol tema disembunyikan (tema ikut blog)
 =========================== */
 
 body.embedded footer{
@@ -1206,6 +1206,16 @@ body.embedded .hero-content{
 width:100%;
 
 max-width:100%;
+
+}
+
+/* Di dalam artikel, tema sudah ikut blog (sinkron lewat
+   embed-resize.js), jadi tombolnya tidak perlu tampil.
+   Buka viewer.html langsung -> tombol tetap ada. */
+
+body.embedded #btn-theme{
+
+display:none;
 
 }
 
