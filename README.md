@@ -361,10 +361,10 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Status |
 |---|---------|--------|
-| 20 | Tidak ada `404.html` → tautan rusak tampil error GitHub. | Belum dikerjakan |
-| 21 | Tidak ada `robots.txt` dan `sitemap.xml` untuk domain kustom. | Belum dikerjakan |
-| 22 | Tidak ada Open Graph / Twitter Card → tidak ada preview saat link dibagikan. | Belum dikerjakan |
-| 23 | Tidak ada `apple-touch-icon` / `webmanifest` → ikon "Add to Home Screen" memakai screenshot. | Belum dikerjakan |
+| 20 | Tidak ada `404.html` → tautan rusak tampil error GitHub. | **Selesai** — `404.html` (halaman mandiri ber-noindex, tautan kembali ke daftar jalur & uploader) |
+| 21 | Tidak ada `robots.txt` dan `sitemap.xml` untuk domain kustom. | **Selesai** — `robots.txt` + `sitemap.xml`. Sitemap dibangun `scripts/build-routes-index.js`, jadi otomatis ikut terbaru setiap ada jalur baru (bukan file statis) |
+| 22 | Tidak ada Open Graph / Twitter Card → tidak ada preview saat link dibagikan. | **Selesai** — Open Graph + Twitter Card di `index.html`, `viewer.html`, `upload.html`. `og:image` = `assets/img/og-image.png` (1200x630). `404.html` dikecualikan (noindex) |
+| 23 | Tidak ada `apple-touch-icon` / `webmanifest` → ikon "Add to Home Screen" memakai screenshot. | **Selesai** — `apple-touch-icon` (180px) + `site.webmanifest` (192/512). Ikon PNG dibuat `scripts/generate-icons.js` dari desain `favicon.svg`; dibuat full-bleed opaque karena iOS merender transparansi jadi hitam |
 | 24 | Tidak ada analytics (disarankan GoatCounter/Umami untuk situs statik). | Belum dikerjakan |
 
 ### C. Rencana perbaikan 1–4

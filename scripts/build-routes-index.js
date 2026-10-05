@@ -100,6 +100,52 @@ function collectRoutes() {
 }
 
 /* ==========================================
+   Tulis sitemap.xml
+
+   Dibuat di sini (bukan file statis) supaya sitemap
+   selalu ikut jalur baru yang di-publish lewat uploader.
+   ========================================== */
+const SITE = "https://alam.nyasarnyaman.my.id";
+const SITEMAP_OUTPUT = path.join(ROOT, "sitemap.xml");
+
+function urlEntry(loc, lastmod, priority) {
+  return [
+    "  <url>",
+    `    <loc>${loc}</loc>`,
+    lastmod ? `    <lastmod>${lastmod.slice(0, 10)}</lastmod>` : null,
+    `    <priority>${priority}</priority>`,
+    "  </url>",
+  ].filter(Boolean).join("\n");
+}
+
+function writeSitemap(routes) {
+  const urls = [urlEntry(`${SITE}/`, null, "1.0")];
+
+  for (const r of routes) {
+    urls.push(urlEntry(`${SITE}/viewer.html?route=${encodeURIComponent(r.slug)}`, null, "0.8"));
+  }
+
+  urls.push(urlEntry(`${SITE}/upload.html`, null, "0.4"));
+
+  const xml =
+    '<?xml version="1.0" encoding="UTF-8"?>\n' +
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
+    urls.join("\n") +
+    "\n</urlset>\n";
+
+  const previous = fs.existsSync(SITEMAP_OUTPUT) ? fs.readFileSync(SITEMAP_OUTPUT, "utf8") : null;
+
+  if (previous === xml) {
+    console.log(`sitemap.xml sudah sama — ${routes.length} jalur, tidak ada perubahan.`);
+    return false;
+  }
+
+  fs.writeFileSync(SITEMAP_OUTPUT, xml);
+  console.log(`sitemap.xml ditulis — ${urls.length} URL.`);
+  return true;
+}
+
+/* ==========================================
    Tulis data/routes.json
    ========================================== */
 function main() {
@@ -118,12 +164,14 @@ function main() {
   // tidak membuat commit baru setiap kali tanggal berubah saja.
   if (previous && stripGenerated(previous) === stripGenerated(json)) {
     console.log(`data/routes.json sudah sama — ${routes.length} jalur, tidak ada perubahan.`);
+    writeSitemap(routes);
     return;
   }
 
   fs.writeFileSync(OUTPUT, json);
   console.log(`data/routes.json ditulis — ${routes.length} jalur:`);
   routes.forEach((r) => console.log(`  - ${r.slug} (${r.distance_km ?? "?"} km)`));
+  writeSitemap(routes);
 }
 
 function stripGenerated(text) {

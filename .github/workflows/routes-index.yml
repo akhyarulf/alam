@@ -39,12 +39,14 @@ jobs:
 
       - name: Commit if changed
         run: |
-          if git diff --quiet -- data/routes.json; then
-            echo "routes.json tidak berubah, tidak ada commit."
+          # sitemap.xml ikut dibangun oleh script yang sama, jadi keduanya
+          # harus dicek dan di-commit bersama.
+          if git diff --quiet -- data/routes.json sitemap.xml; then
+            echo "routes.json & sitemap.xml tidak berubah, tidak ada commit."
             exit 0
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/routes.json
-          git commit -m "data: regenerate routes index"
+          git add data/routes.json sitemap.xml
+          git commit -m "data: regenerate routes index & sitemap"
           git push
