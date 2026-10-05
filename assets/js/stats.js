@@ -340,6 +340,14 @@ const Stats = {
 
         panel.classList.toggle("hidden", !willShow);
 
+        const button = this.elements.directionBtn;
+
+        if (button) {
+
+            button.setAttribute("aria-expanded", String(willShow));
+
+        }
+
     },
 
     /* ======================================================
