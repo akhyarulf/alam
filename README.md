@@ -205,7 +205,9 @@ Tambahkan **satu baris** ini di tema Blogger (**Tema → Edit HTML**, sebelum
 
 ```html
 <script src="https://alam.nyasarnyaman.my.id/embed-resize.js"></script>
-```Setelah itu:
+```
+
+Setelah itu:
 
 1. **Tinggi otomatis** — tinggi iframe mengikuti isi viewer (dibatasi 400–20.000px),
    jadi tidak ada lagi area kosong besar atau scroll di dalam iframe, di HP maupun
