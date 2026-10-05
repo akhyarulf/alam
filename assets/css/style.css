@@ -390,15 +390,11 @@ align-items:flex-end;
 
 padding:28px 36px;
 
-color:#fff;
+color:var(--text);
 
-background:
+background:var(--bg);
 
-linear-gradient(
-135deg,
-#5a7562,
-#415447
-);
+border-bottom:1px solid var(--border);
 
 }
 
@@ -420,23 +416,12 @@ opacity:.35;
 
 }
 
+/* Gambar cover tidak pernah diisi (tidak ada kode yang
+   mengisinya, manifest juga tidak punya field cover), jadi
+   overlay hitam hanya membuat header semakin gelap tanpa alasan. */
 .hero-overlay{
 
-position:absolute;
-
-inset:0;
-
-background:
-
-linear-gradient(
-
-180deg,
-
-rgba(0,0,0,.20),
-
-rgba(0,0,0,.55)
-
-);
+display:none;
 
 }
 
@@ -538,11 +523,11 @@ border:none;
 
 border-radius:12px;
 
-background:rgba(255,255,255,.16);
+background:var(--card);
 
-backdrop-filter:blur(10px);
+border:1px solid var(--border);
 
-color:#fff;
+color:var(--text);
 
 font-size:16px;
 
@@ -554,7 +539,7 @@ transition:.25s;
 
 .theme-toggle:hover{
 
-background:rgba(255,255,255,.28);
+background:var(--bg);
 
 transform:translateY(-2px);
 
@@ -579,7 +564,7 @@ height:36px;
 
 font-size:14px;
 
-background:rgba(0,0,0,.25);
+background:var(--card);
 
 }
 
@@ -639,9 +624,9 @@ padding:6px 14px;
 
 border-radius:999px;
 
-background:rgba(255,255,255,.16);
+background:var(--card);
 
-backdrop-filter:blur(10px);
+border:1px solid var(--border);
 
 font-size:12px;
 
@@ -667,10 +652,6 @@ font-size:26px;
 font-weight:800;
 
 line-height:1.2;
-
-text-shadow:
-
-0 4px 18px rgba(0,0,0,.35);
 
 }
 
