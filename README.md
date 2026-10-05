@@ -323,7 +323,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | # | Masalah | Dampak | Status |
 |---|---------|--------|--------|
 | 1 | Jalur baru **tidak otomatis muncul** di landing; slug masih ditulis manual di `assets/js/landing.js` (`ROUTE_SLUGS`). | Setelah upload GPX baru, harus tambah 1 baris JS. | **Selesai** — `data/routes.json` dibuat otomatis oleh `scripts/build-routes-index.js` via `.github/workflows/routes-index.yml` |
-| 2 | `upload.html` **tidak punya satu pun `@media` query** → layout berdesakan di layar kecil. | Upload dari HP terasa sempit. | Belum dikerjakan |
+| 2 | `upload.html` tidak punya `@media` query → padding & `<pre>` JSON melebar di HP. | Tampilan upload dari HP. | **Selesai** — dua breakpoint (`640px`, `380px`): padding dirapatkan, `.stats-grid` jadi `minmax(112px,1fr)` lalu 2 kolom di ≤380px, `<pre>` JSON pakai `pre-wrap` + `overflow-wrap:anywhere` (anti scroll horizontal), plus `text-size-adjust:100%` biar iOS tidak membesarkan teks. Layout dasarnya memang sudah fluid (`.wrap` max-width, `button{width:100%}`, `auto-fit`). |
 | 3 | Tombol unduh GPX/KML **bergantung pada layanan eksternal** (`manifest.downloads.*`); jalur hasil upload browser punya `downloads: null` sehingga tombolnya mati. | Tidak ada layanan eksternal lagi. | **Selesai** — GPX & KML dibuat di browser dari `track.geojson` (`assets/js/export-file.js`); semua referensi layanan eksternal (Drive) sudah dibuang dari kode, data, dan dokumen |
 
 ### B2. Kekurangan — viewer
@@ -344,7 +344,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
 | 12 | Auto-height **tidak jalan** untuk snippet dari landing: `embed-sync.js` mengirim `{source:"alam",type:"resize"}`, tapi receiver-nya harus ada di theme Blogger (`index.xml`) dan tidak disertakan. | `embed-resize.js` | **Selesai** — `embed-resize.js` di root menerima pesan resize (tinggi 400–20.000px) + push/pull tema dua arah; dipasang lewat satu `<script src>` di tema Blogger |
-| 13 | Handshake tema tidak dijawab: `theme.js` mengirim `{source:"alam",type:"ready"}`, tetapi tidak ada skrip di sisi blog yang membalas `{source:"nyasar-blog",theme}`. | `assets/js/theme.js` | Belum dikerjakan |
+| 13 | Handshake tema tidak dijawab: `theme.js` mengirim `{source:"alam",type:"ready"}`, tetapi tidak ada skrip di sisi blog yang membalas. | `assets/js/theme.js` | **Selesai** — `embed-resize.js` menjawab `{source:"alam-blog",type:"theme"}` saat menerima `type:"ready"` (embedded), plus push tema berkala (interval + MutationObserver). `theme.js` menerima bentuk `alam-blog` dan bentuk lama `nyasar-blog`. |
 | 14 | Iframe dipatok `height:600px` + `overflow:hidden` → jebakan scroll di tengah artikel. | `index.html`, `upload.html` | **Selesai** — snippet embed `height:1300px` + `scrolling="no"`; kalau `embed-resize.js` terpasang, tinggi jadi otomatis |
 
 ### B4. Kekurangan — data & dokumentasi
