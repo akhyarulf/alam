@@ -15,12 +15,18 @@ alam/
 ├── viewer.html       # viewer (halaman pemutaran jalur)
 ├── upload.html       # uploader browser: GPX -> commit ke data/
 ├── embed-resize.js   # penerima pesan auto-height & sinkron tema di sisi blog
+├── nyasar-widget.html # widget promo aplikasi Nyasar untuk ditempel di Blogger
+├── CNAME             # domain kustom GitHub Pages
 ├── assets/
 │   ├── css/
 │   │   ├── style.css
 │   │   └── landing.css
 │   ├── img/
-│   │   └── favicon.svg
+│   │   ├── favicon.svg        # ikon SVG (sumber untuk generate-icons.js)
+│   │   ├── icon-180.png       # apple-touch-icon
+│   │   ├── icon-192.png       # webmanifest
+│   │   ├── icon-512.png       # webmanifest
+│   │   └── og-image.png       # preview saat link dibagikan (1200x630)
 │   └── js/
 │       ├── app.js
 │       ├── chart.js
@@ -301,7 +307,8 @@ Landing page sudah ditulis ulang dan **sudah terdeploy** di
   (lokal dulu, fallback ke `CONFIG.rawBase`).
 - Basemap tanpa API key: **OpenTopoMap** (terang) + **Esri Dark Gray Canvas** (gelap).
   CARTO tidak dipakai karena sekarang mewajibkan API key.
-- URL aset di-version (`?v=3`) agar cache GitHub Pages tidak menahan versi lama.
+- URL aset di-version (semarang dinaikkan tiap aset berubah) agar cache
+  GitHub Pages tidak menahan versi lama.
 
 Commit terkait: `f8240cb` (rewrite landing), `ca94a50` (cache-busting),
 `7ed8972` (ganti basemap + anti overflow).
@@ -354,7 +361,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
 | 15 | `track.json` (±92 KB total) **tidak pernah dibaca** halaman mana pun; uploader masih mem-publish-nya. | `data/*/track.json` | **Selesai** — penerbitan `track.json` dihapus dari `upload.html` (juga blok preview `prev-trackjson`), `viewer.json` dibersihkan dari kedua `manifest.json`, dan file `track.json` dihapus dari repo |
-| 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | **Selesai** — `config.js` menambah `localBase`/`rawManifestURL`/`rawGeojsonURL`; `getManifestURLs()` & `getTrackURLs()` mencoba domain sendiri dulu, baru fallback ke raw. Versi URL aset dinaikkan (`config.js?v=10`, `app.js?v=6`) supaya cache Pages tidak menahan versi lama |
+| 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | **Selesai** — `config.js` menambah `localBase`/`rawManifestURL`/`rawGeojsonURL`; `getManifestURLs()` & `getTrackURLs()` mencoba domain sendiri dulu, baru fallback ke raw. Versi URL aset dinaikkan tiap kali berubah supaya cache Pages tidak menahan versi lama |
 | 17 | `exports[]` di `manifest.json` Butak menyimpan path internal Windows (`output\\viewer\\...`). | — | **Selesai** — data dummy Butak dihapus |
 | 18 | `engine.version` tidak sinkron antar jalur. | `data/*/manifest.json` | **Selesai** — kedua jalur sudah `1.4.0`; perhatikan sinkronisasi saat menambah jalur baru |
 | 19 | README contoh manifest menulis angka yang salah untuk jalurnya. | `README.md` | **Sudah diperbaiki** |
@@ -414,8 +421,9 @@ yang sama: 14 waypoint, 12 ruas, total 8,66 km (sesuai `stats.distance_km`).
 
 **4. Tombol ganti tema di viewer — ✅ SELESAI**
 Tombol `#btn-theme` sudah ada di hero `viewer.html` (dengan `aria-label`), gaya
-`.theme-toggle` di `assets/css/style.css`. `theme.js` tidak berubah sama sekali,
-hanya `meta theme-color` yang mengikuti aksen baru.
+`.theme-toggle` di `assets/css/style.css`. Warna tombol ikut `var(--card)` /
+`var(--border)` supaya kontras di kedua mode, dan `meta theme-color` mengikuti
+warna latar halaman (`#f6f6fa` terang, `#202124` gelap).
 
 **6. Embed di artikel Blogger — ✅ SELESAI (sebagian)**
 `scrollWheelZoom` dimatikan saat embedded, snippet embed dapat `scrolling="no"` +
@@ -441,12 +449,23 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - Perbaikan viewer/uploader kecil: link hasil publish diarahkan ke `viewer.html`, snippet embed diberi `allowfullscreen`, `?v=6`.
 - Viewer: unduh GPX/KML dibuat di browser dari `track.geojson`; tombol "GPX asli" dan seluruh referensi layanan eksternal dibuang.
 - `upload.html` menulis waypoint (`Point`) + `manifest.legs`; data `lawu-via-candi-cetho` diperbaiki, `?v=7`.
-- Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen tetap hijau `#5a7562` (selaras dengan repo, bukan warna oranye tema blog).
+- Viewer: tombol tema, `scrollWheelZoom` mati saat embedded, panel error (ganti `alert()`), `100svh`; snippet embed dapat `scrolling="no"` + `title`; README tambah panduan auto-height. Aksen (`--primary`) tetap hijau `#5a7562` di tombol, ikon, dan grafik.
 - Embed: `body.embedded` mengecilkan hero & menyembunyikan footer, card POI kosong otomatis disembunyikan, dan seluruh aset viewer diberi `?v=1` (cache busting).
 - Uploader: nama jalur otomatis dari Gunung + Jalur (`buildTrackName()`), `extractMountainRoute()` sekarang juga memecah `X via Y` tanpa awalan "Gunung".
 - Tampilan HP diringkas: hapus 2 baris duplikat, grafik 200px + bisa dilipat, 6 pos pertama + “lihat semua”, tombol unduh 3 kolom.
 - Ruas waypoint disinkronkan dengan total: `buildLegs()` menghitung gain per segmen + `gain_m`, dan `stats.js` memakai jumlah ruas sebagai Total Naik.
 - “Total Naik/Turun” tidak lagi “---”: `upload.html` menulis `ascent/descent_duration_minutes_*` + `ascent_km`/`return_km`/`profile_descent_km`, `stats.js` jatuh ke estimasi `Utils.climbTimes()` bila field kosong, dan `data/lawu-via-candi-cetho/manifest.json` di-backfill. Semantik turun diubah ke “finish → start”; untuk Cemoro Sewu angka engine (90–120 mnt) cocok dengan hitungan itu (80–125).
+
+### Perawatan
+
+- Penamaan dirapikan jadi satu nama: “Alam Viewer” dan “Alam Engine” (yang foldernya sudah
+  dihapus lama lalu) digabung menjadi “Alam”. `window.AlamViewer` menjadi `window.Alam`,
+  dan `og-image.png` digambar ulang karena teksnya dilukis di dalam PNG.
+- Header viewer sekarang memakai `var(--bg)` seperti halaman, bukan gradient hijau:
+  gambar cover memang tidak pernah diisi, sehingga overlay hitam hanya membuat header
+  semakin gelap tanpa gunanya. Tombol tema dan badge ikut `var(--card)` + border.
+- Field `manifest.downloads` dibuang seluruhnya — isinya sudah lama hanya `null`, dan
+  sekarang GPX/KML dibangun dari `track.geojson` di browser tanpa layanan eksternal.
 
 ## Files
 
