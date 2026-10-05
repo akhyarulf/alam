@@ -205,23 +205,45 @@ Tambahkan **satu baris** ini di tema Blogger (**Tema → Edit HTML**, sebelum
 
 ```html
 <script src="https://alam.nyasarnyaman.my.id/embed-resize.js"></script>
-```
-
-Setelah itu:
+```Setelah itu:
 
 1. **Tinggi otomatis** — tinggi iframe mengikuti isi viewer (dibatasi 400–20.000px),
    jadi tidak ada lagi area kosong besar atau scroll di dalam iframe, di HP maupun
-   desktop. Nilai `height:1300px` di snippet embed hanya cadangan awal kalau
-   script belum terpasang.
-2. **Tema sinkron dua arah** — `embed-resize.js` membaca tema blog ( atribut
-   `data-theme`, class `dark`/`light`, warna latar, atau `prefers-color-scheme`)
-   lalu mengirimnya ke viewer. Kalau tombol dark/light di dalam viewer diklik,
-   script ini menekan tombol tema milik blog (dicari lewat `aria-label`/`title`
-   berisi "dark", "light", atau "tema"), jadi artikel ikut berubah. Loop dicegah:
-   perubahan dari blog tidak dipantulkan balik ke blog.
+   desktop. Nilai `height` di snippet embed hanya cadangan awal kalau script belum
+   terpasang.
+2. **Tema sinkron dua arah** — `embed-resize.js` membaca tema blog lalu mengirimnya
+   ke viewer. Kalau tombol dark/light di dalam viewer diklik, script ini mengubah
+   tema blog juga, jadi artikel ikut berubah. Perubahan dari blog tidak dipantulkan
+   balik (anti-loop).
+3. **Src iframe yang ditunda** — kalau iframe ditulis tanpa `src`:
+
+   ```html
+   <iframe class="alam-viewer-embed" data-route="lawu-via-cemoro-sewu"></iframe>
+   ```
+
+   `embed-resize.js` yang mengisinya (sertakan `&theme=…`), sehingga viewer tampil
+   dengan tema yang benar sejak frame pertama dan tidak berkedip.
+
+**Penting — ganti, jangan ditumpuk.** Kalau tema Blogger masih memuat script lama
+yang menunda `src` iframe, hapus dulu script itu sebelum memasang baris di atas.
+Dua script sekaligus akan berebut set `src` dan tinggi iframe.
 
 Kalau `embed-resize.js` belum terpasang, viewer tetap jalan normal — hanya tinggi
-iframe dan tema yang tidak ikut menyesuaikan.
+iframe, src tertunda, dan sinkron tema yang tidak ikut menyesuaikan.
+
+### Cara `embed-resize.js` membaca tema blog
+
+Diurutkan dari yang paling spesifik:
+
+1. checkbox `#mode` — pola tema Derelogy, tercentang = dark
+2. atribut `data-theme` di `<html>` atau `<body>`
+3. class `dark`/`light` di `<html>` atau `<body>`
+4. warna latar `background-color` (gelap/terang)
+5. `prefers-color-scheme` sistem
+
+Kalau tema blog pakai kontrol lain (tombol ber-`aria-label`/`title` berisi "dark",
+"light", "mode", "tema", atau "theme"), kontrol itu tetap dipakai untuk
+mengubah tema blog.
 
 ## Upload Data Baru
 
