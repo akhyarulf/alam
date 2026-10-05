@@ -14,6 +14,7 @@ alam/
 ├── index.html        # landing page (daftar jalur, statistik, embed)
 ├── viewer.html       # viewer (halaman pemutaran jalur)
 ├── upload.html       # uploader browser: GPX -> commit ke data/
+├── embed-resize.js   # penerima pesan auto-height & sinkron tema di sisi blog
 ├── assets/
 │   ├── css/
 │   │   ├── style.css
@@ -38,8 +39,7 @@ alam/
 │   ├── routes.json        # index daftar jalur (dibuat otomatis, dibaca landing)
 │   └── <slug>/
 │       ├── manifest.json   # metadata + statistik
-│       ├── track.geojson   # garis jalur untuk peta
-│       └── track.json      # format lengkap engine (meta, stats, waypoints, segments)
+│       └── track.geojson   # garis jalur + waypoint untuk peta
 ├── scripts/
 │   └── build-routes-index.js  # scan data/*/manifest.json -> data/routes.json
 ├── .github/
@@ -114,24 +114,26 @@ Setiap `data/<slug>/` harus memiliki:
     "finish": 3247.68
   },
   "viewer": {
-    "json": "track.json",
     "geojson": "track.geojson"
   }
 }
 ```
 
-> Angka `stats` di atas mengikuti data nyata `lawu-via-cemoro-sewu` (satu-satunya jalur yang masih ada).
+> Angka `stats` di atas mengikuti data nyata `lawu-via-cemoro-sewu`.
+
+> `viewer.json` dan `track.json` sudah dihapus — tidak ada kode yang membacanya.
+> Viewer hanya butuh `track.geojson`; GPX/KML dibuat di browser dari file itu.
 
 Referensi lengkap:
 - https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/manifest.json
-- https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/track.json
 - https://raw.githubusercontent.com/akhyarulf/alam/main/data/<slug>/track.geojson
 
 ## Fitur
 
 - **Viewer statis**: dibuka dari GitHub Pages, no `npm install`, no `vite build`.
-- **Data dari GitHub raw**: semua `track.json`, `track.geojson`, dan `manifest.json`
-  diambil lewat `config.js` → `rawBase`/`manifestURL`/`geojsonURL`.
+- **Data dari domain sendiri**: `manifest.json` & `track.geojson` diambil lewat
+  `config.js` → `localBase`, dengan fallback ke `rawBase` (GitHub raw) bila
+  domain kustom belum sempat mem-build.
 - **Uploader browser**: `upload.html` memproses GPX 100% di browser
   (`@mapbox/togeojson` + Turf.js), lalu commit ke `data/<slug>/` melalui GitHub API.
 - **Theme dark/light**: dikontrol di `viewer.html` / `index.html` oleh `?theme=dark|light` dan sinkron
@@ -262,7 +264,7 @@ Gunakan uploader di:
    diketik manual, kolom itu berhenti mengikuti (Gunung/Jalur berubah).
 3. Tempel **GitHub fine-grained PAT** (repo ini saja, permission **Contents:
    Read and write**, pakai expiry). Opsional diingat di `localStorage`.
-4. Klik **Publish** → 3 file (`track.json`, `track.geojson`, `manifest.json`) ter-commit
+4. Klik **Publish** → 2 file (`track.geojson`, `manifest.json`) ter-commit
    ke `data/<slug>/`.
 
 Setelah publish, viewer langsung bisa dibuka lewat `?route=<slug>`, dan daftar jalur
@@ -330,14 +332,14 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
-| 4 | Tidak ada tombol ganti tema (`#btn-theme` tidak pernah dibuat, padahal `theme.js` sudah siap). | `viewer.html` | **Selesai** — tombol `#btn-theme` + gaya `.theme-toggle`; ikonLight/CA_DARKThemesmilTheme.js yang mengisinya |
+| 4 | Tidak ada tombol ganti tema (`#btn-theme` tidak pernah dibuat, padahal `theme.js` sudah siap). | `viewer.html` | **Selesai** — tombol `#btn-theme` + gaya `.theme-toggle`; ikon `fa-sun`/`fa-moon` di `assets/js/theme.js` yang mengisinya |
 | 5 | `scrollWheelZoom` default Leaflet (`true`) → saat viewer di-embed, scroll halaman ikut terjerat di atas peta. | `assets/js/map.js` | **Selesai** — `scrollWheelZoom: !(window.self !== window.top)`: di iframe mati, dibuka langsung tetap normal |
 | 6 | `min-height:100vh` memaksa dokumen embedded setinggi viewport → ruang kosong/gulir dobel. | `assets/css/style.css` | **Selesai** — `min-height:100svh` dengan fallback `100vh` |
 | 7 | Error masih pakai `alert()` + judul "Viewer Error" (Inggris). | `assets/js/app.js` | **Selesai** — panel `#error-box` (CSS `.error-box`) diisi pakai `textContent`, tanpa alert |
 | 8 | Bahasa bercampur: `Distance`, `Elevation Gain/Loss`, `Highest/Lowest Point` berdampingan dengan `Gunung`, `Jalur`, `Total Naik/Turun`. | `viewer.html` | Belum dikerjakan |
 | 9 | Tidak ada pemilih jalur di dalam viewer; harus lewat `?route=` atau datang dari landing. | `viewer.html` | Belum dikerjakan |
 | 10 | Tombol fullscreen gagal di iframe Blogger. | `index.html`, `upload.html` | **Selesai** — snippet embed (landing & uploader) sudah memakai `allowfullscreen` |
-| 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | Belum dikerjakan (tombol tema sudah punya `aria-label`) |
+| 11 | Tombol toolbar hanya punya `title`, tanpa `aria-label`. | `viewer.html` | **Selesai** — `aria-label` ditambahkan ke `btn-fit`, `btn-fullscreen`, `btn-basemap`, `btn-direction-info`; tombol `btn-theme` sudah punya sebelumnya. `btn-print` (punya teks) dan `btn-elevation-toggle` (sudah punya `aria-expanded`) tidak perlu tambahan |
 
 ### B3. Kekurangan — embed Blogger
 
@@ -351,10 +353,10 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
-| 15 | `track.json` (±92 KB total) **tidak pernah dibaca** halaman mana pun; uploader masih mem-publish-nya. | `data/*/track.json` | Belum dikerjakan |
-| 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | Belum dikerjakan |
+| 15 | `track.json` (±92 KB total) **tidak pernah dibaca** halaman mana pun; uploader masih mem-publish-nya. | `data/*/track.json` | **Selesai** — penerbitan `track.json` dihapus dari `upload.html` (juga blok preview `prev-trackjson`), `viewer.json` dibersihkan dari kedua `manifest.json`, dan file `track.json` dihapus dari repo |
+| 16 | Viewer selalu ambil data dari `raw.githubusercontent.com` (`CONFIG.manifestURL`), landing dari lokal — sumber data tidak konsisten & bisa lebih lambat. | `assets/js/app.js`, `config.js` | **Selesai** — `config.js` menambah `localBase`/`rawManifestURL`/`rawGeojsonURL`; `getManifestURLs()` & `getTrackURLs()` mencoba domain sendiri dulu, baru fallback ke raw. Versi URL aset dinaikkan (`config.js?v=10`, `app.js?v=6`) supaya cache Pages tidak menahan versi lama |
 | 17 | `exports[]` di `manifest.json` Butak menyimpan path internal Windows (`output\\viewer\\...`). | — | **Selesai** — data dummy Butak dihapus |
-| 18 | `engine.version` tidak sinkron antar jalur. | `data/*/manifest.json` | **Selesai untuk sekarang** — tersisa satu jalur (`lawu-via-cemoro-sewu`, versi `1.4.0`); perhatikan sinkronisasi saat menambah jalur baru |
+| 18 | `engine.version` tidak sinkron antar jalur. | `data/*/manifest.json` | **Selesai** — kedua jalur sudah `1.4.0`; perhatikan sinkronisasi saat menambah jalur baru |
 | 19 | README contoh manifest menulis angka yang salah untuk jalurnya. | `README.md` | **Sudah diperbaiki** |
 
 ### B5. Kekurangan — polish situs
@@ -365,7 +367,7 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 | 21 | Tidak ada `robots.txt` dan `sitemap.xml` untuk domain kustom. | **Selesai** — `robots.txt` + `sitemap.xml`. Sitemap dibangun `scripts/build-routes-index.js`, jadi otomatis ikut terbaru setiap ada jalur baru (bukan file statis) |
 | 22 | Tidak ada Open Graph / Twitter Card → tidak ada preview saat link dibagikan. | **Selesai** — Open Graph + Twitter Card di `index.html`, `viewer.html`, `upload.html`. `og:image` = `assets/img/og-image.png` (1200x630). `404.html` dikecualikan (noindex) |
 | 23 | Tidak ada `apple-touch-icon` / `webmanifest` → ikon "Add to Home Screen" memakai screenshot. | **Selesai** — `apple-touch-icon` (180px) + `site.webmanifest` (192/512). Ikon PNG dibuat `scripts/generate-icons.js` dari desain `favicon.svg`; dibuat full-bleed opaque karena iOS merender transparansi jadi hitam |
-| 24 | Tidak ada analytics (disarankan GoatCounter/Umami untuk situs statik). | Belum dikerjakan |
+| 24 | Tidak ada analytics (disarankan GoatCounter/Umami untuk situs statik). | **Diputuskan tidak dikerjakan** — statistik sudah tersedia di Statistik Blogger; `alam` hanya viewer map, jadi nilainya kecil. Bisa dipasang nanti tanpa mengubah kode lain |
 
 ### C. Rencana perbaikan 1–4
 
@@ -451,13 +453,18 @@ Saran urutan pengerjaan: **1 ✅ → 4 ✅ → 2 → 3**.
 - `index.html` — landing page
 - `viewer.html` — viewer jalur (`viewer.html?route=<slug>`)
 - `upload.html` — uploader
-- `config.js` — config GitHub Pages data
+- `404.html` — halaman 404 mandiri (`noindex`)
+- `embed-resize.js` — penerima pesan auto-height + sinkron tema, dipasang di tema Blogger
+- `nyasar-widget.html` — widget promo aplikasi Nyasar untuk ditempel di Blogger
+- `robots.txt`, `sitemap.xml`, `site.webmanifest` — SEO & ikon aplikasi
+- `config.js` — config GitHub Pages data (`localBase` + `rawBase`)
 - `assets/js/*.js` — viewer modules
 - `assets/js/landing.js` — script landing page (daftar jalur + peta mini)
 - `assets/js/export-file.js` — pembuat file GPX & KML dari `track.geojson`
 - `assets/css/style.css` — viewer styles
 - `assets/css/landing.css` — landing page styles (standalone)
 - `data/routes.json` — index daftar jalur (otomatis, dipakai landing page)
-- `data/*/manifest.json`, `track.json`, `track.geojson` — jalur data
-- `scripts/build-routes-index.js` — pembuat `data/routes.json`
+- `data/*/manifest.json`, `track.geojson` — jalur data
+- `scripts/build-routes-index.js` — pembuat `data/routes.json` (+ sitemap)
+- `scripts/generate-icons.js` — pembuat ikon PNG dari `assets/img/favicon.svg`
 - `.github/workflows/routes-index.yml` — otomatisasi pembuat index
