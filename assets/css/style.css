@@ -560,6 +560,51 @@ transform:translateY(-2px);
 
 }
 
+/* Di HP tombol tema mengambang di pojok kanan hero, jadi
+   tidak menambah tinggi header. */
+
+@media (max-width:768px){
+
+.theme-toggle{
+
+position:absolute;
+
+top:10px;
+
+right:12px;
+
+width:36px;
+
+height:36px;
+
+font-size:14px;
+
+background:rgba(0,0,0,.25);
+
+}
+
+#track-title{
+
+font-size:19px;
+
+}
+
+#track-route{
+
+font-size:12px;
+
+opacity:.85;
+
+}
+
+.hero-left{
+
+gap:2px;
+
+}
+
+}
+
 .theme-toggle:active{
 
 transform:scale(.95);
@@ -1392,23 +1437,40 @@ height:560px;
 
 @media (max-width:768px){
 
+/* Header ringkas di HP: tanpa gambar cover, tanpa badge,
+   tombol tema pindah ke pojok kanan supaya tidak turun
+   ke baris sendiri. Berlaku baik dibuka langsung maupun
+   di dalam artikel. */
+
 .hero{
 
-padding:20px 20px;
+padding:12px 14px;
 
 height:auto;
 
-min-height:150px;
+min-height:0;
+
+}
+
+.hero-cover{
+
+display:none;
+
+}
+
+.badge{
+
+display:none;
 
 }
 
 .hero-content{
 
-flex-direction:column;
+flex-direction:row;
 
 align-items:flex-start;
 
-gap:12px;
+gap:10px;
 
 }
 

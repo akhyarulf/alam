@@ -178,6 +178,9 @@ Supaya tidak terlalu memanjang ke bawah di artikel:
 - Daftar pos menampilkan **6 ruas pertama** + tombol “Lihat semua N ruas” (indeks & klik untuk
   fly-to tetap utuh karena semua ruas tetap ada di DOM).
 - Tombol unduh GPX/KML/Print jadi **3 kolom** di HP, dan baris pos lebih rapat (`padding:10px`).
+- **Header diringkas di HP** (buka langsung maupun embed): foto cover & badge disembunyikan,
+  tinggi otomatis (`padding:12px`), judul 19px, dan tombol tema mengambang di pojok kanan
+  supaya tidak turun ke baris sendiri.
 - Efeknya tinggi konten di HP turun dari ~2.000px jadi ~1.500–1.600px, cocok dengan
   `height:1600px` di snippet embed.
 
