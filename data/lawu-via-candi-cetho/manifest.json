@@ -138,13 +138,6 @@
   "viewer": {
     "geojson": "track.geojson"
   },
-  "downloads": {
-    "gpx": null,
-    "kml": null,
-    "kmz": null,
-    "fit": null,
-    "tcx": null
-  },
   "exports": [
     {
       "route_id": "lawu-via-candi-cetho",

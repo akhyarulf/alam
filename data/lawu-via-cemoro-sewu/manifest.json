@@ -115,12 +115,5 @@
   "viewer": {
     "geojson": "track.geojson"
   },
-  "downloads": {
-    "gpx": null,
-    "kml": null,
-    "kmz": null,
-    "fit": null,
-    "tcx": null
-  },
   "created_at": "2026-08-11T12:23:57.681850"
 }

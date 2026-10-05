@@ -6,8 +6,6 @@
 
    - GPX & KML dibuat langsung di browser dari track.geojson
      (lewat assets/js/export-file.js). Tidak ada layanan eksternal.
-   - Kalau GeoJSON belum tersedia, tombol memakai tautan yang
-     dicantumkan di manifest.downloads (bila ada).
 ========================================================== */
 
 "use strict";
@@ -17,8 +15,6 @@ const DownloadManager = {
     manifest: null,
 
     geojson: null,
-
-    downloads: {},
 
     buttons: {},
 
@@ -84,8 +80,6 @@ const DownloadManager = {
 
         this.manifest = manifest || {};
 
-        this.downloads = this.manifest.downloads || {};
-
     },
 
     setGeojson(geojson) {
@@ -123,7 +117,7 @@ const DownloadManager = {
 
     onGenerateClick(event, type) {
 
-        /* Tanpa GeoJSON: biarkan tautan dari manifest bekerja. */
+        /* Tanpa GeoJSON tidak ada yang bisa dibuat dari browser. */
 
         if (!this.canGenerate()) return;
 
@@ -182,21 +176,17 @@ const DownloadManager = {
 
     update() {
 
-        const canGenerate = this.canGenerate();
+        /* GeoJSON selalu tersedia di viewer; tanpa itu tombol dinonaktifkan. */
 
-        [["gpx", this.downloads.gpx], ["kml", this.downloads.kml]].forEach(([type, url]) => {
+        if (this.canGenerate()) {
 
-            if (canGenerate) {
+            ["gpx", "kml"].forEach((type) => this.markGenerated(type));
 
-                this.markGenerated(type);
+        } else {
 
-            } else {
+            this.disableAll();
 
-                this.updateButton(type, url);
-
-            }
-
-        });
+        }
 
     },
 
@@ -221,40 +211,6 @@ const DownloadManager = {
         button.setAttribute("title", "Dibuat dari track.geojson di browser");
 
         button.classList.remove("disabled");
-
-    },
-
-    /* Tautan langsung dari manifest.downloads. */
-
-    updateButton(type, url) {
-
-        const button = this.buttons[type];
-
-        if (!button) return;
-
-        button.removeAttribute("role");
-
-        if (!url) {
-
-            button.removeAttribute("href");
-
-            button.classList.add("disabled");
-
-            button.setAttribute("aria-disabled", "true");
-
-            return;
-
-        }
-
-        button.href = url;
-
-        button.target = "_blank";
-
-        button.rel = "noopener";
-
-        button.classList.remove("disabled");
-
-        button.removeAttribute("aria-disabled");
 
     },
 
@@ -305,8 +261,6 @@ const DownloadManager = {
         this.manifest = null;
 
         this.geojson = null;
-
-        this.downloads = {};
 
         this.buttons = {};
 
