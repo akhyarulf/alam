@@ -684,6 +684,14 @@ max-width:650px;
 
 }
 
+/* Nama jalur sudah memuat gunung + jalur -> subjudul disembunyikan */
+
+#track-route.is-redundant{
+
+display:none;
+
+}
+
 
 /* ===========================
 THEME BUTTON

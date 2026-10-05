@@ -115,6 +115,22 @@ const Stats = {
 
         );
 
+        /* Kalau nama jalur sudah memuat nama gunung + jalur,
+           subjudul di bawahnya cuma pengulangan -> disembunyikan. */
+        if (this.elements.routeTitle) {
+
+            const name = String(this.track.name || "").toLowerCase();
+
+            const mountain = String(this.track.mountain || "").toLowerCase();
+
+            const route = String(this.track.route || "").toLowerCase();
+
+            const redundant = Boolean(mountain && route && name.includes(mountain) && name.includes(route));
+
+            this.elements.routeTitle.classList.toggle("is-redundant", redundant);
+
+        }
+
     },
 
     /* ======================================================

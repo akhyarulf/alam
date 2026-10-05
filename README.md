@@ -154,7 +154,7 @@ Referensi lengkap:
 ```html
 <iframe
   src="https://alam.nyasarnyaman.my.id/viewer.html?route=lawu-via-cemoro-sewu"
-  style="width:100%;height:1600px;border:0;border-radius:10px"
+  style="width:100%;height:1300px;border:0;border-radius:10px"
   loading="lazy"
   scrolling="no"
   allowfullscreen
@@ -178,11 +178,14 @@ Supaya tidak terlalu memanjang ke bawah di artikel:
 - Daftar pos menampilkan **6 ruas pertama** + tombol “Lihat semua N ruas” (indeks & klik untuk
   fly-to tetap utuh karena semua ruas tetap ada di DOM).
 - Tombol unduh GPX/KML/Print jadi **3 kolom** di HP, dan baris pos lebih rapat (`padding:10px`).
+- **Subjudul hero disembunyikan kalau pengulangan**: bila `track.name` sudah memuat nama gunung
+  **dan** nama jalur (mis. "Lawu via Candi Cetho"), baris "Lawu • Candi Cetho" di bawahnya
+  disembunyikan. Kalau nama jalur dikustom ("Rute Favorit Saya"), subjudul tetap tampil.
 - **Header diringkas di HP** (buka langsung maupun embed): foto cover & badge disembunyikan,
   tinggi otomatis (`padding:12px`), judul 19px, dan tombol tema mengambang di pojok kanan
   supaya tidak turun ke baris sendiri.
 - Efeknya tinggi konten di HP turun dari ~2.000px jadi ~1.500–1.600px, cocok dengan
-  `height:1600px` di snippet embed.
+  `height:1300px` di snippet embed.
 
 ### Tampilan di dalam artikel
 
