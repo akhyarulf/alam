@@ -39,7 +39,7 @@ content="website">
 
 <meta
 property="og:site_name"
-content="Alam Viewer — Nyasar Nyaman">
+content="Alam — Nyasar Nyaman">
 
 <meta
 property="og:locale"
@@ -51,7 +51,7 @@ content="Uploader Jalur — Nyasar Nyaman">
 
 <meta
 property="og:description"
-content="Upload GPX ke data/ Alam Viewer. Diproses 100% di browser, publish langsung ke GitHub.">
+content="Upload GPX ke data/ Alam. Diproses 100% di browser, publish langsung ke GitHub.">
 
 <meta
 property="og:image"
@@ -67,7 +67,7 @@ content="630">
 
 <meta
 property="og:image:alt"
-content="Ilustrasi gunung dengan label Alam Viewer">
+content="Ilustrasi gunung dengan label Alam">
 
 <meta
 name="twitter:card"
@@ -94,7 +94,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 
 /* ==========================================================
    Alam Uploader
-   Tema mengikuti Alam Viewer (style.css)
+   Tema mengikuti viewer (style.css)
    ========================================================== */
 
 :root {
@@ -1007,7 +1007,7 @@ html {
 
     <footer>
 
-        Powered by <strong>Alam Engine</strong> • Nyasar Nyaman
+        Nyasar Nyaman
 
     </footer>
 
@@ -1022,7 +1022,7 @@ html {
 <script src="https://cdn.jsdelivr.net/npm/@turf/turf@7.2.0/turf.min.js"></script>
 
 <!-- ==============================
-     LOGIKA MURNI (replika Alam Engine)
+     LOGIKA MURNI
      Tidak menyentuh DOM — bisa dites terpisah.
 ============================== -->
 
@@ -1870,7 +1870,7 @@ function buildGeojson(meta, stats, coords, waypoints) {
 
             route: meta.route,
 
-            engine: "Alam Engine",
+            engine: "Alam",
 
             distance_km: stats.distance_km,
 
@@ -1914,7 +1914,7 @@ function buildManifestSkeleton(slug, meta, stats, legs) {
 
         engine: {
 
-            name: "Alam Engine",
+            name: "Alam",
 
             version: UPLOADER.ENGINE_VERSION
 

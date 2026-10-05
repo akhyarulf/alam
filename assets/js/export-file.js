@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer — Export File (GPX & KML)
+   Alam — Export File (GPX & KML)
  ==========================================================
    Mengubah track.geojson menjadi file GPX 1.1 dan KML 2.2
    langsung di browser. Tidak butuh server, tidak butuh layanan eksternal.
@@ -92,7 +92,7 @@
         parts.push('<?xml version="1.0" encoding="UTF-8"?>');
 
         parts.push(
-            '<gpx version="1.1" creator="Alam Viewer (akhyarulf/alam)"' +
+            '<gpx version="1.1" creator="Alam (akhyarulf/alam)"' +
             ' xmlns="http://www.topografix.com/GPX/1/1"' +
             ' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"' +
             ' xsi:schemaLocation="http://www.topografix.com/GPX/1/1' +

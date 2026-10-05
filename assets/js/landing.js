@@ -1,5 +1,5 @@
 /* ==========================================
- Alam Viewer — Landing Page
+ Alam — Landing Page
  ==========================================
  Data   : data/routes.json (index, satu request untuk semua jalur)
             + data/<slug>/track.geojson (hanya saat kartu dilihat)

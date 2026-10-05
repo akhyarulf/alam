@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer — embed-resize.js
+   Alam — embed-resize.js
    Helper sisi BLOG (Blogger, tema Derelogy).
 
    Pasang SATU BARIS di tema Blogger:

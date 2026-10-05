@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.2
+   Alam v1.2
    download.js
 
    Download Manager

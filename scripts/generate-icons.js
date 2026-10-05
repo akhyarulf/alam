@@ -1,5 +1,5 @@
 /* ==========================================
- Alam Viewer — Icon Generator
+ Alam — Icon Generator
  ==========================================
  Membuat PNG raster dari desain yang sama dengan
  assets/img/favicon.svg:
@@ -257,7 +257,7 @@ function makeOG() {
 
     /* judul */
     const px = 16 * SS;
-    drawText(cv, "ALAM VIEWER", 80 * SS, 300 * SS, px, C.snow);
+    drawText(cv, "ALAM", 80 * SS, 300 * SS, px, C.snow);
     drawText(cv, "PETA JALUR", 80 * SS, 300 * SS + 9 * px, px * 0.8, C.mtn);
     fillRect(cv, 80 * SS, 300 * SS + 22 * px, 80 * SS + 300 * SS, 300 * SS + 22 * px + 4 * SS, C.sun);
 

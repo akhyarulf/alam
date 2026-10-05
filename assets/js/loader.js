@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.0
+   Alam v1.0
    loader.js
 
    Loading Screen Controller
@@ -35,7 +35,7 @@ const Loader = {
 
     },
 
-    show(text = "Loading Route...", subtitle = "Mengambil data dari Alam Engine") {
+    show(text = "Loading Route...", subtitle = "Mengambil data dari Alam") {
 
         if (!this.initialized) {
 
@@ -146,7 +146,7 @@ const Loader = {
             title.textContent = "Loading Route...";
 
         if (desc)
-            desc.textContent = "Mengambil data dari Alam Engine";
+            desc.textContent = "Mengambil data dari Alam";
 
         this.element.style.opacity = "1";
 

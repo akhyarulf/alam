@@ -1,6 +1,6 @@
 {
-  "name": "Alam Viewer — Nyasar Nyaman",
-  "short_name": "Alam Viewer",
+  "name": "Alam — Nyasar Nyaman",
+  "short_name": "Alam",
   "description": "Peta interaktif jalur pendakian Indonesia: peta Leaflet, profil elevasi, waypoint, dan unduh GPX/KML.",
   "lang": "id",
   "start_url": "/",

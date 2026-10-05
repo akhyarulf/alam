@@ -1,4 +1,4 @@
-# Alam Viewer — https://alam.nyasarnyaman.my.id/
+# Alam — https://alam.nyasarnyaman.my.id/
 # Peta interaktif jalur pendakian Indonesia.
 # Halaman dibangun dari data mentah, jadi crawling aman.
 

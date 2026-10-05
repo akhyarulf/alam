@@ -1,7 +1,7 @@
 /*
 
 =========================================
- Alam Viewer
+ Alam
  Config
 
  githubRepo now points to: akhyarulf/alam
@@ -10,7 +10,7 @@
 
 */
 
-window.AlamViewer = window.AlamViewer || {};
+window.Alam = window.Alam || {};
 
 const CONFIG = {
 
@@ -80,7 +80,7 @@ const CONFIG = {
 
     Priority:
 
-    1 window.AlamViewer.route
+    1 window.Alam.route
     2 ?route=
     3 defaultRoute
 
@@ -94,15 +94,15 @@ const CONFIG = {
 
         if (
 
-            window.AlamViewer
+            window.Alam
 
             &&
 
-            window.AlamViewer.route
+            window.Alam.route
 
         ) {
 
-            return window.AlamViewer.route;
+            return window.Alam.route;
 
         }
 

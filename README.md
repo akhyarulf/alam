@@ -1,4 +1,4 @@
-# Alam Viewer 🥾
+# Alam 🥾
 
 Peta interaktif jalur pendakian — bagian dari **Nyasar Nyaman** (nyasarnyaman.my.id).
 Stark JavaScript murni + Leaflet, tanpa framework, tanpa build step.
@@ -95,7 +95,7 @@ Setiap `data/<slug>/` harus memiliki:
 {
   "id": "slugsatu",
   "engine": {
-    "name": "Alam Engine",
+    "name": "Alam",
     "version": "1.4.0"
   },
   "track": {

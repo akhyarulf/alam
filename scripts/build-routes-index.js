@@ -1,5 +1,5 @@
 /* ==========================================
- Alam Viewer — Routes Index Builder
+ Alam — Routes Index Builder
  ==========================================
  Membaca setiap data/<slug>/manifest.json lalu menulis satu
  ringkasan ke data/routes.json supaya landing page cukup

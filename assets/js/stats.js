@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.0
+   Alam v1.0
    stats.js
 
    Statistics & Information Module
@@ -360,7 +360,7 @@ const Stats = {
 
             this.track.name ||
 
-            "Alam Viewer";
+            "Alam";
 
         const description = document.querySelector(
 

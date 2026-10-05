@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.1
+   Alam v1.1
    theme.js
 
    Light / Dark Theme Manager

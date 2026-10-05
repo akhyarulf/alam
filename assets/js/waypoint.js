@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.0
+   Alam v1.0
    waypoint.js
 
    Waypoint Sidebar Manager

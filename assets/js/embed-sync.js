@@ -1,5 +1,5 @@
 /* ==========================================================
-   Alam Viewer v1.1
+   Alam v1.1
    embed-sync.js
 
    Saat viewer ini di-embed lewat <iframe> di artikel
