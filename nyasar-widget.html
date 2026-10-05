@@ -1,0 +1,143 @@
+<!--
+  ============================================================
+  WIDGET PROMO APLIKASI NYASAR
+  ------------------------------------------------------------
+  CARA PAKAI (Blogger):
+    1. Buka  Tema Blogger -> Tata Letak
+    2. Cari area "Aside"  (di situ widget Label kamu berada)
+    3. Klik "Tambah widget" -> pilih tipe  HTML/HTML
+    4. Hapus isi bawaan, tempel seluruh kode ini
+    5. Simpan
+
+  Catatan:
+  - Warna memakai variabel milik tema Derelogy
+    (--bg-100, --border, --bodyTx, --postLink, --tx-50),
+    jadi widget ini OTOMATIS ikut mode terang/gelap.
+    Tidak ada JavaScript sama sekali.
+  - Di HP widget ini jadi lebar penuh, karena tema
+    mengubah .aside menjadi max-width:100%.
+  ============================================================ -->
+
+<style>
+.nyasar-promo {
+  background: var(--bg-100, #fff);
+  border: 1px solid var(--border, #dededf);
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+  font-family: var(--fontBody, 'Noto Sans', sans-serif);
+}
+
+.nyasar-promo .np-emoji {
+  font-size: 30px;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.nyasar-promo h3 {
+  margin: 0 0 6px;
+  font-size: 16px;
+  line-height: 1.35;
+  color: var(--bodyTx, #232428);
+}
+
+.nyasar-promo p.np-teks {
+  margin: 0 0 12px;
+  font-size: var(--tx-m, .9em);
+  line-height: 1.55;
+  color: var(--tx-75, #36383a);
+}
+
+.nyasar-promo ul.np-list {
+  margin: 0 0 14px;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.nyasar-promo ul.np-list li {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 5px;
+  font-size: var(--tx-s, .785em);
+  line-height: 1.45;
+  color: var(--tx-50, #606060);
+}
+
+.nyasar-promo ul.np-list li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: .55em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--postLink, #5a7562);
+}
+
+.nyasar-promo a.np-btn {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: var(--postLink, #5a7562);
+  color: #fff;
+  font-size: var(--tx-m, .9em);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.nyasar-promo a.np-btn:hover { opacity: .9; }
+
+.nyasar-promo a.np-apk {
+  display: block;
+  margin-top: 9px;
+  font-size: var(--tx-s, .785em);
+  color: var(--postLink, #5a7562);
+}
+
+.nyasar-promo .np-note {
+  margin: 14px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--border, #dededf);
+  font-size: var(--tx-s, .785em);
+  color: var(--tx-50, #606060);
+}
+
+.nyasar-promo .np-note a {
+  color: var(--tx-50, #606060);
+  text-decoration: underline;
+}
+</style>
+
+<div class="nyasar-promo">
+
+  <div class="np-emoji">🥾</div>
+
+  <h3>Datang ke lapangan tanpa sinyal?</h3>
+
+  <p class="np-teks">
+    Peta di atasnya butuh internet. <strong>Nyasar</strong> membawanya
+    ke HP: rekam jalur, lihat peta topografi, semuanya offline.
+  </p>
+
+  <ul class="np-list">
+    <li>Rekam GPS tanpa koneksi</li>
+    <li>Peta topografi tersimpan di HP</li>
+    <li>Data GPS-mu tidak dikirim ke mana pun</li>
+  </ul>
+
+  <a class="np-btn"
+     href="https://app.nyasarnyaman.my.id/"
+     target="_blank" rel="noopener nofollow">Lihat aplikasi Nyasar</a>
+
+  <a class="np-apk"
+     href="https://github.com/akhyarulf/nyasar/releases/latest/download/Nyasar.apk"
+     target="_blank" rel="noopener nofollow">atau unduh APK (Android) langsung</a>
+
+  <p class="np-note">
+    <a href="https://github.com/akhyarulf/nyasar" target="_blank" rel="noopener">Sumber terbuka</a>
+    &middot;
+    <a href="https://app.nyasarnyaman.my.id/privacy-policy.html" target="_blank" rel="noopener">Privasi</a>
+  </p>
+
+</div>
