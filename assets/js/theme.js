@@ -133,27 +133,68 @@ const Theme = {
 
             const data = e.data;
 
-            if (
-                !data ||
-                data.source !== "nyasar-blog" ||
-                (data.theme !== "dark" && data.theme !== "light")
-            ) {
-                return;
-            }
+            if (!data) return;
+
+            /* Pesan tema dari blog: {"source":"alam-blog","type":"theme"}
+               atau bentuk lama {"source":"nyasar-blog","theme":"dark"}.
+               Sumbernya wajib dari script blog kita, supaya pesan
+              Random dari halaman lain tidak bisa mengganti tema. */
+            const fromBlog =
+                data.source === "alam-blog" || data.source === "nyasar-blog";
+
+            const themeOk = data.theme === "dark" || data.theme === "light";
+
+            if (!fromBlog || !themeOk) return;
 
             this.syncedFromParent = true;
+
+            this._fromParent = true;
 
             this.apply(data.theme, { persist: false });
 
         });
 
         try {
+
             window.parent.postMessage(
+
                 { source: "alam", type: "ready" },
+
                 "*"
+
             );
+
         } catch (e) {
+
             console.warn("Theme: gagal handshake ke parent.", e);
+
+        }
+
+    },
+
+    /* ======================================================
+       Kirim perubahan tema ke halaman induk
+       (dipakai embed-resize.js untuk membalik tema blog)
+    ====================================================== */
+
+    notifyParent(mode) {
+
+        if (!this.embedded) return;
+
+        try {
+
+            window.parent.postMessage(
+
+                { source: "alam", type: "theme", theme: mode },
+
+                "*"
+
+            );
+
+        } catch (e) {
+
+            /* silent */
+
         }
 
     },
@@ -165,6 +206,8 @@ const Theme = {
     apply(mode, opts) {
 
         opts = opts || {};
+
+        const previous = this.current;
 
         document.body.classList.remove("light", "dark");
         document.body.classList.add(mode);
@@ -181,6 +224,17 @@ const Theme = {
         document.dispatchEvent(
             new CustomEvent("themeChanged", { detail: { theme: mode } })
         );
+
+        /* Kirim balik ke blog HANYA kalau perubahan berasal dari
+           user di viewer (bukan dari pesan blog), supaya tidak
+           terjadi bolak-balik tanpa akhir. */
+        if (this.embedded && this.initialized && previous !== mode && !this._fromParent) {
+
+            this.notifyParent(mode);
+
+        }
+
+        this._fromParent = false;
 
     },
 

@@ -195,26 +195,33 @@ menjadi strip tipis (judul jalur + tombol tema tetap ada), badge disembunyikan.
 Card POI juga otomatis disembunyikan kalau jalurnya memang tidak punya POI.
 Dibuka langsung (`viewer.html?route=…` tanpa iframe) tampilannya tetap utuh.
 
-### Tinggi iframe otomatis (disarankan)
+### Tinggi iframe otomatis + tema sinkron (disarankan)
 
-`assets/js/embed-sync.js` sudah mengirim tinggi konten ke halaman induk
-(`postMessage {source:"alam", type:"resize", height}`). Blogger/Derelogy belum punya
-penerima pesan itu, jadi `height:2000px` di atas hanya perkiraan. Tambahkan script
-ini di tema Blogger (**Tema → Edit HTML**, sebelum `</body>`), lalu tinggi iframe
-menyesuaikan sendiri di HP maupun desktop:
+`assets/js/embed-sync.js` mengirim tinggi konten ke halaman induk
+(`postMessage {source:"alam", type:"resize", height}`), dan `assets/js/theme.js`
+menerima tema dari blog. Penerimanya sudah disiapkan di `embed-resize.js`.
+Tambahkan **satu baris** ini di tema Blogger (**Tema → Edit HTML**, sebelum
+`</body>`):
 
 ```html
-<script>
-window.addEventListener("message", function (e) {
-  if (!e.data || e.data.source !== "alam" || e.data.type !== "resize") return;
-  document.querySelectorAll('iframe[src*="alam.nyasarnyaman.my.id"]').forEach(function (f) {
-    if (f.dataset.h === String(e.data.height)) return;
-    f.dataset.h = String(e.data.height);
-    f.style.height = e.data.height + "px";
-  });
-});
-</script>
+<script src="https://alam.nyasarnyaman.my.id/embed-resize.js"></script>
 ```
+
+Setelah itu:
+
+1. **Tinggi otomatis** — tinggi iframe mengikuti isi viewer (dibatasi 400–20.000px),
+   jadi tidak ada lagi area kosong besar atau scroll di dalam iframe, di HP maupun
+   desktop. Nilai `height:1300px` di snippet embed hanya cadangan awal kalau
+   script belum terpasang.
+2. **Tema sinkron dua arah** — `embed-resize.js` membaca tema blog ( atribut
+   `data-theme`, class `dark`/`light`, warna latar, atau `prefers-color-scheme`)
+   lalu mengirimnya ke viewer. Kalau tombol dark/light di dalam viewer diklik,
+   script ini menekan tombol tema milik blog (dicari lewat `aria-label`/`title`
+   berisi "dark", "light", atau "tema"), jadi artikel ikut berubah. Loop dicegah:
+   perubahan dari blog tidak dipantulkan balik ke blog.
+
+Kalau `embed-resize.js` belum terpasang, viewer tetap jalan normal — hanya tinggi
+iframe dan tema yang tidak ikut menyesuaikan.
 
 ## Upload Data Baru
 
@@ -312,9 +319,9 @@ Audit terakhir dilakukan pada 2026-10-04 terhadap `index.html`, `viewer.html`,
 
 | # | Masalah | Lokasi | Status |
 |---|---------|--------|--------|
-| 12 | Auto-height **tidak jalan** untuk snippet dari landing: `embed-sync.js` mengirim `{source:"alam",type:"resize"}`, tapi receiver-nya harus ada di theme Blogger (`index.xml`) dan tidak disertakan. | `assets/js/embed-sync.js` | Belum dikerjakan |
+| 12 | Auto-height **tidak jalan** untuk snippet dari landing: `embed-sync.js` mengirim `{source:"alam",type:"resize"}`, tapi receiver-nya harus ada di theme Blogger (`index.xml`) dan tidak disertakan. | `embed-resize.js` | **Selesai** — `embed-resize.js` di root menerima pesan resize (tinggi 400–20.000px) + push/pull tema dua arah; dipasang lewat satu `<script src>` di tema Blogger |
 | 13 | Handshake tema tidak dijawab: `theme.js` mengirim `{source:"alam",type:"ready"}`, tetapi tidak ada skrip di sisi blog yang membalas `{source:"nyasar-blog",theme}`. | `assets/js/theme.js` | Belum dikerjakan |
-| 14 | Iframe dipatok `height:600px` + `overflow:hidden` → jebakan scroll di tengah artikel. | `index.html` | Belum dikerjakan |
+| 14 | Iframe dipatok `height:600px` + `overflow:hidden` → jebakan scroll di tengah artikel. | `index.html`, `upload.html` | **Selesai** — snippet embed `height:1300px` + `scrolling="no"`; kalau `embed-resize.js` terpasang, tinggi jadi otomatis |
 
 ### B4. Kekurangan — data & dokumentasi
 
