@@ -53,6 +53,28 @@ const CONFIG = {
     /*
 
     =========================================
+    LOKAL
+
+    =========================================
+    Data juga ikut ter-deploy di domain ini sendiri (folder data/),
+    jadi lebih cepat diambil dari CDN sendiri daripada menunggu
+    raw.githubusercontent.com. Dipakai duluan; rawBase tetap
+    disimpan sebagai cadangan.
+
+    =========================================
+
+    */
+
+    get localBase() {
+
+        return this.dataFolder;
+
+    },
+
+
+    /*
+
+    =========================================
 
     ROUTE
 
@@ -117,11 +139,26 @@ const CONFIG = {
 
     get manifestURL() {
 
-        return `${this.rawBase}/${this.route}/manifest.json`;
+        return `${this.localBase}/${this.route}/manifest.json`;
 
     },
 
     get geojsonURL() {
+
+        return `${this.localBase}/${this.route}/track.geojson`;
+
+    },
+
+    /* Cadangan: dipakai kalau file lokal tidak tersedia
+       (mis. viewer.html di-host tanpa folder data/). */
+
+    get rawManifestURL() {
+
+        return `${this.rawBase}/${this.route}/manifest.json`;
+
+    },
+
+    get rawGeojsonURL() {
 
         return `${this.rawBase}/${this.route}/track.geojson`;
 

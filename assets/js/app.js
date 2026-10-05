@@ -121,16 +121,21 @@ const App = {
 	Manifest URL
 	====================================================== */
 
-	getManifestURL() {
-	
-		if (
-			window.CONFIG &&
-			CONFIG.manifestURL
-		) {
-			return CONFIG.manifestURL;
-		}
+	getManifestURLs() {
 
-		return `https://raw.githubusercontent.com/akhyarulf/alam/main/data/${this.routeId}/manifest.json`;
+		const remote = `https://raw.githubusercontent.com/akhyarulf/alam/main/data/${this.routeId}/manifest.json`;
+
+		const list = [
+
+			...(window.CONFIG ? [CONFIG.manifestURL, CONFIG.rawManifestURL] : []),
+
+			remote
+
+		];
+
+		/* Buang duplikat & kosong supaya tidak fetch dua kali ke URL sama. */
+
+		return [...new Set(list.filter(Boolean))];
 
 	},
 
@@ -138,16 +143,19 @@ const App = {
 	Track URL
 	====================================================== */
 
-	getTrackURL() {
+	getTrackURLs() {
 
-		if (
-			window.CONFIG &&
-			CONFIG.geojsonURL
-		) {
-			return CONFIG.geojsonURL;
-		}
+		const remote = `https://raw.githubusercontent.com/akhyarulf/alam/main/data/${this.routeId}/track.geojson`;
 
-		return `https://raw.githubusercontent.com/akhyarulf/alam/main/data/${this.routeId}/track.geojson`;
+		const list = [
+
+			...(window.CONFIG ? [CONFIG.geojsonURL, CONFIG.rawGeojsonURL] : []),
+
+			remote
+
+		];
+
+		return [...new Set(list.filter(Boolean))];
 
 	},
 	
@@ -157,19 +165,35 @@ const App = {
 
     async loadManifest() {
 
-        const url = this.getManifestURL();
+        const urls = this.getManifestURLs();
 
-        const response = await fetch(url, {
+        let response = null;
 
-            cache: "no-cache"
+        let lastStatus = 0;
 
-        });
+        for (const url of urls) {
 
-        if (!response.ok) {
+            try {
+
+                response = await fetch(url, { cache: "no-cache" });
+
+                if (response.ok) break;
+
+                lastStatus = response.status;
+
+            } catch (err) {
+
+                /* Lanjut ke kandidat berikutnya. */
+
+            }
+
+        }
+
+        if (!response || !response.ok) {
 
             throw new Error(
 
-                `Manifest tidak ditemukan (${response.status})`
+                `Manifest tidak ditemukan (${lastStatus || "tidak ada sumber yang bisa diakses"})`
 
             );
 
@@ -201,9 +225,7 @@ const App = {
 
     async loadTrack() {
 
-        let url;
-
-        if (
+        const file = (
 
             this.manifest &&
 
@@ -211,37 +233,41 @@ const App = {
 
             this.manifest.viewer.geojson
 
-        ) {
+        )
 
-            url = this.getTrackURL()
+            ? this.manifest.viewer.geojson
 
-                .replace(
+            : "track.geojson";
 
-                    "track.geojson",
+        let response = null;
 
-                    this.manifest.viewer.geojson
+        let lastStatus = 0;
 
-                );
+        for (const base of this.getTrackURLs()) {
+
+            const url = base.replace("track.geojson", file);
+
+            try {
+
+                response = await fetch(url, { cache: "no-cache" });
+
+                if (response.ok) break;
+
+                lastStatus = response.status;
+
+            } catch (err) {
+
+                /* Lanjut ke kandidat berikutnya. */
+
+            }
 
         }
 
-        else {
-
-            url = this.getTrackURL();
-
-        }
-
-        const response = await fetch(url, {
-
-            cache: "no-cache"
-
-        });
-
-        if (!response.ok) {
+        if (!response || !response.ok) {
 
             throw new Error(
 
-                `Track GeoJSON tidak ditemukan (${response.status})`
+                `Track GeoJSON tidak ditemukan (${lastStatus || "tidak ada sumber yang bisa diakses"})`
 
             );
 
