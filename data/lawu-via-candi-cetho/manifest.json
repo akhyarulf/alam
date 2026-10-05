@@ -32,6 +32,7 @@
     "ascent_duration_minutes_high": 435,
     "descent_duration_minutes_low": 115,
     "descent_duration_minutes_high": 175,
+    "direction": "ascent",
     "ascent_km": 7.99,
     "return_km": 8.66,
     "profile_descent_km": 0.67

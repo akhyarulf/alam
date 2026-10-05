@@ -942,15 +942,7 @@ html {
 
         </details>
 
-        <details>
-
-            <summary>track.json</summary>
-
-            <pre id="prev-trackjson"></pre>
-
-        </details>
-
-    </section>
+        </section>
 
     <!-- ==============================
          4. PUBLISH
@@ -1914,42 +1906,6 @@ function buildGeojson(meta, stats, coords, waypoints) {
 
 }
 
-function buildTrackJson(meta, stats, waypoints, geometryCoords, segments) {
-
-    return {
-
-        meta: {
-
-            name: meta.name,
-
-            route_id: meta.route_id,
-
-            mountain: meta.mountain,
-
-            route: meta.route,
-
-            engine: "Alam Engine"
-
-        },
-
-        stats: stats,
-
-        waypoints: waypoints,
-
-        geometry: {
-
-            type: "LineString",
-
-            coordinates: geometryCoords
-
-        },
-
-        segments: segments
-
-    };
-
-}
-
 function buildManifestSkeleton(slug, meta, stats, legs) {
 
     return {
@@ -1979,8 +1935,6 @@ function buildManifestSkeleton(slug, meta, stats, legs) {
         legs: legs || [],
 
         viewer: {
-
-            json: "track.json",
 
             geojson: "track.geojson"
 
@@ -2500,27 +2454,7 @@ function renderPreview(autoWaypoints) {
 
     meta.route_id = createRouteId(meta.mountain, meta.route);
 
-    const geometryCoords = state.points.map((p, i) =>
-
-        [p.lat, p.lng, p.ele, state.dists[i]]
-
-    );
-
     const geojson = buildGeojson(meta, state.stats, state.coords, currentWaypoints());
-
-    const trackJson = buildTrackJson(
-
-        meta,
-
-        state.stats,
-
-        autoWaypoints.concat(state.gpxWaypoints),
-
-        geometryCoords,
-
-        state.segments
-
-    );
 
     const manifest = buildManifestSkeleton(meta.route_id, meta, state.stats, buildLegs(currentWaypoints(), state.points));
 
@@ -2541,8 +2475,6 @@ function renderPreview(autoWaypoints) {
     el("prev-manifest").textContent = pretty(manifest);
 
     el("prev-geojson").textContent = pretty(geojson).slice(0, 4000) + "\n…";
-
-    el("prev-trackjson").textContent = pretty(trackJson).slice(0, 4000) + "\n…";
 
 }
 
@@ -2778,53 +2710,7 @@ async function publish() {
 
         updateLog(span0, "fa-solid fa-check", `Slug "${slug}" tersedia`, "ok");
 
-        /* 1. track.json */
-
-        const span1 = addLog("fa-solid fa-spinner fa-spin", "Meng-commit track.json…");
-
-        const trackJson = buildTrackJson(
-
-            meta,
-
-            state.stats,
-
-            buildAutoWaypoints(state.points).concat(state.gpxWaypoints),
-
-            state.points.map((p, i) => [p.lat, p.lng, p.ele, state.dists[i]]),
-
-            state.segments
-
-        );
-
-        const tjStr = pretty(trackJson);
-
-        let tjSha = null;
-
-        const tjExisting = await apiGetFile(`${UPLOADER.DATA_FOLDER}/${slug}/track.json`, token);
-
-        if (tjExisting.status === 200) {
-
-            tjSha = (await tjExisting.json()).content.sha;
-
-        }
-
-        const r1 = await putFile(
-
-            `${UPLOADER.DATA_FOLDER}/${slug}/track.json`,
-
-            tjStr,
-
-            `Add ${slug}/track.json via uploader`,
-
-            token,
-
-            tjSha
-
-        );
-
-        updateLog(span1, "fa-solid fa-check", "track.json ✓", "ok");
-
-        /* 2. track.geojson */
+        /* 1. track.geojson */
 
         const span2 = addLog("fa-solid fa-spinner fa-spin", "Meng-commit track.geojson…");
 
@@ -2869,8 +2755,6 @@ async function publish() {
         const manifest = buildManifestSkeleton(slug, meta, state.stats, publishedLegs);
 
         manifest.exports = [
-
-            exportEntry(slug, "json", "track.json", byteLength(tjStr), r1),
 
             exportEntry(slug, "geojson", "track.geojson", byteLength(gjStr), r2)
 
