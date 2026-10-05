@@ -113,7 +113,6 @@
     }
   ],
   "viewer": {
-    "json": "track.json",
     "geojson": "track.geojson"
   },
   "downloads": {
